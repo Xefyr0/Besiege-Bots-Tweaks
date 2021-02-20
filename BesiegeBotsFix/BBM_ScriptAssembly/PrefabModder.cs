@@ -17,8 +17,8 @@ namespace BotFix
 
                 //1
                 PrefabMaster.GetBlock(BlockType.DoubleWoodenBlock, out BB);
-                if (BB.gameObject.GetComponent<WoodBlockFix>() == null)
-                    BB.gameObject.AddComponent<WoodBlockFix>();
+                if (BB.gameObject.GetComponent<DoubleWoodBlockFix>() == null)
+                    BB.gameObject.AddComponent<DoubleWoodBlockFix>();
 
                 //2              
 /*                PrefabMaster.GetBlock(BlockType.Wheel, out BB);
@@ -270,8 +270,8 @@ namespace BotFix
 
                 //41
                 PrefabMaster.GetBlock(BlockType.WoodenPole, out BB);
-                if (BB.gameObject.GetComponent<WoodBlockFix>() == null)
-                    BB.gameObject.AddComponent<WoodBlockFix>();
+                if (BB.gameObject.GetComponent<WoodPoleFix>() == null)
+                    BB.gameObject.AddComponent<WoodPoleFix>();
 
                 //42
                 //PrefabMaster.GetBlock(BlockType.Slider, out BB);
