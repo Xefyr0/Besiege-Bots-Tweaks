@@ -14,7 +14,8 @@ namespace BotFix
         private Queue<Vector3> averageVelocityQueue = new Queue<Vector3>();
         private Queue<float> averageAngularVelocityQueue = new Queue<float>();
         private int queueSize = 60;
-        public BBinfo.VelocityUnit velocityUnit;
+        // 0 = kmh, 1 = mph, 2 = ms, 3 = Mach
+        public byte velocityUnit;
         public BlockBehaviour targetBlock;
         private bool validBlock;
         private Vector3 lastPosition;
@@ -45,7 +46,7 @@ namespace BotFix
         private void Awake()
         {
             isFirstFrame = false;
-            velocityUnit = BBinfo.VelocityUnit.ms;
+            velocityUnit = 2;
         }
 
         private void FixedUpdate()
@@ -95,21 +96,8 @@ namespace BotFix
 
         public void ChangedVelocityUnit()
         {
-            switch (velocityUnit)
-            {
-                case BBinfo.VelocityUnit.mph:
-                    velocityUnit = BBinfo.VelocityUnit.ms;
-                    break;
-                case BBinfo.VelocityUnit.ms:
-                    velocityUnit = BBinfo.VelocityUnit.Mach;
-                    break;
-                case BBinfo.VelocityUnit.Mach:
-                    velocityUnit = BBinfo.VelocityUnit.kmh;
-                    break;
-                case BBinfo.VelocityUnit.kmh:
-                    velocityUnit = BBinfo.VelocityUnit.mph;
-                    break;
-            }
+            if(velocityUnit < 3) velocityUnit ++;
+            else velocityUnit = 0;
             Velocity = Vector3.zero;
             ConsoleController.ShowMessage(velocityUnit.ToString());
         }
@@ -175,17 +163,17 @@ namespace BotFix
                 Velocity = Vector3.zero;
         }
 
-        private Vector3 GetVelocity(Vector3 velocity, BBinfo.VelocityUnit velocityUnit)
+        private Vector3 GetVelocity(Vector3 velocity, byte velocityUnit)
         {
             switch (velocityUnit)
             {
-                case BBinfo.VelocityUnit.kmh:
+                case 0: //kph
                     velocity = Vector3.Scale(velocity, Vector3.one * 3.6f);
                     break;
-                case BBinfo.VelocityUnit.Mach:
+                case 1: //mach
                     velocity = Vector3.Scale(velocity, Vector3.one / 340f);
                     break;
-                case BBinfo.VelocityUnit.mph:
+                case 3: //mph
                     velocity = Vector3.Scale(velocity, Vector3.one * 2.237f);
                     break;
             }
@@ -209,12 +197,12 @@ namespace BotFix
             if (validBlock)
             {
                 float acceleration = Acceleration;
-                if (velocityUnit == BBinfo.VelocityUnit.kmh)
+                if (velocityUnit == 0)  //kmh
                     acceleration /= 3.6f;
-                else if (velocityUnit == BBinfo.VelocityUnit.Mach)
-                    acceleration *= 340f;
-                else if (velocityUnit == BBinfo.VelocityUnit.mph)
+                else if (velocityUnit == 1) //mph
                     acceleration /= 2.237f;
+                else if (velocityUnit == 3) //mach
+                    acceleration *= 340f;
 
                     if (averageAccelerationQueue.Count == queueSize)
                 {
@@ -284,14 +272,6 @@ namespace BotFix
                 //yeet = strBlock.Replace("UnityEngine", "");
                 //yeet = yeet.Replace("GameObject", "");
             }
-        }
-
-        public enum VelocityUnit
-        {
-            kmh,
-            mph,
-            ms,
-            Mach,
         }
     }
 }
