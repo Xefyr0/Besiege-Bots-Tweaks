@@ -199,6 +199,7 @@ namespace BotFix
 
         public static void AngularVelocityClient(Message m)
         {
+            //NRE here on callbacks.
             //Debug.Log("Gotmessage:");
             Block BL = (Block)m.GetData(0);
             //Debug.Log(BL);
