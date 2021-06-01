@@ -8,19 +8,17 @@ namespace BotFix
 {
     public class Wheelfix : MonoBehaviour
     {
-        private HingeJoint HJ;
-        private HingeJoint CJ;
-        private JointMotor JM;
-        private Collider[] colliders;
+        public BlockBehaviour BB;
+        private bool isFirstFrame = true;
+        private Rigidbody rigg;
         private MSlider GS;
         private MMenu PCMenu;
         private int PCselect = 3;
-        public BlockBehaviour BB { get; internal set; }
-        public float grip = 1;
-        private Rigidbody rigg;
-        
+        private int ID = 0;
+        private float Friction = 0.8f;
+
         public PhysicMaterialCombine PC = PhysicMaterialCombine.Maximum;
-        
+
         internal static List<string> PCmenul = new List<string>()
         {
             "Average",
@@ -28,14 +26,37 @@ namespace BotFix
             "Minimum",
             "Maximum",
         };
+
+        void Update()
+        {
+            if (!StatMaster.isClient || StatMaster.isLocalSim)
+            {
+                if (BB.isSimulating)
+                {
+                    if (isFirstFrame)
+                    {
+                        isFirstFrame = false;
+                        foreach (Collider c in GetComponentsInChildren<Collider>())
+                        {
+                            c.material.dynamicFriction = Friction;
+                            c.material.staticFriction = Friction;
+                            c.material.frictionCombine = PC;
+                        }
+                    }
+                }
+            }
+        }
      
         private void Awake()
-        {          
+        {
+            //Get stuff
             BB = GetComponent<BlockBehaviour>();
-            
 
-            GS = BB.AddSlider("Friction", "Friction", grip, 0.1f, 10f);
-            GS.ValueChanged += (float value) => { grip = value; };
+            ID = BB.BlockID;
+
+            //Mapper definition
+            GS = BB.AddSlider("Friction", "Friction", Friction, 0.1f, 10f);
+            GS.ValueChanged += (float value) => { Friction = value; };
 
             PCMenu = BB.AddMenu("Combine", PCselect, PCmenul, false);
             PCMenu.ValueChanged += (ValueHandler)(value => 
@@ -56,33 +77,19 @@ namespace BotFix
                         break;
                 }
             });
-          
+
+            //DisplayInMapper config
             GS.DisplayInMapper = true;
             PCMenu.DisplayInMapper = true;
 
-            
-           
-
+            //Physics stuff
             if (!StatMaster.isClient || StatMaster.isLocalSim)
             {
                 rigg = GetComponent<Rigidbody>();
                 rigg.drag = 0f;
                 rigg.angularDrag = 0f;
                 rigg.maxAngularVelocity = 100;
-
-                CJ = GetComponent<HingeJoint>();
-                CJ.breakForce = 60000;
-                CJ.breakTorque = 60000;
-
-                colliders = GetComponentsInChildren<Collider>();
-                foreach (Collider collider in colliders)
-                {
-
-                    collider.material.dynamicFriction = grip;
-                    collider.material.staticFriction = grip;
-                    collider.material.frictionCombine = PC;
-                }
-            }
+            }    
         }
     }
 }
