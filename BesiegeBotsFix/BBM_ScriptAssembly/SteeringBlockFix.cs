@@ -16,9 +16,11 @@ namespace BotFix
 
                 CJ.breakForce = 60000;
                 CJ.breakTorque = 60000;
+                /*
                 rigg.drag = 0f;
                 rigg.angularDrag = 0f;
                 rigg.maxAngularVelocity = 100;
+                */
             }
         }
     }

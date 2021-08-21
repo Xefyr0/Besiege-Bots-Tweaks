@@ -28,9 +28,11 @@ namespace BotFix
         
             if (!StatMaster.isClient || StatMaster.isLocalSim)
             {
+                /*
                 rigg = GetComponent<Rigidbody>();
                 rigg.drag = 0f;
                 rigg.angularDrag = 0f;
+                */
 
                 colliders = GetComponentsInChildren<Collider>();
 

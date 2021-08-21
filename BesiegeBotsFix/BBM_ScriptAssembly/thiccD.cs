@@ -35,11 +35,12 @@ namespace BotFix
                 CD.jointDamageScale = 0f;
                 //CD.UseCollisionStay = false;
                 //CD.enabled = false;
-
+/*
                 rigg = GetComponent<Rigidbody>();
                 rigg.drag = 0f;
                 rigg.angularDrag = 0f;
                 rigg.maxAngularVelocity = 5;
+                */
             }
             
         }

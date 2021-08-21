@@ -16,7 +16,20 @@ namespace BesiegeBotsMod
                 #if DoyleNumbers
                 switch(type)
                 {
+                    case BlockType.CogMediumUnpowered:
+                    case BlockType.GripPad:
+                    case BlockType.Log:
+                    case BlockType.ArmorPlateSmall:
+                    case BlockType.StartingBlock:
+                        RB.drag = 0f;
+                        RB.angularDrag = 0f;
+                        RB.maxAngularVelocity = 1000;
+                        break;
+                    case BlockType.BuildSurface:
                     case BlockType.Ballast:
+                    case BlockType.Swivel:
+                    case BlockType.BallJoint:
+                    case BlockType.Spike:
                     case BlockType.MetalBlade:
                     case BlockType.Cannon:
                     case BlockType.Torch:
@@ -33,8 +46,6 @@ namespace BesiegeBotsMod
                     case BlockType.WheelUnpowered:
                     case BlockType.LargeWheelUnpowered:
                     case BlockType.CogLargeUnpowered:
-                    case BlockType.Wheel:
-                    case BlockType.LargeWheel:
                     case BlockType.WoodenPole:
                     case BlockType.SingleWoodenBlock:
                     case BlockType.WoodenPanel:
@@ -42,18 +53,27 @@ namespace BesiegeBotsMod
                         RB.angularDrag = 0f;
                         RB.maxAngularVelocity = 100;
                         break;
+                    case BlockType.Wheel:
+                    case BlockType.LargeWheel:
+                        RB.drag = 0f;
+                        RB.angularDrag = 0f;
+                        RB.maxAngularVelocity = 100;//100 in code, 50 in Object Explorer.
+                        break;
                     case BlockType.FlyingBlock:
-                    case BlockType.WaterCannon:
+                    case BlockType.SpinningBlock:
                         RB.drag = 0f;
                         RB.angularDrag = 0f;
                         break;
-                    case BlockType.StartingBlock:
-                    case BlockType.CogMediumUnpowered:
-                    case BlockType.GripPad:
-                    case BlockType.Log:
+                    case BlockType.CircularSaw:
+                    case BlockType.Drill:
                         RB.drag = 0f;
                         RB.angularDrag = 0f;
-                        RB.maxAngularVelocity = 1000;
+                        RB.maxAngularVelocity = 5;//5 in code, 250 in Object Explorer.
+                        break;
+                    case BlockType.WaterCannon:
+                        RB.drag = 0f;
+                        RB.angularDrag = 0f;
+                        RB.maxAngularVelocity = 5;
                         break;
                     case BlockType.Grabber:
                         RB.drag = 0.01f;
@@ -61,17 +81,10 @@ namespace BesiegeBotsMod
                         RB.maxAngularVelocity = 100;
                         break;     
                     case BlockType.ArmorPlateLarge:
-                    case BlockType.ArmorPlateSmall:
                     case BlockType.ArmorPlateRound:
                         RB.drag = 0f;
                         RB.angularDrag = 0f;
                         RB.maxAngularVelocity = 200;
-                        break;
-                    case BlockType.CircularSaw:
-                    case BlockType.Drill:
-                        RB.drag = 0f;
-                        RB.angularDrag = 0f;
-                        RB.maxAngularVelocity = 5;
                         break;
                 }
                 #else

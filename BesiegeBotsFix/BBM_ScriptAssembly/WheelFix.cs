@@ -81,7 +81,7 @@ namespace BotFix
             //DisplayInMapper config
             GS.DisplayInMapper = true;
             PCMenu.DisplayInMapper = true;
-
+            /*
             //Physics stuff
             if (!StatMaster.isClient || StatMaster.isLocalSim)
             {
@@ -90,6 +90,7 @@ namespace BotFix
                 rigg.angularDrag = 0f;
                 rigg.maxAngularVelocity = 100;
             }    
+            */
         }
     }
 }

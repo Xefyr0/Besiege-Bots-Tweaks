@@ -10,6 +10,7 @@ namespace BotFix
         {
             if (Mod.UseModdedBlocks)
             {
+                BesiegeBotsMod.DragFix.FixDrags();
                 //0
                 PrefabMaster.GetBlock(BlockType.StartingBlock, out BB);
                 if (BB.gameObject.GetComponent<AngVelFix>() == null)

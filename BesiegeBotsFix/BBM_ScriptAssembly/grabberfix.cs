@@ -49,9 +49,11 @@ namespace BotFix
             if (!StatMaster.isClient || StatMaster.isLocalSim)
             {
                 rigg.mass = 0.7f;
+                /*
                 rigg.drag = 0.01f;
                 rigg.angularDrag = 0f;
                 rigg.maxAngularVelocity = 100;
+                */
 
                 colliders = GetComponentsInChildren<Collider>();
                 foreach (Collider collider in colliders)

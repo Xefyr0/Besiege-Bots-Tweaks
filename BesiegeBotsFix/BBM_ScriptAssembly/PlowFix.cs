@@ -21,11 +21,12 @@ namespace BotFix
 
                 if (Mod.ModbotMode)
                     return;
-
+/*
                 rigg = GetComponent<Rigidbody>();
                 rigg.drag = 0f;
                 rigg.angularDrag = 0f;
                 rigg.maxAngularVelocity = 100;
+                */
             }
         }
     }

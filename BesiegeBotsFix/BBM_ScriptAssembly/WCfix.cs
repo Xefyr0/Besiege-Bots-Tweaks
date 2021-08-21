@@ -11,15 +11,17 @@ namespace BotFix
         {
             if (!StatMaster.isClient || StatMaster.isLocalSim)
             {
+                /*
                 rigg = GetComponent<Rigidbody>();
                 rigg.drag = 0f;
                 rigg.angularDrag = 0f;
+                */
 
                 RBF = GetComponent<ReduceBreakForceOnImpact>();
                 RBF.reduceMultiplier = 0f;
                 RBF.firstBreakForce = Mathf.Infinity;
                 RBF.impactThreshold = Mathf.Infinity;
-
+/*
                 if (!Mod.BetaMode)
                 {
                     rigg.maxAngularVelocity = 5;
@@ -28,6 +30,7 @@ namespace BotFix
                 {
                     rigg.maxAngularVelocity = 1000;
                 }
+                */
             }
         }
     }

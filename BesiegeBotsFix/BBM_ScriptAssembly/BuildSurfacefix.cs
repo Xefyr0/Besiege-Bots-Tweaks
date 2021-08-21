@@ -26,10 +26,12 @@ namespace BotFix
 
             if (!StatMaster.isClient || StatMaster.isLocalSim)
             {
+                /*
                 rigg = GetComponent<Rigidbody>();
                 rigg.drag = 0f;
                 rigg.angularDrag = 0f;
                 rigg.maxAngularVelocity = 100;
+                */
 
                 CJ = GetComponents<ConfigurableJoint>();
                 foreach (ConfigurableJoint joint in CJ)

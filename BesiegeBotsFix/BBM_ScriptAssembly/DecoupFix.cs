@@ -14,12 +14,12 @@ namespace BotFix
                 myJoint = GetComponent<ConfigurableJoint>();
                 myJoint.breakForce = 30000;
                 myJoint.breakTorque = 30000;
-
+                /*
                 rigg = GetComponent<Rigidbody>();
                 rigg.drag = 0f;
                 rigg.angularDrag = 0f;
                 rigg.maxAngularVelocity = 100;
-    
+                */
             }
         }
     }

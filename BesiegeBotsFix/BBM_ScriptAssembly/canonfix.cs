@@ -25,11 +25,12 @@ namespace BotFix
                     RBF.firstBreakForce = Mathf.Infinity;
                     RBF.impactThreshold = Mathf.Infinity;
                 }
-
+                /*
                 rigg = GetComponent<Rigidbody>();
                 rigg.drag = 0f;
                 rigg.angularDrag = 0f;
                 rigg.maxAngularVelocity = 100;
+                */
             }
         }
     }
