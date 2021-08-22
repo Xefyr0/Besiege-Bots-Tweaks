@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace BesiegeBotsMod
+namespace BesiegeBotsTweaks
 {
     public class MassFix
     {
@@ -25,6 +25,9 @@ namespace BesiegeBotsMod
                         RB.mass = 0.4f;
                         break;
                     case BlockType.WoodenPanel:
+                        RB.mass = 0.5f;
+                        break;
+                    case BlockType.ArmorPlateLarge:
                         RB.mass = 0.5f;
                         break;
                 }

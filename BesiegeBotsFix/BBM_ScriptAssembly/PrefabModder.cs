@@ -10,7 +10,8 @@ namespace BotFix
         {
             if (Mod.UseModdedBlocks)
             {
-                BesiegeBotsMod.DragFix.FixDrags();
+                BesiegeBotsTweaks.DragFix.FixDrags();
+                BesiegeBotsTweaks.MassFix.fixMasses();
                 //0
                 PrefabMaster.GetBlock(BlockType.StartingBlock, out BB);
                 if (BB.gameObject.GetComponent<AngVelFix>() == null)
@@ -209,7 +210,7 @@ namespace BotFix
                 PrefabMaster.GetBlock(BlockType.ArmorPlateLarge, out BB);
                 if (BB.gameObject.GetComponent<Platefix>() == null)
                     BB.gameObject.AddComponent<Platefix>();
-                BB.gameObject.GetComponent<Rigidbody>().mass = 0.5f;
+                //BB.gameObject.GetComponent<Rigidbody>().mass = 0.5f;
 
                 //33
                 PrefabMaster.GetBlock(BlockType.Plow, out BB);

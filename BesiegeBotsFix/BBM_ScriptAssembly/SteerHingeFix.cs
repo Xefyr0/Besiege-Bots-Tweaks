@@ -32,7 +32,7 @@ namespace BotFix
                 rigg = GetComponent<Rigidbody>();
                 CJ.breakForce = 30000;
                 CJ.breakTorque = 30000;
-                rigg.mass = 0.4f;
+                //rigg.mass = 0.4f;
                 /*
                 rigg.drag = 0f;
                 rigg.angularDrag = 0f;

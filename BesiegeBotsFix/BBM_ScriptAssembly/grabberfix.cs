@@ -48,7 +48,7 @@ namespace BotFix
             //Physics Stuff
             if (!StatMaster.isClient || StatMaster.isLocalSim)
             {
-                rigg.mass = 0.7f;
+                //rigg.mass = 0.7f;
                 /*
                 rigg.drag = 0.01f;
                 rigg.angularDrag = 0f;

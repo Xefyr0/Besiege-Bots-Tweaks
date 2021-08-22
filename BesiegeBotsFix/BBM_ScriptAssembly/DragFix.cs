@@ -1,7 +1,7 @@
 #define DoyleNumbers
 using UnityEngine;
 
-namespace BesiegeBotsMod
+namespace BesiegeBotsTweaks
 {
     public class DragFix
     {

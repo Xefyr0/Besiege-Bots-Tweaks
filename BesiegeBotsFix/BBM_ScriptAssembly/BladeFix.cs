@@ -22,13 +22,13 @@ namespace BotFix
                 CJ.breakForce = 80000;
                 CJ.breakTorque = 80000;
 
-                rigg = GetComponent<Rigidbody>();
+                //rigg = GetComponent<Rigidbody>();
                 /*
                 rigg.drag = 0f;
                 rigg.angularDrag = 0f;
                 rigg.maxAngularVelocity = 100;
                 */
-                rigg.mass = 0.6f;
+                //rigg.mass = 0.6f;
         
                 colliders = GetComponentsInChildren<Collider>();
                 foreach (Collider collider in colliders)
