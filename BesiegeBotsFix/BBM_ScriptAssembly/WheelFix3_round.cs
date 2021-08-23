@@ -77,7 +77,7 @@ namespace BotFix
             Roundwheelz = BB.AddToggle("ROUNDWHEELZ!", "ROUNDWHEELZ!", MakeRound);
             Roundwheelz.Toggled += (bool value) => { MakeRound = Collider = value; };
 
-            GS = BB.AddSlider("Friction", "Friction", Friction, 0.1f, 10f);
+            GS = BB.AddSlider("Friction", "Friction", Friction, 0.1f, 4f);
             GS.ValueChanged += (float value) => { Friction = value; };
 
             PCMenu = BB.AddMenu("Combine", PCselect, PCmenul, false);
