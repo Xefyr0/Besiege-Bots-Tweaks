@@ -54,7 +54,7 @@ namespace BotFix
                 rigg.angularDrag = 0f;
                 */
                 rigg = GetComponent<Rigidbody>();
-                rigg.maxAngularVelocity = 100;
+                //rigg.maxAngularVelocity = 100;
 
                 colliders = GetComponentsInChildren<Collider>();
                 foreach (Collider collider in colliders)

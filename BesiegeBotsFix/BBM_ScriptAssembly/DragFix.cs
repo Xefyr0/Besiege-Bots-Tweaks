@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace BesiegeBotsTweaks
 {
-    public class DragFix
+    public class DragFix : MonoBehaviour
     {
         internal static void FixDrags()
         {
@@ -11,8 +11,19 @@ namespace BesiegeBotsTweaks
             {
                 Modding.Blocks.BlockPrefabInfo BPI = Modding.Blocks.BlockPrefabInfo.GetOfficial(type);
                 GameObject GO = BPI.InternalObject.gameObject;
-                Rigidbody RB = GO.GetComponent<Rigidbody>();
-
+                //Rigidbody RB = GO.GetComponent<Rigidbody>();
+                GO.AddComponent<DragFix>();
+            }
+        }
+        void Awake()
+        {
+            BlockType type = GetComponent<BlockBehaviour>().Prefab.Type;
+            /*foreach(BlockType type in System.Enum.GetValues(typeof(BlockType)))
+            {
+                Modding.Blocks.BlockPrefabInfo BPI = Modding.Blocks.BlockPrefabInfo.GetOfficial(type);
+                GameObject GO = BPI.InternalObject.gameObject;
+                */
+                Rigidbody RB = GetComponent<Rigidbody>();
                 #if DoyleNumbers
                 switch(type)
                 {
@@ -64,12 +75,12 @@ namespace BesiegeBotsTweaks
                     case BlockType.Drill:
                         RB.drag = 0f;
                         RB.angularDrag = 0f;
-                        RB.maxAngularVelocity = 5;//5 in code, 250 in Object Explorer.
+                        //RB.maxAngularVelocity = 5;//5 in code, 250 in Object Explorer.
                         break;
                     case BlockType.WaterCannon:
                         RB.drag = 0f;
                         RB.angularDrag = 0f;
-                        RB.maxAngularVelocity = 5;
+                        //RB.maxAngularVelocity = 5;//5 in code, different elsewhere I'm sure.
                         break;
                     case BlockType.Grabber:
                         RB.drag = 0.01f;
@@ -168,7 +179,7 @@ namespace BesiegeBotsTweaks
                     default: 
                 }
                 */
-            }
+            //}
         }
     }
 }
