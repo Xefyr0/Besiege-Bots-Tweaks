@@ -133,7 +133,7 @@ namespace BotFix
                     BMute();
                     BMuteEvent();
                     PrefabModder.ModAllPrefab();
-                    PrefabModder.DestroyAllModPrefab();
+                    //PrefabModder.DestroyAllModPrefab();
                     
                 }
                 GUILayout.EndHorizontal();

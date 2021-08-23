@@ -15,13 +15,9 @@ namespace BotFix
                 BesiegeBotsTweaks.BreakForceFix.FixBreakForces();
                 //0
                 PrefabMaster.GetBlock(BlockType.StartingBlock, out BB);
-                if (BB.gameObject.GetComponent<AngVelFix>() == null)
-                    BB.gameObject.AddComponent<AngVelFix>();
 
                 //1
                 PrefabMaster.GetBlock(BlockType.DoubleWoodenBlock, out BB);
-                if (BB.gameObject.GetComponent<DoubleWoodBlockFix>() == null)
-                    BB.gameObject.AddComponent<DoubleWoodBlockFix>();
 
                 //2              
 /*                PrefabMaster.GetBlock(BlockType.Wheel, out BB);
@@ -46,8 +42,6 @@ namespace BotFix
 
                 //4
                 PrefabMaster.GetBlock(BlockType.Decoupler, out BB);
-                if (BB.gameObject.GetComponent<DecoupFix>() == null)
-                    BB.gameObject.AddComponent<DecoupFix>();
 
                 //5
                 PrefabMaster.GetBlock(BlockType.Hinge, out BB);
@@ -92,22 +86,14 @@ namespace BotFix
                 //12
                 //PrefabMaster.GetBlock(BlockType.ScalingBlock, out BB);
                
-
                 //13
                 PrefabMaster.GetBlock(BlockType.SteeringBlock, out BB);
-                if (BB.gameObject.GetComponent<Sbfix>() == null)
-                    BB.gameObject.AddComponent<Sbfix>();
 
                 //14
                 PrefabMaster.GetBlock(BlockType.FlyingBlock, out BB);
-                if (BB.gameObject.GetComponent<FBfix>() == null)
-                    BB.gameObject.AddComponent<FBfix>();
-
 
                 //15
                 PrefabMaster.GetBlock(BlockType.SingleWoodenBlock, out BB);
-                if (BB.gameObject.GetComponent<WoodBlockFix>() == null)
-                    BB.gameObject.AddComponent<WoodBlockFix>();
 
                 //16
                 PrefabMaster.GetBlock(BlockType.Suspension, out BB);
@@ -120,16 +106,14 @@ namespace BotFix
 
                 //17
                 PrefabMaster.GetBlock(BlockType.CircularSaw, out BB);
-                if (BB.gameObject.GetComponent<ThiccD>() == null)
-                    BB.gameObject.AddComponent<ThiccD>();
+                if (BB.gameObject.GetComponent<Winchfixer>() == null)
+                    BB.gameObject.AddComponent<Winchfixer>();
                 //BB.transform.Find("Joint").localScale = new Vector3(0.9f,0.2f,0.9f);
                 BB.transform.GetChild(9).localPosition = new Vector3(0f, 0f, -0.1f);
                 BB.transform.GetChild(10).localPosition = new Vector3(0f, 0f, -0.1f);
 
                 //18
                 PrefabMaster.GetBlock(BlockType.Piston, out BB);
-                if (BB.gameObject.GetComponent<PistonFix>() == null)
-                    BB.gameObject.AddComponent<PistonFix>();
                 if (BB.gameObject.GetComponent<FrictionSlider>() == null)
                     BB.gameObject.AddComponent<FrictionSlider>();
 
@@ -166,8 +150,6 @@ namespace BotFix
 
                 //24
                 PrefabMaster.GetBlock(BlockType.ArmorPlateSmall, out BB);
-                if (BB.gameObject.GetComponent<AngVelFix>() == null)
-                    BB.gameObject.AddComponent<AngVelFix>();
 
                 //25
                 PrefabMaster.GetBlock(BlockType.Wing, out BB);
@@ -193,8 +175,6 @@ namespace BotFix
 
                 //28
                 PrefabMaster.GetBlock(BlockType.SteeringHinge, out BB);
-                if (BB.gameObject.GetComponent<Shfix>() == null)
-                    BB.gameObject.AddComponent<Shfix>();
 
                 //29
                 PrefabMaster.GetBlock(BlockType.ArmorPlateRound, out BB);
@@ -225,8 +205,6 @@ namespace BotFix
 
                 //35
                 PrefabMaster.GetBlock(BlockType.Ballast, out BB);
-                if (BB.gameObject.GetComponent<BalFix>() == null)
-                    BB.gameObject.AddComponent<BalFix>();
                 if (BB.gameObject.GetComponent<FrictionSlider>() == null)
                     BB.gameObject.AddComponent<FrictionSlider>();
 
@@ -240,8 +218,6 @@ namespace BotFix
 
                 //38
                 PrefabMaster.GetBlock(BlockType.CogMediumUnpowered, out BB);
-                if (BB.gameObject.GetComponent<AngVelFix>() == null)
-                    BB.gameObject.AddComponent<AngVelFix>();
                
                 //39
                 PrefabMaster.GetBlock(BlockType.CogMediumPowered, out BB);
@@ -255,26 +231,9 @@ namespace BotFix
                 PrefabMaster.GetStrippedBlock(BlockType.WheelUnpowered, out BB);
                 if (BB.gameObject.GetComponent<Wheelfix3_round>() == null)
                     BB.gameObject.AddComponent<Wheelfix3_round>();
-                /*
-                if (BB.gameObject.GetComponent<Uwheelfix>() == null)
-                    BB.gameObject.AddComponent<Uwheelfix>();
-                    */
-                if (Mod.BetaMode)
-                {
-                    if (BB.gameObject.GetComponent<SMotor2>() == null)
-                        BB.gameObject.AddComponent<SMotor2>();
-                }
-                else
-                {
-                    SMotor2 AV = BB.gameObject.GetComponent<SMotor2>();
-                    if (AV != null)
-                        Destroy(AV);
-                }
 
                 //41
                 PrefabMaster.GetBlock(BlockType.WoodenPole, out BB);
-                if (BB.gameObject.GetComponent<WoodPoleFix>() == null)
-                    BB.gameObject.AddComponent<WoodPoleFix>();
 
                 //42
                 //PrefabMaster.GetBlock(BlockType.Slider, out BB);
@@ -312,8 +271,8 @@ namespace BotFix
 
                 //48
                 PrefabMaster.GetBlock(BlockType.Drill, out BB);
-                if (BB.gameObject.GetComponent<ThiccD>() == null)
-                    BB.gameObject.AddComponent<ThiccD>();
+                if (BB.gameObject.GetComponent<Winchfixer>() == null)
+                    BB.gameObject.AddComponent<Winchfixer>();
                 /*
                 BoxCollider[] BCS = BB.gameObject.GetComponentsInChildren<BoxCollider>();
                 foreach (BoxCollider BC in BCS)
@@ -359,15 +318,11 @@ namespace BotFix
 
                 //49
                 PrefabMaster.GetBlock(BlockType.GripPad, out BB);
-                if (BB.gameObject.GetComponent<AngVelFix>() == null)
-                    BB.gameObject.AddComponent<AngVelFix>();
                 if (BB.gameObject.GetComponent<FrictionSlider>() == null)
                     BB.gameObject.AddComponent<FrictionSlider>();
 
                 //50
                 PrefabMaster.GetBlock(BlockType.SmallWheel, out BB);
-                if (BB.gameObject.GetComponent<Casterfix>() == null)
-                    BB.gameObject.AddComponent<Casterfix>();
 
                 //51
                 PrefabMaster.GetBlock(BlockType.CogLargeUnpowered, out BB);
@@ -423,21 +378,6 @@ namespace BotFix
                     BB.gameObject.AddComponent<Wheelfix3_round>();
                 if (BB.gameObject.GetComponent<SpinnerSound>() == null)
                     BB.gameObject.AddComponent<SpinnerSound>();
-                /*
-                if (BB.gameObject.GetComponent<Uwheelfix>() == null)
-                    BB.gameObject.AddComponent<Uwheelfix>();
-                */
-                if (Mod.BetaMode)
-                {
-                    if (BB.gameObject.GetComponent<SMotor2>() == null)
-                        BB.gameObject.AddComponent<SMotor2>();
-                }
-                else
-                {
-                    SMotor2 AV = BB.gameObject.GetComponent<SMotor2>();
-                    if (AV != null)
-                        Destroy(AV);
-                }
 
                 //61
                 //PrefabMaster.GetBlock(BlockType.Crossbow, out BB);
@@ -492,397 +432,5 @@ namespace BotFix
                     BB.gameObject.AddComponent<BuildSurfaceFix>();
             }
         }
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        public static void DestroyAllModPrefab()
-        {
-            if (!Mod.UseModdedBlocks)
-            {
-                Component CC;
-
-                //0
-                PrefabMaster.GetBlock(BlockType.StartingBlock, out BB);
-                CC = BB.gameObject.GetComponent<AngVelFix>();
-                if (CC)
-                    Destroy(CC);
-                    
-                //1
-                PrefabMaster.GetBlock(BlockType.DoubleWoodenBlock, out BB);
-                CC = BB.gameObject.GetComponent<AngVelFix>();
-                if (CC)
-                    Destroy(CC);
-
-                //2
-                PrefabMaster.GetBlock(BlockType.Wheel, out BB);
-               
-                CC = BB.gameObject.GetComponent<Wheelfix>();
-                if (CC)
-                    Destroy(CC);
-
-                //3
-                PrefabMaster.GetBlock(BlockType.MetalBlade, out BB);
-               
-                CC = BB.gameObject.GetComponent<Bladefix>();
-                if (CC)
-                    Destroy(CC);
-
-                //4
-                //PrefabMaster.GetBlock(BlockType.Decoupler, out BB);
-
-                //5
-                PrefabMaster.GetBlock(BlockType.Hinge, out BB);
-
-                CC = BB.gameObject.GetComponent<Hfix>();
-                if (CC)
-                    Destroy(CC);
-                CC = BB.gameObject.GetComponent<FrictionSlider>();
-                if (CC)
-                    Destroy(CC);
-
-                //6
-                //PrefabMaster.GetBlock(BlockType.MetalBall, out BB);
-
-
-                //7
-                //PrefabMaster.GetBlock(BlockType.Brace, out BB);
-
-                //8
-                //PrefabMaster.GetBlock(BlockType.Unused, out BB);
-
-                //9
-                //PrefabMaster.GetBlock(BlockType.Spring, out BB);
-
-                //10
-                PrefabMaster.GetBlock(BlockType.WoodenPanel, out BB);
-                
-                CC = BB.gameObject.GetComponent<WPFix>();
-                if (CC)
-                    Destroy(CC);
-
-                //11
-                PrefabMaster.GetBlock(BlockType.Cannon, out BB);
-
-                CC = BB.gameObject.GetComponent<CanonFix>();
-                if (CC)
-                    Destroy(CC);
-
-                //12
-                //PrefabMaster.GetBlock(BlockType.ScalingBlock, out BB);
-
-                //13
-                PrefabMaster.GetBlock(BlockType.SteeringBlock, out BB);
-               
-                CC = BB.gameObject.GetComponent<Sbfix>();
-                if (CC)
-                    Destroy(CC);
-
-                //14
-                //PrefabMaster.GetBlock(BlockType.FlyingBlock, out BB);
-
-                //15
-                PrefabMaster.GetBlock(BlockType.SingleWoodenBlock, out BB);
- 
-                CC = BB.gameObject.GetComponent<AngVelFix>();
-                if (CC)
-                    Destroy(CC);
-
-                //16
-                PrefabMaster.GetBlock(BlockType.Suspension, out BB);
-               
-                CC = BB.gameObject.GetComponent<Suspensionzcript>();
-                if (CC)
-                    Destroy(CC);
-
-                //17
-                PrefabMaster.GetBlock(BlockType.CircularSaw, out BB);
-              
-                CC = BB.gameObject.GetComponent<ThiccD>();
-                if (CC)
-                    Destroy(CC);
-
-                //18
-                PrefabMaster.GetBlock(BlockType.Piston, out BB);
-               
-                CC = BB.gameObject.GetComponent<PistonFix>();
-                if (CC)
-                    Destroy(CC);
-                CC = BB.gameObject.GetComponent<FrictionSlider>();
-                if (CC)
-                    Destroy(CC);
-
-                //19
-                PrefabMaster.GetBlock(BlockType.Swivel, out BB);
-              
-                CC = BB.gameObject.GetComponent<Hfix> ();
-                if (CC)
-                    Destroy(CC);
-
-                //20
-                PrefabMaster.GetBlock(BlockType.Spike, out BB);
-                
-                CC = BB.gameObject.GetComponent<Bladefix>();
-                if (CC)
-                    Destroy(CC);
-
-                //21
-                PrefabMaster.GetBlock(BlockType.Flamethrower, out BB);
-                
-                CC = BB.gameObject.GetComponent<FlameTFix>();
-                if (CC)
-                    Destroy(CC);
-
-                //22
-                PrefabMaster.GetBlock(BlockType.SpinningBlock, out BB);
-                
-                CC = BB.gameObject.GetComponent<SpinBfix>();
-                if (CC)
-                    Destroy(CC);
-
-                //23
-                //PrefabMaster.GetBlock(BlockType.Bomb, out BB);
-
-                //24
-                PrefabMaster.GetBlock(BlockType.ArmorPlateSmall, out BB);
-               
-                CC = BB.gameObject.GetComponent<AngVelFix>();
-                if (CC)
-                    Destroy(CC);
-
-                //25
-                PrefabMaster.GetBlock(BlockType.Wing, out BB);
-                
-                CC = BB.gameObject.GetComponent<WFix>();
-                if (CC)
-                    Destroy(CC);
-
-                //26
-                //PrefabMaster.GetBlock(BlockType.Propeller, out BB);
-
-                //27
-                PrefabMaster.GetBlock(BlockType.Grabber, out BB);
-               
-                CC = BB.gameObject.GetComponent<Grabberfix>();
-                if (CC)
-                    Destroy(CC);
-
-                //28
-                PrefabMaster.GetBlock(BlockType.SteeringHinge, out BB);
-               
-                CC = BB.gameObject.GetComponent<Shfix>();
-                if (CC)
-                    Destroy(CC);
-
-                //29
-                PrefabMaster.GetBlock(BlockType.ArmorPlateRound, out BB);
-               
-                CC = BB.gameObject.GetComponent<Platefix>();
-                if (CC)
-                    Destroy(CC);
-
-                //30
-                //PrefabMaster.GetBlock(BlockType.BombHolder, out BB);
-
-                //31
-                //PrefabMaster.GetBlock(BlockType.FlameBall, out BB);
-
-                //32
-                PrefabMaster.GetBlock(BlockType.ArmorPlateLarge, out BB);
-             
-                CC = BB.gameObject.GetComponent<Platefix>();
-                if (CC)
-                    Destroy(CC);
-
-                //33
-                PrefabMaster.GetBlock(BlockType.Plow, out BB);
-               
-                CC = BB.gameObject.GetComponent<Plowfix>();
-                if (CC)
-                    Destroy(CC);
-
-                //34
-                //PrefabMaster.GetBlock(BlockType.WingPanel, out BB);
-
-                //35
-                PrefabMaster.GetBlock(BlockType.Ballast, out BB);
-              
-                CC = BB.gameObject.GetComponent<BalFix>();
-                if (CC)
-                    Destroy(CC);
-                CC = BB.gameObject.GetComponent<FrictionSlider>();
-                if (CC)
-                    Destroy(CC);
-
-                //36
-                //PrefabMaster.GetBlock(BlockType.Boulder, out BB);
-
-                //37
-                PrefabMaster.GetBlock(BlockType.HalfPipe, out BB);
-             
-                CC = BB.gameObject.GetComponent<Plowfix>();
-                if (CC)
-                    Destroy(CC);
-
-                //38
-                PrefabMaster.GetBlock(BlockType.CogMediumUnpowered, out BB);
-               
-                CC = BB.gameObject.GetComponent<AngVelFix>();
-                if (CC)
-                    Destroy(CC);
-
-                //39
-                PrefabMaster.GetBlock(BlockType.CogMediumPowered, out BB);
-                
-                CC = BB.gameObject.GetComponent<Cogfix>();
-                if (CC)
-                    Destroy(CC);
-
-                //40
-                PrefabMaster.GetBlock(BlockType.WheelUnpowered, out BB);
-                CC = BB.gameObject.GetComponent<SMotor2>();
-                if (CC)
-                    Destroy(CC);
-                CC = BB.gameObject.GetComponent<Uwheelfix>();
-                if (CC)
-                    Destroy(CC);
-
-                //41
-                PrefabMaster.GetBlock(BlockType.WoodenPole, out BB);
-               
-                CC = BB.gameObject.GetComponent<AngVelFix>();
-                if (CC)
-                    Destroy(CC);
-
-                //42
-                //PrefabMaster.GetBlock(BlockType.Slider, out BB);
-
-                //43
-                //PrefabMaster.GetBlock(BlockType.Balloon, out BB);
-
-                //44
-                PrefabMaster.GetBlock(BlockType.BallJoint, out BB);
-             
-                CC = BB.gameObject.GetComponent<Hfix>();
-                if (CC)
-                    Destroy(CC);
-
-                //45
-                //PrefabMaster.GetBlock(BlockType.RopeWinch, out BB);
-
-
-                //46
-                PrefabMaster.GetBlock(BlockType.LargeWheel, out BB);
-               
-                CC = BB.gameObject.GetComponent<Wheelfix>();
-                if (CC)
-                    Destroy(CC);
-
-                //47
-                //PrefabMaster.GetBlock(BlockType.Torch, out BB);
-
-                //48
-                PrefabMaster.GetBlock(BlockType.Drill, out BB);
-              
-                CC = BB.gameObject.GetComponent<ThiccD>();
-                if (CC)
-                    Destroy(CC);
-
-                //49
-                PrefabMaster.GetBlock(BlockType.GripPad, out BB);
-             
-                CC = BB.gameObject.GetComponent<AngVelFix>();
-                if (CC)
-                    Destroy(CC);
-
-                //50
-                PrefabMaster.GetBlock(BlockType.SmallWheel, out BB);
-               
-                CC = BB.gameObject.GetComponent<Casterfix>();
-                if (CC)
-                    Destroy(CC);
-
-                //51
-                PrefabMaster.GetBlock(BlockType.CogLargeUnpowered, out BB);
-              
-                CC = BB.gameObject.GetComponent<AngVelFix>();
-                if (CC)
-                    Destroy(CC);
-                CC = BB.gameObject.GetComponent<Wheelfix>();
-                if (CC)
-                    Destroy(CC);
-
-                //52
-                //PrefabMaster.GetBlock(BlockType.Unused3, out BB);
-
-                //53
-                PrefabMaster.GetBlock(BlockType.ShrapnelCannon, out BB);
-                CC = BB.gameObject.GetComponent<CanonFix>();
-                if (CC)
-                    Destroy(CC);
-
-                //54
-                //PrefabMaster.GetBlock(BlockType.Grenade, out BB);
-
-                //55
-                //PrefabMaster.GetBlock(BlockType.SmallPropeller, out BB);
-
-                //56
-                PrefabMaster.GetBlock(BlockType.WaterCannon, out BB);
-              
-                CC = BB.gameObject.GetComponent<WCfix>();
-                if (CC)
-                    Destroy(CC);
-
-                //57
-                //PrefabMaster.GetBlock(BlockType.Pin, out BB);
-
-                //58
-                //PrefabMaster.GetBlock(BlockType.CameraBlock, out BB);
-
-
-                //59
-                //PrefabMaster.GetBlock(BlockType.Rocket, out BB);
-
-                //60
-                PrefabMaster.GetBlock(BlockType.LargeWheelUnpowered, out BB);
-                CC = BB.gameObject.GetComponent<SMotor2>();
-                if (CC)
-                    Destroy(CC);
-                CC = BB.gameObject.GetComponent<Uwheelfix>();
-                if (CC)
-                    Destroy(CC);
-
-                //61
-                //PrefabMaster.GetBlock(BlockType.Crossbow, out BB);
-
-                //62
-                //PrefabMaster.GetBlock(BlockType.Vacuum, out BB);
-
-                //63
-                PrefabMaster.GetBlock(BlockType.Log, out BB);
-               
-                CC = BB.gameObject.GetComponent<Logfix>();
-                if (CC)
-                    Destroy(CC);
-                //CC = BB.gameObject.GetComponent<SpinnerSound>();
-                //if (CC)
-                //     Destroy(CC);
-
-                //64
-                //PrefabMaster.GetBlock(BlockType.Magnet, out BB);
-
-                //65 Sensor
-                //66 Timer
-                //67 Altimeter
-                //68 LogicGate
-                //69 Anglometer
-                //70 Speedometer
-                //71 BuildNode
-                //72 BuildEdge
-                //73 BuildSurface
-                //PrefabMaster.GetBlock(BlockType.BuildSurface, out BB);
-            }
-        }
     }
 }
-

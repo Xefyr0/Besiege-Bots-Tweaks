@@ -49,15 +49,11 @@ namespace BesiegeBotsTweaks
                     case BlockType.WoodenPole:
                     case BlockType.SingleWoodenBlock:
                     case BlockType.WoodenPanel:
-                        RB.drag = 0f;
-                        RB.angularDrag = 0f;
-                        RB.maxAngularVelocity = 100;
-                        break;
                     case BlockType.Wheel:
                     case BlockType.LargeWheel:
                         RB.drag = 0f;
                         RB.angularDrag = 0f;
-                        RB.maxAngularVelocity = 100;//100 in code, 50 in Object Explorer.
+                        RB.maxAngularVelocity = 100;
                         break;
                     case BlockType.FlyingBlock:
                     case BlockType.SpinningBlock:
