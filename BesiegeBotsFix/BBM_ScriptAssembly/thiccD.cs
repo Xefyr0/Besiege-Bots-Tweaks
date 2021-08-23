@@ -62,8 +62,8 @@ namespace BotFix
                             return;
                         }
                         fcounter++;
-                        HJ.breakForce = 90000;
-                        HJ.breakTorque = 90000;
+                        //HJ.breakForce = 90000;
+                        //HJ.breakTorque = 90000;
                         //BB.jointBreakForce = 5;
                         if (fcounter == 4)
                             firstframe = true;

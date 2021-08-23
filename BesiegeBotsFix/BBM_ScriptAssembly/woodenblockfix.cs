@@ -10,7 +10,7 @@ namespace BotFix
         void Start()
         { 
             if (!StatMaster.isClient || StatMaster.isLocalSim)
-            {
+            {/*
                 CJ = GetComponents<ConfigurableJoint>();
                 foreach (ConfigurableJoint joint in CJ)
                 {
@@ -18,7 +18,6 @@ namespace BotFix
                     joint.breakTorque = 60000;
     
                 }
-/*
                 rigg = GetComponent<Rigidbody>();
                 rigg.drag = 0f;
                 rigg.angularDrag = 0f;

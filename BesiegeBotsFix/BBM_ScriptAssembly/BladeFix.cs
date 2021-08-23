@@ -18,12 +18,13 @@ namespace BotFix
 
             if (!StatMaster.isClient || StatMaster.isLocalSim)
             {
+                /*
                 CJ = GetComponent<ConfigurableJoint>();
                 CJ.breakForce = 80000;
                 CJ.breakTorque = 80000;
 
                 //rigg = GetComponent<Rigidbody>();
-                /*
+                
                 rigg.drag = 0f;
                 rigg.angularDrag = 0f;
                 rigg.maxAngularVelocity = 100;

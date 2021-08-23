@@ -4,7 +4,7 @@ namespace BesiegeBotsTweaks
 {
     public class MassFix
     {
-        internal static void fixMasses()
+        internal static void FixMasses()
         {
             foreach(BlockType type in System.Enum.GetValues(typeof(BlockType)))
             {

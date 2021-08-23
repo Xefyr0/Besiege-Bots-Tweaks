@@ -11,9 +11,9 @@ namespace BotFix
         {
             if (!StatMaster.isClient || StatMaster.isLocalSim)
             {
-                CJ = GetComponent<ConfigurableJoint>();
-                CJ.breakForce = 60000;
-                CJ.breakTorque = 60000;
+                //CJ = GetComponent<ConfigurableJoint>();
+                //CJ.breakForce = 60000;
+                //CJ.breakTorque = 60000;
             }
         }
     }

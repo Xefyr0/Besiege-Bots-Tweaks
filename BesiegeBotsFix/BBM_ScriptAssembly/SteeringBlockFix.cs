@@ -10,13 +10,13 @@ namespace BotFix
         void Start()
         {
             if (!StatMaster.isClient || StatMaster.isLocalSim)
-            {
+            {/*
                 CJ = GetComponent<ConfigurableJoint>();
                 rigg = GetComponent<Rigidbody>();
 
                 CJ.breakForce = 60000;
                 CJ.breakTorque = 60000;
-                /*
+                
                 rigg.drag = 0f;
                 rigg.angularDrag = 0f;
                 rigg.maxAngularVelocity = 100;

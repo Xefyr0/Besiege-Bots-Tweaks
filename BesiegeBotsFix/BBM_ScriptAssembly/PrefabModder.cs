@@ -11,7 +11,8 @@ namespace BotFix
             if (Mod.UseModdedBlocks)
             {
                 BesiegeBotsTweaks.DragFix.FixDrags();
-                BesiegeBotsTweaks.MassFix.fixMasses();
+                BesiegeBotsTweaks.MassFix.FixMasses();
+                BesiegeBotsTweaks.BreakForceFix.FixBreakForces();
                 //0
                 PrefabMaster.GetBlock(BlockType.StartingBlock, out BB);
                 if (BB.gameObject.GetComponent<AngVelFix>() == null)

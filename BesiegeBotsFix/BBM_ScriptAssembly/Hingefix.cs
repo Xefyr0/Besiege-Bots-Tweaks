@@ -20,7 +20,7 @@ namespace BotFix
                 rigg.drag = 0f;
                 rigg.angularDrag = 0f;
                 rigg.maxAngularVelocity = 100;
-            */
+            
                 if (GetComponent<ConfigurableJoint>())
                 {
                     CJ = GetComponent<ConfigurableJoint>();
@@ -33,7 +33,7 @@ namespace BotFix
                     HJ = GetComponent<HingeJoint>();
                     HJ.breakForce = BF;
                     HJ.breakTorque = BF;
-                }
+                }*/
 
                 if (GetComponent<StrengthenTreads>())
                 {

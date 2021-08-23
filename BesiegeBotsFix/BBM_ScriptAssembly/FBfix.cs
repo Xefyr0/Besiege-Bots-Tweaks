@@ -15,10 +15,11 @@ namespace BotFix
                 rigg = GetComponent<Rigidbody>();
                 rigg.drag = 0f;
                 rigg.angularDrag = 0f;
-                */
+                
                 CJ = GetComponent<ConfigurableJoint>();
                 CJ.breakForce = 20000f;
                 CJ.breakTorque = 20000f;
+                */
             }
         }
     }

@@ -201,8 +201,8 @@ namespace BotFix
                     SJlimit.limit = limit;
                     CJ.linearLimit = SJlimit;                   
                 }
-              /*
                 rigg = GetComponent<Rigidbody>();
+                /*
                 if (rigg)
                 {
                     rigg.drag = 0f;
