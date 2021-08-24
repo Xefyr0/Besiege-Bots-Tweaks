@@ -38,7 +38,7 @@ namespace BotFix
                 {
                     joint.breakForce = 40000;
                     joint.breakTorque = 40000;
-                }*/
+                }
 
                 colliders = GetComponentsInChildren<Collider>();
                 foreach (Collider collider in colliders)
@@ -47,7 +47,7 @@ namespace BotFix
                     collider.material.dynamicFriction = 0.1f;
                     collider.material.staticFriction = 0.1f;
                     collider.material.frictionCombine = PhysicMaterialCombine.Minimum;
-                }
+                }*/
             }
         }
 

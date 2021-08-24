@@ -13,6 +13,7 @@ namespace BotFix
                 BesiegeBotsTweaks.DragFix.FixDrags();
                 BesiegeBotsTweaks.MassFix.FixMasses();
                 BesiegeBotsTweaks.BreakForceFix.FixBreakForces();
+                BesiegeBotsTweaks.FrictionFix.FixFriction();
                 //0
                 PrefabMaster.GetBlock(BlockType.StartingBlock, out BB);
 
@@ -37,8 +38,8 @@ namespace BotFix
 
                 //3
                 PrefabMaster.GetBlock(BlockType.MetalBlade, out BB);
-                if (BB.gameObject.GetComponent<Bladefix>() == null)
-                    BB.gameObject.AddComponent<Bladefix>();
+                if (BB.gameObject.GetComponent<Winchfixer>() == null)
+                    BB.gameObject.AddComponent<Winchfixer>();
 
                 //4
                 PrefabMaster.GetBlock(BlockType.Decoupler, out BB);
@@ -124,8 +125,8 @@ namespace BotFix
 
                 //20
                 PrefabMaster.GetBlock(BlockType.Spike, out BB);
-                if (BB.gameObject.GetComponent<Bladefix>() == null)
-                    BB.gameObject.AddComponent<Bladefix>();
+                if (BB.gameObject.GetComponent<Winchfixer>() == null)
+                    BB.gameObject.AddComponent<Winchfixer>();
 
                 //21
                 PrefabMaster.GetBlock(BlockType.Flamethrower, out BB);
@@ -191,7 +192,6 @@ namespace BotFix
                 PrefabMaster.GetBlock(BlockType.ArmorPlateLarge, out BB);
                 if (BB.gameObject.GetComponent<Platefix>() == null)
                     BB.gameObject.AddComponent<Platefix>();
-                //BB.gameObject.GetComponent<Rigidbody>().mass = 0.5f;
 
                 //33
                 PrefabMaster.GetBlock(BlockType.Plow, out BB);

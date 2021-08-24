@@ -24,14 +24,13 @@ namespace BotFix
                 rigg.drag = 0f;
                 rigg.angularDrag = 0f;
                 rigg.maxAngularVelocity = 200;
-  */
                 colliders = GetComponentsInChildren<Collider>();
                 foreach (Collider collider in colliders)
                 {
                     collider.material.dynamicFriction = 0.1f;
                     collider.material.staticFriction = 0.1f;
                     collider.material.frictionCombine = PhysicMaterialCombine.Minimum;
-                }
+                }*/
             }
         }
     }
