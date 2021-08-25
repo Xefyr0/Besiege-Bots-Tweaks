@@ -1,4 +1,5 @@
 using UnityEngine;
+using BesiegeBotsTweaks;
 
 namespace BotFix
 {
@@ -10,10 +11,10 @@ namespace BotFix
         {
             if (Mod.UseModdedBlocks)
             {
-                BesiegeBotsTweaks.DragFix.FixDrags();
-                BesiegeBotsTweaks.MassFix.FixMasses();
-                BesiegeBotsTweaks.BreakForceFix.FixBreakForces();
-                BesiegeBotsTweaks.FrictionFix.FixFriction();
+                DragFix.FixDrags();
+                MassFix.FixMasses();
+                BreakForceFix.FixBreakForces();
+                FrictionFix.FixFriction();
                 //0
                 PrefabMaster.GetBlock(BlockType.StartingBlock, out BB);
 

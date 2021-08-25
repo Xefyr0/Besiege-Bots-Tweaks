@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace BotFix
+namespace BesiegeBotsTweaks
 {
     public class FrictionSlider : MonoBehaviour
     {
@@ -26,7 +26,7 @@ namespace BotFix
         {
             BB = GetComponent<BlockBehaviour>();
 
-            GS = BB.AddSlider("Friction", "Friction", grip, 0.1f, 10f);
+            GS = BB.AddSlider("Friction", "Friction", grip, 0.1f, 4f);
             GS.ValueChanged += (float value) => { grip = value; };
 
             PCMenu = BB.AddMenu("Combine", PCselect, PCmenul, false);
