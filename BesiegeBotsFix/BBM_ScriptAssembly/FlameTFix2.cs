@@ -67,14 +67,13 @@ namespace BotFix
             Firesound.loop = true;
             Firesound.maxDistance = 100f;
             Firesound.volume = 0.05f;
-            /*
             if (!StatMaster.isClient || StatMaster.isLocalSim)
             {
                 CJ = GetComponent<ConfigurableJoint>();
-                CJ.breakForce = 40000;
-                CJ.breakTorque = 40000;
+
+                //CJ.breakForce = 40000;
+                //CJ.breakTorque = 40000;
             }
-            */
         }
 
         private void Update()
