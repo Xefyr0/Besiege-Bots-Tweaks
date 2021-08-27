@@ -23,10 +23,20 @@ namespace BesiegeBotsTweaks
                     case BlockType.Ballast:
                     case BlockType.Decoupler:
                     case BlockType.SteeringHinge:
-                    case BlockType.Hinge:
-                    case BlockType.BallJoint:
                         joints[0].breakForce = 30000;
                         joints[0].breakTorque = 30000;
+                        break;
+                    case BlockType.Hinge:
+                    case BlockType.BallJoint:
+                    case BlockType.Swivel:
+                        joints[0].breakForce = 30000;
+                        joints[0].breakTorque = 30000;
+                        StrengthenTreads ST = null;
+                        if(ST = GO.GetComponent<StrengthenTreads>())
+                        {
+                            ST.breakForce = 50000;
+                            ST.breakTorque = 50000;
+                        }
                         break;
                     case BlockType.Suspension:
                     case BlockType.Piston:

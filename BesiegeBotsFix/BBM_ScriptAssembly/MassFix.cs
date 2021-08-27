@@ -16,6 +16,7 @@ namespace BesiegeBotsTweaks
                 {
                     case BlockType.MetalBlade:
                     case BlockType.Spike:
+                    case BlockType.Swivel:
                         RB.mass = 0.6f;
                         break;
                     case BlockType.Grabber:
