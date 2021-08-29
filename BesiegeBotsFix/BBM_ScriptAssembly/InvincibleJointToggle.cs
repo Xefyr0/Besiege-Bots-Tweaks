@@ -8,30 +8,30 @@ namespace BesiegeBotsTweaks
         private Joint joint;
         private bool Invincible = false;
         private MToggle toggle;
-        private float normalBreakForce;
-        private float normalBreakTorque;
+        private byte frameCount;
 
         void Awake()
         {
             BB = GetComponent<BlockBehaviour>();
             toggle = BB.AddToggle("Make Invincible", "MVI", Invincible);
-            toggle.Toggled += (bool value) => ToggleInvincibility(value);
+            toggle.Toggled += (bool value) => Invincible = value;
 
             joint = BB.GetComponentInChildren<Joint>();
-            normalBreakForce = joint.breakForce;
-            normalBreakTorque = joint.breakTorque;
         }
-        internal void ToggleInvincibility(bool value)
+        internal void Update()
         {
-            if(value)
+            if(BB.SimPhysics)
             {
-                joint.breakForce = Mathf.Infinity;
-                joint.breakTorque = Mathf.Infinity;
-            }
-            else
-            {
-                joint.breakForce = normalBreakForce;
-                joint.breakTorque = normalBreakTorque;
+                if(frameCount == 5)
+                {
+                    if(Invincible)
+                    {
+                        joint.breakForce = Mathf.Infinity;
+                        joint.breakTorque = Mathf.Infinity;
+                    }
+                    Object.Destroy(this);
+                }
+                frameCount++;
             }
         }
     }
