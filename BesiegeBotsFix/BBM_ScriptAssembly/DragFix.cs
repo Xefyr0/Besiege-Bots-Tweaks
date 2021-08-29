@@ -180,6 +180,7 @@ namespace BesiegeBotsTweaks
                 }
                 */
             //}
+            Object.Destroy(this);
         }
     }
 }

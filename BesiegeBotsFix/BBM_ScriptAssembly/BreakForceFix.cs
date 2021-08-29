@@ -1,20 +1,32 @@
-#define DoyleNumbers
 using UnityEngine;
 
 namespace BesiegeBotsTweaks
 {
-    public class BreakForceFix
+    public class BreakForceFix : MonoBehaviour
     {
+        byte frameCount = 0;
+        BlockBehaviour BB;
         internal static void FixBreakForces()
         {
             foreach(BlockType type in System.Enum.GetValues(typeof(BlockType)))
             {
                 Modding.Blocks.BlockPrefabInfo BPI = Modding.Blocks.BlockPrefabInfo.GetOfficial(type);
                 GameObject GO = BPI.InternalObject.gameObject;
-                Joint[] joints = GO.GetComponents<Joint>();
-
-                #if DoyleNumbers
-                switch(type)
+                //Joint[] joints = GO.GetComponents<Joint>();
+                GO.AddComponent<BreakForceFix>();
+            }
+        }
+        void Awake()
+        {
+            BB = GetComponent<BlockBehaviour>();
+        }
+        void Update()
+        {
+            if(!BB.SimPhysics) return;
+            if(frameCount < 5)
+            {
+                Joint[] joints = GetComponents<Joint>();
+                switch(BB.Prefab.Type)
                 {
                     case BlockType.FlyingBlock:
                         joints[0].breakForce = 20000;
@@ -32,7 +44,7 @@ namespace BesiegeBotsTweaks
                         joints[0].breakForce = 30000;
                         joints[0].breakTorque = 30000;
                         StrengthenTreads ST = null;
-                        if(ST = GO.GetComponent<StrengthenTreads>())
+                        if(ST = GetComponent<StrengthenTreads>())
                         {
                             ST.breakForce = 50000;
                             ST.breakTorque = 50000;
@@ -96,9 +108,9 @@ namespace BesiegeBotsTweaks
                         }
                         break;
                 }
-                #else
-                #endif
+                frameCount++;
             }
+            else Object.Destroy(this);
         }
     }
 }
