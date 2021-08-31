@@ -5,6 +5,7 @@ namespace BesiegeBotsTweaks
 {
     public class DragFix : MonoBehaviour
     {
+        BlockBehaviour BB;
         internal static void FixDrags()
         {
             foreach(BlockType type in System.Enum.GetValues(typeof(BlockType)))
@@ -17,6 +18,11 @@ namespace BesiegeBotsTweaks
         }
         void Awake()
         {
+            BB = GetComponent<BlockBehaviour>();
+        }
+        void Update()
+        {
+            if(!BB.SimPhysics) return;
             BlockType type = GetComponent<BlockBehaviour>().Prefab.Type;
             /*foreach(BlockType type in System.Enum.GetValues(typeof(BlockType)))
             {
@@ -30,12 +36,7 @@ namespace BesiegeBotsTweaks
                     case BlockType.CogMediumUnpowered:
                     case BlockType.GripPad:
                     case BlockType.Log:
-                    case BlockType.ArmorPlateSmall:
                     case BlockType.StartingBlock:
-                        RB.drag = 0f;
-                        RB.angularDrag = 0f;
-                        RB.maxAngularVelocity = 1000;
-                        break;
                     case BlockType.BuildSurface:
                     case BlockType.Ballast:
                     case BlockType.Swivel:
@@ -62,6 +63,10 @@ namespace BesiegeBotsTweaks
                     case BlockType.WoodenPanel:
                     case BlockType.Wheel:
                     case BlockType.LargeWheel:
+                    case BlockType.WaterCannon:
+                    case BlockType.ArmorPlateSmall:
+                    case BlockType.ArmorPlateLarge:
+                    case BlockType.ArmorPlateRound:
                         RB.drag = 0f;
                         RB.angularDrag = 0f;
                         RB.maxAngularVelocity = 100;
@@ -77,22 +82,11 @@ namespace BesiegeBotsTweaks
                         RB.angularDrag = 0f;
                         //RB.maxAngularVelocity = 5;//5 in code, 250 in Object Explorer.
                         break;
-                    case BlockType.WaterCannon:
-                        RB.drag = 0f;
-                        RB.angularDrag = 0f;
-                        //RB.maxAngularVelocity = 5;//5 in code, different elsewhere I'm sure.
-                        break;
                     case BlockType.Grabber:
                         RB.drag = 0.01f;
                         RB.angularDrag = 0f;
                         RB.maxAngularVelocity = 100;
                         break;     
-                    case BlockType.ArmorPlateLarge:
-                    case BlockType.ArmorPlateRound:
-                        RB.drag = 0f;
-                        RB.angularDrag = 0f;
-                        RB.maxAngularVelocity = 200;
-                        break;
                 }
                 #else
                 RB.drag = 0.01f;
