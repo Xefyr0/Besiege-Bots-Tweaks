@@ -118,7 +118,7 @@ namespace BotFix
                 rigg.drag = 0f;
                 rigg.angularDrag = 0f;
                 */
-                rigg.maxAngularVelocity = 100;
+                //rigg.maxAngularVelocity = 100;
             }    
         }
 

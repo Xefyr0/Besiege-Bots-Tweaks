@@ -5,7 +5,8 @@ namespace BesiegeBotsTweaks
 {
     public class DragFix : MonoBehaviour
     {
-        BlockBehaviour BB;
+        private BlockBehaviour BB;
+        private byte frameCounter = 0;
         internal static void FixDrags()
         {
             foreach(BlockType type in System.Enum.GetValues(typeof(BlockType)))
@@ -23,6 +24,8 @@ namespace BesiegeBotsTweaks
         void Update()
         {
             if(!BB.SimPhysics) return;
+            frameCounter++;
+            if(frameCounter < 3) return;
             BlockType type = GetComponent<BlockBehaviour>().Prefab.Type;
             /*foreach(BlockType type in System.Enum.GetValues(typeof(BlockType)))
             {
@@ -73,9 +76,6 @@ namespace BesiegeBotsTweaks
                         break;
                     case BlockType.FlyingBlock:
                     case BlockType.SpinningBlock:
-                        RB.drag = 0f;
-                        RB.angularDrag = 0f;
-                        break;
                     case BlockType.CircularSaw:
                     case BlockType.Drill:
                         RB.drag = 0f;

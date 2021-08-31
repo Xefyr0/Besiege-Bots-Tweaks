@@ -4,7 +4,7 @@ namespace BesiegeBotsTweaks
 {
     public class BreakForceFix : MonoBehaviour
     {
-        BlockBehaviour BB;
+        private BlockBehaviour BB;
         private byte frameCounter = 0;
         internal static void FixBreakForces()
         {
