@@ -21,9 +21,10 @@ namespace BesiegeBotsTweaks
         }
         private void Update()
         {
-            if(!Modding.Game.IsSimulatingGlobal) return;
+            if(!BB.SimPhysics) return;
             frameCounter++;
             if(frameCounter < 3) return;
+            if(StatMaster.isClient && !StatMaster.isLocalSim) Object.Destroy(this);
             Joint[] joints = GetComponents<Joint>();
             switch(BB.Prefab.Type)
             {

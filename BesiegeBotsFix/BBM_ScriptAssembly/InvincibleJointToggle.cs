@@ -18,9 +18,10 @@ namespace BesiegeBotsTweaks
         }
         private void Update()
         {
-            if(!Modding.Game.IsSimulatingGlobal) return;
+            if(!BB.SimPhysics) return;
             frameCounter++;
             if(frameCounter < 4) return;
+            if(StatMaster.isClient && !StatMaster.isLocalSim) Object.Destroy(this);
             if(Invincible && joint != null)
             {
                 joint.breakForce = Mathf.Infinity;
