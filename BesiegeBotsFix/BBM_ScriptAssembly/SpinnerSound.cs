@@ -203,6 +203,7 @@ namespace BotFix
             //Debug.Log("Gotmessage:");
             Block BL = (Block)m.GetData(0);
             //Debug.Log(BL);
+            if(BL == null) return;
             BL.InternalObject.GetComponent<SpinnerSound>().angval = (float)m.GetData(1);
         }
     }

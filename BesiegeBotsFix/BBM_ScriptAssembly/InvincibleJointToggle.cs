@@ -18,7 +18,7 @@ namespace BesiegeBotsTweaks
         }
         private void Update()
         {
-            if(!BB.SimPhysics) return;
+            if(BB == null || !BB.SimPhysics) return;
             frameCounter++;
             if(frameCounter < 4) return;
             if(StatMaster.isClient && !StatMaster.isLocalSim) Object.Destroy(this);

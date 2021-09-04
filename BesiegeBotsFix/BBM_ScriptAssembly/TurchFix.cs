@@ -11,7 +11,7 @@ namespace BotFix
 
         private MToggle Ftoggle;
 
-        private bool Fired = true;
+        private bool FireEnabled = true;
         private int FrameCounter = 0;
 
         private void Awake()
@@ -21,8 +21,8 @@ namespace BotFix
             FC = GetComponent<FireController>();
 
             //Mapper definition
-            Ftoggle = BB.AddToggle("Enable Fire", "Enable Fire", Fired);
-            Ftoggle.Toggled += (bool value) => { Fired = value; };
+            Ftoggle = BB.AddToggle("Enable Fire", "Enable Fire", FireEnabled);
+            Ftoggle.Toggled += (bool value) => { FireEnabled = value; };
 
             //DisplayInMapper config
             Ftoggle.DisplayInMapper = true;
@@ -30,12 +30,12 @@ namespace BotFix
 
         public void Update()
         {
+            if(StatMaster.isClient && !StatMaster.isLocalSim || BB == null || FC == null) Object.Destroy(this);
             if (FrameCounter <= 100)
             {              
-                FC.enabled = Fired;
+                FC.enabled = FireEnabled;
                 FrameCounter++;
-                GameObject FP = BB.transform.FindChild("FireParticle").gameObject;
-                FP.SetActive(Fired);
+                BB.transform.FindChild("FireParticle").gameObject.SetActive(FireEnabled);
             }
         }
     }

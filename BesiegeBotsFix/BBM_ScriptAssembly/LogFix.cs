@@ -70,6 +70,7 @@ namespace BotFix
             //Debug.Log(BL);
             bool tog = (bool)m.GetData(1);
             //Debug.Log(tog);
+            if(BL == null) return;
             BL.InternalObject.GetComponent<Logfix>().ToggleSmoke();
         }
     }

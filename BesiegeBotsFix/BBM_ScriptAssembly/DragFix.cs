@@ -23,7 +23,7 @@ namespace BesiegeBotsTweaks
         }
         void Update()
         {
-            if(!BB.SimPhysics) return;
+            if(BB == null || !BB.SimPhysics) return;
             frameCounter++;
             if(frameCounter < 3) return;
             if(StatMaster.isClient && !StatMaster.isLocalSim) Object.Destroy(this);
@@ -34,6 +34,7 @@ namespace BesiegeBotsTweaks
                 GameObject GO = BPI.InternalObject.gameObject;
                 */
                 Rigidbody RB = GetComponent<Rigidbody>();
+                if(RB == null) Object.Destroy(this);
                 #if DoyleNumbers
                 switch(type)
                 {
