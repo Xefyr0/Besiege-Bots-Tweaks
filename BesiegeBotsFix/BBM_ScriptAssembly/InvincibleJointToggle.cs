@@ -14,14 +14,14 @@ namespace BesiegeBotsTweaks
             BB = GetComponent<BlockBehaviour>();
             toggle = BB.AddToggle("Make Invincible", "MVI", Invincible);
             toggle.Toggled += (bool value) => Invincible = value;
-            joint = BB.GetComponentInChildren<Joint>();
+            joint = BB.GetComponent<Joint>();
         }
         private void Update()
         {
-            if(!BB.SimPhysics) return;
+            if(!Modding.Game.IsSimulatingGlobal) return;
             frameCounter++;
             if(frameCounter < 4) return;
-            if(Invincible)
+            if(Invincible && joint != null)
             {
                 joint.breakForce = Mathf.Infinity;
                 joint.breakTorque = Mathf.Infinity;

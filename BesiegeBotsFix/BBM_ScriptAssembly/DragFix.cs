@@ -23,7 +23,7 @@ namespace BesiegeBotsTweaks
         }
         void Update()
         {
-            if(!BB.SimPhysics) return;
+            if(!Modding.Game.IsSimulatingGlobal) return;
             frameCounter++;
             if(frameCounter < 3) return;
             BlockType type = GetComponent<BlockBehaviour>().Prefab.Type;

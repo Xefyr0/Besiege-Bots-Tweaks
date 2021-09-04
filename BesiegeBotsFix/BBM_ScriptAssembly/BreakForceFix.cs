@@ -21,25 +21,28 @@ namespace BesiegeBotsTweaks
         }
         private void Update()
         {
-            if(!BB.SimPhysics) return;
+            if(!Modding.Game.IsSimulatingGlobal) return;
             frameCounter++;
             if(frameCounter < 3) return;
             Joint[] joints = GetComponents<Joint>();
             switch(BB.Prefab.Type)
             {
                 case BlockType.FlyingBlock:
+                    if(joints[0] == null) return;
                     joints[0].breakForce = 20000;
                     joints[0].breakTorque = 20000;
                     break;
                 case BlockType.Ballast:
                 case BlockType.Decoupler:
                 case BlockType.SteeringHinge:
+                    if(joints[0] == null) return;
                     joints[0].breakForce = 30000;
                     joints[0].breakTorque = 30000;
                     break;
                 case BlockType.Hinge:
                 case BlockType.BallJoint:
                 case BlockType.Swivel:
+                    if(joints[0] == null) return;
                     joints[0].breakForce = 30000;
                     joints[0].breakTorque = 30000;
                     StrengthenTreads ST = null;
@@ -51,6 +54,7 @@ namespace BesiegeBotsTweaks
                     break;
                 case BlockType.Suspension:
                 case BlockType.Piston:
+                    if(joints[0] == null) return;
                     joints[0].breakForce = 35000;
                     joints[0].breakTorque = 35000;
                     break;
@@ -58,6 +62,7 @@ namespace BesiegeBotsTweaks
                 case BlockType.Wing:
                 case BlockType.WingPanel:
                 case BlockType.BuildSurface:
+                    if(joints[0] == null) return;
                     joints[0].breakForce = 40000;
                     joints[0].breakTorque = 40000;
                     break;
@@ -67,27 +72,32 @@ namespace BesiegeBotsTweaks
                 case BlockType.WheelUnpowered:
                 case BlockType.LargeWheel:
                 case BlockType.LargeWheelUnpowered:
+                    if(joints[0] == null) return;
                     joints[0].breakForce = 60000;
                     joints[0].breakTorque = 60000;
                     break;
                 case BlockType.MetalBlade:
                 case BlockType.Spike:
+                    if(joints[0] == null) return;
                     joints[0].breakForce = 80000;
                     joints[0].breakTorque = 80000;
                     break;
                 case BlockType.SpinningBlock:
                 case BlockType.CogMediumPowered:
                 case BlockType.CircularSaw:
+                    if(joints[0] == null) return;
                     joints[0].breakForce = 90000;
                     joints[0].breakTorque = 90000;
                     break;
                 case BlockType.WoodenPanel:
+                    if(joints[0] == null) return;
                     joints[0].breakForce = Mathf.Infinity;
                     joints[0].breakTorque = Mathf.Infinity;
                     break;
                 case BlockType.SingleWoodenBlock:
                     foreach(Joint joint in joints)
                     {
+                        if(joint == null) continue;
                         joint.breakForce = 60000;
                         joint.breakTorque = 60000;
                     }
@@ -95,6 +105,7 @@ namespace BesiegeBotsTweaks
                 case BlockType.DoubleWoodenBlock:
                     foreach(Joint joint in joints)
                     {
+                        if(joint == null) continue;
                         joint.breakForce = 50000;
                         joint.breakTorque = 50000;
                     }
@@ -102,6 +113,7 @@ namespace BesiegeBotsTweaks
                 case BlockType.WoodenPole:
                     foreach(Joint joint in joints)
                     {
+                        if(joint == null) continue;
                         joint.breakForce = 40000;
                         joint.breakTorque = 40000;
                     }
