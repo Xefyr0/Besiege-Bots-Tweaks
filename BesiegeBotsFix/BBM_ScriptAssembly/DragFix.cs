@@ -1,4 +1,3 @@
-#define DoyleNumbers
 using UnityEngine;
 
 namespace BesiegeBotsTweaks
@@ -35,7 +34,6 @@ namespace BesiegeBotsTweaks
                 */
                 Rigidbody RB = GetComponent<Rigidbody>();
                 if(RB == null) Object.Destroy(this);
-                #if DoyleNumbers
                 switch(type)
                 {
                     case BlockType.CogMediumUnpowered:
@@ -90,12 +88,11 @@ namespace BesiegeBotsTweaks
                         RB.maxAngularVelocity = 100;
                         break;     
                 }
-                #else
+                /*
                 RB.drag = 0.01f;
                 RB.angularDrag = 0.01f;
                 RB.maxAngularVelocity = Mathf.PI/Time.fixedDeltaTime;
-                #endif
-                /*
+
                 switch(i)
                 {
                     case 1:

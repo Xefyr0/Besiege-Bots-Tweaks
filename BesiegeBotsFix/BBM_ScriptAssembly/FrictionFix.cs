@@ -1,4 +1,3 @@
-#define DoyleNumbers
 using UnityEngine;
 
 namespace BesiegeBotsTweaks
@@ -13,7 +12,6 @@ namespace BesiegeBotsTweaks
                 GameObject GO = BPI.InternalObject.gameObject;
                 Collider[] colliders = GO.GetComponentsInChildren<Collider>();
 
-                #if DoyleNumbers
                 foreach(Collider collider in colliders)
                 {
                     switch(type)
@@ -37,8 +35,6 @@ namespace BesiegeBotsTweaks
                             break;
                     }
                 }
-                #else
-                #endif
             }
         }
     }

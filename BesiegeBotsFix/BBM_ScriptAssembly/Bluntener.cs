@@ -1,4 +1,3 @@
-#define DoyleNumbers
 using UnityEngine;
 
 namespace BesiegeBotsTweaks
@@ -11,7 +10,6 @@ namespace BesiegeBotsTweaks
             {
                 Modding.Blocks.BlockPrefabInfo BPI = Modding.Blocks.BlockPrefabInfo.GetOfficial(type);
 
-                #if DoyleNumbers
                 switch(type)
                 {
                     case BlockType.MetalBlade:
@@ -24,7 +22,6 @@ namespace BesiegeBotsTweaks
                         BPI.InternalObject.myDamageType = DamageType.Blunt;
                         break;
                 }
-                #endif
             }
         }
     }

@@ -25,15 +25,6 @@ namespace BotFix
             SmokeToggle.Toggled += (bool value) => { smokey = value;};
 
             SmokeToggle.DisplayInMapper = true;
-/*
-            if (!StatMaster.isClient || StatMaster.isLocalSim)
-            {
-                rigg = GetComponent<Rigidbody>();
-                rigg.drag = 0f;
-                rigg.angularDrag = 0f;
-                rigg.maxAngularVelocity = 1000;
-            }
-            */
         }
 
         private void Update()

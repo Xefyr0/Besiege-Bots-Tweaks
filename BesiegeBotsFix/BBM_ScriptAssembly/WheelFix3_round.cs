@@ -109,17 +109,7 @@ namespace BotFix
             if (!StatMaster.isClient || StatMaster.isLocalSim)
             {
                 rigg = GetComponent<Rigidbody>();
-                /*
-                CJ = GetComponent<HingeJoint>();
-                CJ.breakForce = 60000;
-                CJ.breakTorque = 60000;
-               
-                
-                rigg.drag = 0f;
-                rigg.angularDrag = 0f;
-                */
-                //rigg.maxAngularVelocity = 100;
-            }    
+            }
         }
 
         void Update()

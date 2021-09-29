@@ -147,7 +147,7 @@ namespace BotFix
                     BB.gameObject.AddComponent<Grabberfix>();
                 if (BB.gameObject.GetComponent<SpinnerSound>() == null)
                     BB.gameObject.AddComponent<SpinnerSound>();
-                 PrefabMaster.GetStrippedBlock(BlockType.Grabber, out BB);
+                PrefabMaster.GetStrippedBlock(BlockType.Grabber, out BB);
                 if (BB.gameObject.GetComponent<SpinnerSound>() == null)
                     BB.gameObject.AddComponent<SpinnerSound>();
 
@@ -231,8 +231,6 @@ namespace BotFix
 
                 //47
                 //PrefabMaster.GetBlock(BlockType.Torch, out BB);
-                if (BB.gameObject.GetComponent<TurchFix>() == null)
-                    BB.gameObject.AddComponent<TurchFix>();
 
                 //48
                 //PrefabMaster.GetBlock(BlockType.Drill, out BB);

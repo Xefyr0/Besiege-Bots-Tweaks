@@ -31,14 +31,6 @@ namespace BotFix
 
             //DisplayInMapper config
             Wtoggle.DisplayInMapper = true;
-/*
-            if (!StatMaster.isClient || StatMaster.isLocalSim)
-            {
-                myJoint = GetComponent<ConfigurableJoint>();
-                myJoint.breakForce = 40000;
-                myJoint.breakTorque = 40000;
-            }
-            */
         }
     }
 }

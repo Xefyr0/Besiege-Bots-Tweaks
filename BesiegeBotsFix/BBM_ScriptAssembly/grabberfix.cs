@@ -48,21 +48,7 @@ namespace BotFix
             //Physics Stuff
             if (!StatMaster.isClient || StatMaster.isLocalSim)
             {
-                //rigg.mass = 0.7f;
-                /*
-                rigg.drag = 0.01f;
-                rigg.angularDrag = 0f;
-                */
                 rigg = GetComponent<Rigidbody>();
-                //rigg.maxAngularVelocity = 100;
-                /*
-                colliders = GetComponentsInChildren<Collider>();
-                foreach (Collider collider in colliders)
-                {
-                    collider.material.dynamicFriction = 0.05f;
-                    collider.material.staticFriction = 0.05f;
-                    collider.material.frictionCombine = PhysicMaterialCombine.Minimum;
-                }*/
             }
         }
 

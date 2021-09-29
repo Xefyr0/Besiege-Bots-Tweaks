@@ -23,32 +23,6 @@ namespace BotFix
 
             BuildSurface.AllowThicknessChange = true;
             BS.thickSlider.DisplayInMapper = true;
-
-            if (!StatMaster.isClient || StatMaster.isLocalSim)
-            {
-                /*
-                rigg = GetComponent<Rigidbody>();
-                rigg.drag = 0f;
-                rigg.angularDrag = 0f;
-                rigg.maxAngularVelocity = 100;
-                
-
-                CJ = GetComponents<ConfigurableJoint>();
-                foreach (ConfigurableJoint joint in CJ)
-                {
-                    joint.breakForce = 40000;
-                    joint.breakTorque = 40000;
-                }
-
-                colliders = GetComponentsInChildren<Collider>();
-                foreach (Collider collider in colliders)
-                {
-
-                    collider.material.dynamicFriction = 0.1f;
-                    collider.material.staticFriction = 0.1f;
-                    collider.material.frictionCombine = PhysicMaterialCombine.Minimum;
-                }*/
-            }
         }
 
         void FixedUpdate()
@@ -61,7 +35,6 @@ namespace BotFix
                     {
                         BS.currentType.breakImpactThreshold = 500000f;
                     }
-
                     //Debug.Log(BS.currentType.breakImpactThreshold);
                 }
             }
