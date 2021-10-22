@@ -1,3 +1,8 @@
+/*
+FrictionSlider.cs
+Written by Xefyr for the Besiege Bots community
+*/
+
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -5,15 +10,14 @@ namespace BesiegeBotsTweaks
 {
     public class FrictionSlider : MonoBehaviour
     {
-        private Collider[] colliders;
+        private const byte FRAMECOUNT = 3;  //The number of frames this component waits before making changes
+        private byte frameCounter = 0;  //frameCounter Variable to keep track of how many frames have elapsed
         private MSlider GS;
         private MMenu PCMenu;
         private int PCselect = 0;
-        public BlockBehaviour BB { get; internal set; }
-
+        private BlockBehaviour BB;
         public float grip = 0.3f;
         public PhysicMaterialCombine PC = PhysicMaterialCombine.Average;
-        
         internal static List<string> PCmenul = new List<string>()
         {
             "Average",
@@ -21,14 +25,18 @@ namespace BesiegeBotsTweaks
             "Minimum",
             "Maximum",
         };
-
+        
         void Awake()
         {
+            //BB is initialized in Awake instead of Update because otherwise GetComponent would be called multiple times.
             BB = GetComponent<BlockBehaviour>();
+            if(BB == null) Object.Destroy(this);
 
+            //Create friction slider and define its ValueChanged event handler to modify an internal variable.
             GS = BB.AddSlider("Friction", "Friction", grip, 0.1f, 4f);
             GS.ValueChanged += (float value) => { grip = value; };
 
+            //Create friction menu and define its ValueChanged event handler to modify an internal variable.
             PCMenu = BB.AddMenu("Combine", PCselect, PCmenul, false);
             PCMenu.ValueChanged += (ValueHandler)(value => 
             {
@@ -49,19 +57,30 @@ namespace BesiegeBotsTweaks
                 }
             });
 
+            //Forces the new menu elements to display in the mapper tool.
             GS.DisplayInMapper = true;
             PCMenu.DisplayInMapper = true;
-          
-            if (!StatMaster.isClient || StatMaster.isLocalSim)
+        }
+
+        private void Update()
+        {
+            //Wait until sim starts, then starts counting frames until FRAMECOUNT frames are reached
+            if(!BB.SimPhysics) return;
+            frameCounter++;
+            if(frameCounter < FRAMECOUNT) return;
+
+            //If the block isn't actually part of a simulation (i.e. on a client computer in multiverse with local sim turned off) then the component instance is destroyed since it won't do anything either way
+            if (StatMaster.isClient && !StatMaster.isLocalSim) Object.Destroy(this);
+            
+            //Gets the colliders from each block, and modifies those colliders' friction and frictionCombine to the slider and menu values.
+            Collider[] colliders = GetComponentsInChildren<Collider>();
+            foreach (Collider collider in colliders)
             {
-                colliders = GetComponentsInChildren<Collider>();
-                foreach (Collider collider in colliders)
-                {
-                    collider.material.dynamicFriction = grip;
-                    collider.material.staticFriction = grip;
-                    collider.material.frictionCombine = PC;
-                }
+                collider.material.dynamicFriction = grip;
+                collider.material.staticFriction = grip;
+                collider.material.frictionCombine = PC;
             }
+            Object.Destroy(this);   //The component instance is destroyed after the necessary changes are made.
         }
     }
 }

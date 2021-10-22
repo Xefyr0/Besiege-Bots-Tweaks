@@ -1,11 +1,29 @@
+/*
+DragFix.cs
+Written by Xefyr for the Besiege Bots community
+*/
+
 using UnityEngine;
 
 namespace BesiegeBotsTweaks
 {
+    /*
+    Before the existence of BBMod, Spinners and other high-speed weapons had low speed limits
+    and needed many braces to achieve passable speeds.
+    Thus, Doyle decreased the drag of blocks' Rigidbodies and increased their maxAngularVelocitys.
+    This class does the same thing, but consolidated into one location. It functions similarly to BreakForceFix.cs,
+    because for some reason blocks' drag are also modified a few frames into the simulation.
+    */
     public class DragFix : MonoBehaviour
     {
+        private const byte FRAMECOUNT = 3;  //The number of frames this component waits before making changes
+        private byte frameCounter = 0;  //frameCounter Variable to keep track of how many frames have elapsed
         private BlockBehaviour BB;
-        private byte frameCounter = 0;
+        
+        /*
+        A static, parameterless void method that is used as the "entry point" of this class.
+        This method loops through each block prefab and attaches an instance of this component to that prefab.
+        */
         internal static void FixDrags()
         {
             foreach(BlockType type in System.Enum.GetValues(typeof(BlockType)))
@@ -16,25 +34,27 @@ namespace BesiegeBotsTweaks
                 GO.AddComponent<DragFix>();
             }
         }
-        void Awake()
+        private void Awake()
         {
+            //BB is initialized in Awake instead of Update because otherwise GetComponent would be called multiple times.
             BB = GetComponent<BlockBehaviour>();
+            if(BB == null) Object.Destroy(this);
         }
         void Update()
         {
-            if(BB == null || !BB.SimPhysics) return;
+            //Wait until sim starts, then starts counting frames until FRAMECOUNT frames are reached
+            if(!BB.SimPhysics) return;
             frameCounter++;
-            if(frameCounter < 3) return;
+            if(frameCounter < FRAMECOUNT) return;
+
+            //If the block isn't actually part of a simulation (i.e. on a client computer in multiverse with local sim turned off) then the component instance is destroyed since it won't do anything either way
             if(StatMaster.isClient && !StatMaster.isLocalSim) Object.Destroy(this);
-            BlockType type = GetComponent<BlockBehaviour>().Prefab.Type;
-            /*foreach(BlockType type in System.Enum.GetValues(typeof(BlockType)))
+            
+            //Gets the Rigidbody of each block, and if it isn't null then modifiy the drags & maxAngularVelocity based on a switch statement of the block type.
+            Rigidbody RB = GetComponent<Rigidbody>();
+            if(RB != null)
             {
-                Modding.Blocks.BlockPrefabInfo BPI = Modding.Blocks.BlockPrefabInfo.GetOfficial(type);
-                GameObject GO = BPI.InternalObject.gameObject;
-                */
-                Rigidbody RB = GetComponent<Rigidbody>();
-                if(RB == null) Object.Destroy(this);
-                switch(type)
+                switch(BB.Prefab.Type)
                 {
                     case BlockType.CogMediumUnpowered:
                     case BlockType.GripPad:
@@ -80,100 +100,16 @@ namespace BesiegeBotsTweaks
                     case BlockType.Drill:
                         RB.drag = 0f;
                         RB.angularDrag = 0f;
-                        //RB.maxAngularVelocity = 5;//5 in code, 250 in Object Explorer.
                         break;
+                    //Grabbers have nonzero drag because they're used so often in spinners.
                     case BlockType.Grabber:
                         RB.drag = 0.01f;
                         RB.angularDrag = 0f;
                         RB.maxAngularVelocity = 100;
                         break;     
                 }
-                /*
-                RB.drag = 0.01f;
-                RB.angularDrag = 0.01f;
-                RB.maxAngularVelocity = Mathf.PI/Time.fixedDeltaTime;
-
-                switch(i)
-                {
-                    case 1:
-                    case 2:
-                    case 3:
-                    case 4:
-                    case 5:
-                    case 6:
-                    case 7:
-                    case 8:
-                    case 9:
-                    case 10:
-                    case 11:
-                    case 12:
-                    case 13:
-                    case 14:
-                    case 15:
-                    case 16:
-                    case 17:
-                    case 18:
-                    case 19:
-                    case 20:
-                    case 21:
-                    case 22:
-                    case 23:
-                    case 24:
-                    case 25:
-                    case 26:
-                    case 27:
-                    case 28:
-                    case 29:
-                    case 30:
-                    case 31:
-                    case 32:
-                    case 33:
-                    case 34:
-                    case 35:
-                    case 36:
-                    case 37:
-                    case 38:
-                    case 39:
-                    case 40:
-                    case 41:
-                    case 42:
-                    case 43:
-                    case 44:
-                    case 45:
-                    case 46:
-                    case 47:
-                    case 48:
-                    case 49:
-                    case 50:
-                    case 51:
-                    case 52:
-                    case 53:
-                    case 54:
-                    case 55:
-                    case 56:
-                    case 57:
-                    case 58:
-                    case 59:
-                    case 60:
-                    case 61:
-                    case 62:
-                    case 63:
-                    case 64:
-                    case 65:
-                    case 66:
-                    case 67:
-                    case 68:
-                    case 69:
-                    case 70:
-                    case 71:
-                    case 72:
-                    case 73:
-                        break;
-                    default: 
-                }
-                */
-            //}
-            Object.Destroy(this);
+            }
+            Object.Destroy(this);   //The component instance is destroyed after the necessary changes are made.
         }
     }
 }

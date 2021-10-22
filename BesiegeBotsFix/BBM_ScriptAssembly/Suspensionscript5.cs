@@ -88,7 +88,7 @@ namespace BotFix
 
             RetractKey = SC.AddKey("retract", "Shrink", KeyCode.N);           
            
-            FeedSlider = SC.AddSlider("feedSpeed", "feed", Feed, 0f, 10f);
+            FeedSlider = SC.AddSlider("feedSpeed", "feed", Feed, 0f, 25f);
             FeedSlider.ValueChanged += (float value) => { Feed = value; };
 
             ExtendLimitSlider = SC.AddSlider("extendLimit", "ExtendLimit", ExtendLimit, 0f, 4f);

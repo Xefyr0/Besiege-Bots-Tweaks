@@ -1,9 +1,23 @@
+/*
+MassFix.cs
+Written by Xefyr for the Besiege Bots community
+*/
+
 using UnityEngine;
 
 namespace BesiegeBotsTweaks
 {
+    /*
+    Some blocks are too heavy or light for their appearance or usage in a Besiege Bot.
+    this class remedies that.
+    */
     public class MassFix
     {
+        /*
+        This method loops through each block's prefab and alters their masses.
+        The method is static because the blocks' mass can be accessed directly from the prefab
+        and still achieve the desired effect.
+        */
         internal static void FixMasses()
         {
             foreach(BlockType type in System.Enum.GetValues(typeof(BlockType)))

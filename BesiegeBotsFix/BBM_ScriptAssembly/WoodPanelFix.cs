@@ -23,20 +23,6 @@ namespace BotFix
                 CJ = GetComponent<ConfigurableJoint>();
                 CJ.breakForce = Mathf.Infinity;
                 CJ.breakTorque = Mathf.Infinity;
-
-                //rigg = GetComponent<Rigidbody>();
-                //rigg.drag = 0f;
-                //rigg.angularDrag = 0f;
-                //rigg.mass = 0.5f;
-                //rigg.maxAngularVelocity = 100;
-                /*
-                colliders = GetComponentsInChildren<Collider>();
-                foreach (Collider collider in colliders)
-                {
-                    collider.material.dynamicFriction = 0.1f;
-                    collider.material.staticFriction = 0.1f;
-                    collider.material.frictionCombine = PhysicMaterialCombine.Minimum;
-                }*/
             }
         }
        

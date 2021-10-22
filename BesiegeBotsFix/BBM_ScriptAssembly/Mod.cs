@@ -58,8 +58,8 @@ namespace BotFix
 
 
             //Wheelfix messages
-            Messages.SO = ModNetworking.CreateMessageType(DataType.Block, DataType.Integer);
-            ModNetworking.Callbacks[Messages.SO] += Wheelfix2_smoke.SOClient;
+            //Messages.SO = ModNetworking.CreateMessageType(DataType.Block, DataType.Integer);
+            //ModNetworking.Callbacks[Messages.SO] += Wheelfix2_smoke.SOClient;
 
 
             //Spinnersound messages
