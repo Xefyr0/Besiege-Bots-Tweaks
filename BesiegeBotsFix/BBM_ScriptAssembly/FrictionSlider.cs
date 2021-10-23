@@ -1,6 +1,7 @@
 /*
 FrictionSlider.cs
 Written by Xefyr for the Besiege Bots community
+Adapted from the work of DokterDoyle
 */
 
 using UnityEngine;
@@ -16,7 +17,7 @@ namespace BesiegeBotsTweaks
         private MMenu PCMenu;
         private int PCselect = 0;
         private BlockBehaviour BB;
-        public float grip = 0.3f;
+        public float grip = 0.7f;
         public PhysicMaterialCombine PC = PhysicMaterialCombine.Average;
         internal static List<string> PCmenul = new List<string>()
         {

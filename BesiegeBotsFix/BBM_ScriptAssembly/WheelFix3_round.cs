@@ -27,7 +27,6 @@ namespace BotFix
 
         private int PCselect = 3;
         private int ID = 0;
-        private float Friction = 0.8f;
         private float Lerpo = 0f;
            
         public bool MakeRound = false;       
@@ -52,7 +51,6 @@ namespace BotFix
             BB = GetComponent<BlockBehaviour>();
 
             ID = BB.BlockID;
-            Friction = PSaF.GetPositionScaleAndFriction(ID).Friction;
 
             if (ID == (int)BlockType.Wheel || ID == (int)BlockType.LargeWheel)
             {
@@ -76,9 +74,6 @@ namespace BotFix
             //Mapper definition
             Roundwheelz = BB.AddToggle("ROUNDWHEELZ!", "ROUNDWHEELZ!", MakeRound);
             Roundwheelz.Toggled += (bool value) => { MakeRound = Collider = value; };
-
-            GS = BB.AddSlider("Friction", "Friction", Friction, 0.1f, 4f);
-            GS.ValueChanged += (float value) => { Friction = value; };
 
             PCMenu = BB.AddMenu("Combine", PCselect, PCmenul, false);
             PCMenu.ValueChanged += (ValueHandler)(value => 
@@ -141,9 +136,6 @@ namespace BotFix
 
                             mCollider = WheelCollider.GetComponent<MeshCollider>();
                             mCollider.convex = true;
-                            mCollider.material.staticFriction = Friction;
-                            mCollider.material.dynamicFriction = Friction;
-                            mCollider.material.frictionCombine = PC;
 
                             if (ShowCollider)
                             {
@@ -151,7 +143,7 @@ namespace BotFix
                                 mRenderer.material.color = Color.red;
                             }
 
-                            PSaF pas = PSaF.GetPositionScaleAndFriction(ID);
+                            PaS pas = PaS.GetPositionScaleAndFriction(ID);
 
                             WheelCollider.transform.parent = transform;
                             WheelCollider.transform.rotation = transform.rotation;
@@ -160,17 +152,6 @@ namespace BotFix
                         }
                         else
                         {
-                            foreach (Collider c in Colliders)
-                            {
-                                if (c.name == "CubeColliders")
-                                {
-                                    c.enabled = true;
-                                    BoxCollider bc = c.GetComponent<BoxCollider>();
-                                    bc.material.dynamicFriction = Friction;
-                                    bc.material.staticFriction = Friction;
-                                    bc.material.frictionCombine = PC;
-                                }
-                            }
                             Destroy(WheelCollider);
                         }
                     }
@@ -178,46 +159,41 @@ namespace BotFix
             }
         }
 
-        private struct PSaF
+        private struct PaS
         {
             public Vector3 Position;
             public Vector3 Scale;
-            public float Friction;
-            public static PSaF one = new PSaF { Position = Vector3.one, Scale = Vector3.one, Friction = 1 };
+            public static PaS one = new PaS { Position = Vector3.one, Scale = Vector3.one};
 
-            public static PSaF GetPositionScaleAndFriction(int id)
+            public static PaS GetPositionScaleAndFriction(int id)
             {
-                PSaF psaf = new PSaF();
+                PaS psaf = new PaS();
 
                 if (id == (int)BlockType.Wheel)
                 {
                     psaf.Position = new Vector3(0, 0, 0.175f);
                     psaf.Scale = new Vector3(0.98f, 0.98f, 1.75f);
-                    psaf.Friction = 0.8f;
                     return psaf;
                 }
                 if (id == (int)BlockType.LargeWheel)
                 {
                     psaf.Position = new Vector3(0, 0, 0.45f);
                     psaf.Scale = new Vector3(1.38f, 1.38f, 3.75f);
-                    psaf.Friction = 0.8f;
                     return psaf;
                 }
                 if (id == (int)BlockType.WheelUnpowered)
                 {
                     psaf.Position = new Vector3(0, 0, 0.175f);
                     psaf.Scale = new Vector3(0.98f, 0.98f, 1.75f);
-                    psaf.Friction = 0.8f;
                     return psaf;
                 }
                 if (id == (int)BlockType.LargeWheelUnpowered)
                 {
                     psaf.Position = new Vector3(0, 0, 0.45f);
                     psaf.Scale = new Vector3(1.38f, 1.38f, 1.75f);
-                    psaf.Friction = 0.8f;
                     return psaf;
                 }
-                return PSaF.one;
+                return PaS.one;
             }
         }
 

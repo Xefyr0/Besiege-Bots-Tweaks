@@ -26,6 +26,8 @@ namespace BotFix
                 PrefabMaster.GetBlock(BlockType.Wheel, out BB);
                 if (BB.gameObject.GetComponent<Wheelfix3_round>() == null)
                     BB.gameObject.AddComponent<Wheelfix3_round>();
+                if (BB.gameObject.GetComponent<FrictionSlider>() == null)
+                    BB.gameObject.AddComponent<FrictionSlider>();
                 PrefabMaster.GetStrippedBlock(BlockType.Wheel, out BB);
                 if (BB.gameObject.GetComponent<Wheelfix3_round>() == null)
                     BB.gameObject.AddComponent<Wheelfix3_round>();
@@ -61,9 +63,7 @@ namespace BotFix
                     BB.gameObject.AddComponent<WinchFix>();
 
                 //10
-                PrefabMaster.GetBlock(BlockType.WoodenPanel, out BB);
-                if (BB.gameObject.GetComponent<WPFix>() == null)
-                    BB.gameObject.AddComponent<WPFix>();
+                //PrefabMaster.GetBlock(BlockType.WoodenPanel, out BB);
 
                 //11
                 PrefabMaster.GetBlock(BlockType.Cannon, out BB);
@@ -197,6 +197,8 @@ namespace BotFix
                 PrefabMaster.GetBlock(BlockType.WheelUnpowered, out BB);
                 if (BB.gameObject.GetComponent<Wheelfix3_round>() == null)
                     BB.gameObject.AddComponent<Wheelfix3_round>();
+                if (BB.gameObject.GetComponent<FrictionSlider>() == null)
+                    BB.gameObject.AddComponent<FrictionSlider>();
                 PrefabMaster.GetStrippedBlock(BlockType.WheelUnpowered, out BB);
                 if (BB.gameObject.GetComponent<Wheelfix3_round>() == null)
                     BB.gameObject.AddComponent<Wheelfix3_round>();
@@ -225,6 +227,8 @@ namespace BotFix
                 PrefabMaster.GetBlock(BlockType.LargeWheel, out BB);
                 if (BB.gameObject.GetComponent<Wheelfix3_round>() == null)
                     BB.gameObject.AddComponent<Wheelfix3_round>();
+                if (BB.gameObject.GetComponent<FrictionSlider>() == null)
+                    BB.gameObject.AddComponent<FrictionSlider>();
                 PrefabMaster.GetStrippedBlock(BlockType.LargeWheel, out BB);
                 if (BB.gameObject.GetComponent<Wheelfix3_round>() == null)
                     BB.gameObject.AddComponent<Wheelfix3_round>();
@@ -284,7 +288,9 @@ namespace BotFix
                 if (BB.gameObject.GetComponent<Wheelfix3_round>() == null)
                     BB.gameObject.AddComponent<Wheelfix3_round>();
                 if (BB.gameObject.GetComponent<SpinnerSound>() == null)
-                    BB.gameObject.AddComponent<SpinnerSound>();                
+                    BB.gameObject.AddComponent<SpinnerSound>();
+                if (BB.gameObject.GetComponent<FrictionSlider>() == null)
+                    BB.gameObject.AddComponent<FrictionSlider>();
                 PrefabMaster.GetStrippedBlock(BlockType.LargeWheelUnpowered, out BB);
                 if (BB.gameObject.GetComponent<Wheelfix3_round>() == null)
                     BB.gameObject.AddComponent<Wheelfix3_round>();

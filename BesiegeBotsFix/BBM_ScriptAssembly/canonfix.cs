@@ -11,6 +11,7 @@ namespace BotFix
             {
                 CB.randomDelay = 0f;
             }
+            Object.Destroy(this);
         }
     }
 }
