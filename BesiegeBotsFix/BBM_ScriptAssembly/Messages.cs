@@ -7,14 +7,7 @@ namespace BotFix
         public static MessageType A1;
         public static MessageType LP;
         public static MessageType LS;
-        public static MessageType MP;
         public static MessageType SPEED;
-        public static MessageType MS;
-        public static MessageType SF;
-        public static MessageType SO;
-        public static MessageType LF;
-        public static MessageType PFS;
-        public static MessageType SFS;
         public static MessageType DS;
         public static MessageType ELS;
         public static void SetupNetworking()
@@ -28,20 +21,6 @@ namespace BotFix
 
             LS = ModNetworking.CreateMessageType(DataType.Block, DataType.Boolean);
             ModNetworking.Callbacks[Messages.LS] += Suspensionzcript.StopLoopSoundClient;
-
-
-            //Flame thrower messages
-            SF = ModNetworking.CreateMessageType(DataType.Block);
-            ModNetworking.Callbacks[Messages.SF] += FlameTFix.StopFireClient;
-
-            LF = ModNetworking.CreateMessageType(DataType.Block);
-            ModNetworking.Callbacks[Messages.LF] += FlameTFix.LoadFireClient;
-
-            PFS = ModNetworking.CreateMessageType(DataType.Block);
-            ModNetworking.Callbacks[Messages.PFS] += FlameTFix.PlayFireSoundClient;
-
-            SFS = ModNetworking.CreateMessageType(DataType.Block);
-            ModNetworking.Callbacks[Messages.SFS] += FlameTFix.StopFireSoundClient;
 
 
             //Spinnersound messages

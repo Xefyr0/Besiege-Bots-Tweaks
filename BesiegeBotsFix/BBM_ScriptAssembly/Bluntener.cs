@@ -31,6 +31,7 @@ namespace BesiegeBotsTweaks
                     case BlockType.MetalBlade:
                     case BlockType.CircularSaw:
                     case BlockType.Spike:
+                    case BlockType.Flamethrower:
                     case BlockType.Wing:
                     case BlockType.Propeller:
                     case BlockType.SmallPropeller:
