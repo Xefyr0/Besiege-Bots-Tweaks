@@ -97,7 +97,6 @@ namespace BotFix
 
             //DisplayInMapper config
             Roundwheelz.DisplayInMapper = true;
-            GS.DisplayInMapper = true;
             PCMenu.DisplayInMapper = true;
 
             //Physics stuff

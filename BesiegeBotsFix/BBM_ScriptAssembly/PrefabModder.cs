@@ -26,6 +26,8 @@ namespace BotFix
                 PrefabMaster.GetBlock(BlockType.Wheel, out BB);
                 if (BB.gameObject.GetComponent<Wheelfix3_round>() == null)
                     BB.gameObject.AddComponent<Wheelfix3_round>();
+                if (BB.gameObject.GetComponent<RealisticMotorTorque>() == null)
+                    BB.gameObject.AddComponent<RealisticMotorTorque>();
                 if (BB.gameObject.GetComponent<FrictionSlider>() == null)
                     BB.gameObject.AddComponent<FrictionSlider>();
                 PrefabMaster.GetStrippedBlock(BlockType.Wheel, out BB);
@@ -95,6 +97,8 @@ namespace BotFix
                 PrefabMaster.GetBlock(BlockType.CircularSaw, out BB);
                 BB.transform.GetChild(9).localPosition = new Vector3(0f, 0f, -0.1f);
                 BB.transform.GetChild(10).localPosition = new Vector3(0f, 0f, -0.1f);
+                if (BB.gameObject.GetComponent<RealisticMotorTorque>() == null)
+                    BB.gameObject.AddComponent<RealisticMotorTorque>();
 
                 //18
                 PrefabMaster.GetBlock(BlockType.Piston, out BB);
@@ -123,6 +127,8 @@ namespace BotFix
                     BB.gameObject.AddComponent<InvincibleJointToggle>();
                 if (BB.gameObject.GetComponent<SpinnerSound>() == null)
                     BB.gameObject.AddComponent<SpinnerSound>();
+                if (BB.gameObject.GetComponent<RealisticMotorTorque>() == null)
+                    BB.gameObject.AddComponent<RealisticMotorTorque>();
                 PrefabMaster.GetStrippedBlock(BlockType.SpinningBlock, out BB);
                 if (BB.gameObject.GetComponent<SpinnerSound>() == null)
                     BB.gameObject.AddComponent<SpinnerSound>();
@@ -139,7 +145,7 @@ namespace BotFix
                     BB.gameObject.AddComponent<WFix>();
 
                 //26
-                PrefabMaster.GetBlock(BlockType.Propeller, out BB);
+                //PrefabMaster.GetBlock(BlockType.Propeller, out BB);
 
                 //27
                 PrefabMaster.GetBlock(BlockType.Grabber, out BB);
@@ -192,6 +198,8 @@ namespace BotFix
                 PrefabMaster.GetBlock(BlockType.CogMediumPowered, out BB);
                 if (BB.gameObject.GetComponent<Cogfix>() == null)
                     BB.gameObject.AddComponent<Cogfix>();
+                if (BB.gameObject.GetComponent<RealisticMotorTorque>() == null)
+                    BB.gameObject.AddComponent<RealisticMotorTorque>();
 
                 //40
                 PrefabMaster.GetBlock(BlockType.WheelUnpowered, out BB);
@@ -227,6 +235,8 @@ namespace BotFix
                 PrefabMaster.GetBlock(BlockType.LargeWheel, out BB);
                 if (BB.gameObject.GetComponent<Wheelfix3_round>() == null)
                     BB.gameObject.AddComponent<Wheelfix3_round>();
+                if (BB.gameObject.GetComponent<RealisticMotorTorque>() == null)
+                    BB.gameObject.AddComponent<RealisticMotorTorque>();
                 if (BB.gameObject.GetComponent<FrictionSlider>() == null)
                     BB.gameObject.AddComponent<FrictionSlider>();
                 PrefabMaster.GetStrippedBlock(BlockType.LargeWheel, out BB);
@@ -287,10 +297,10 @@ namespace BotFix
                 PrefabMaster.GetBlock(BlockType.LargeWheelUnpowered, out BB);
                 if (BB.gameObject.GetComponent<Wheelfix3_round>() == null)
                     BB.gameObject.AddComponent<Wheelfix3_round>();
-                if (BB.gameObject.GetComponent<SpinnerSound>() == null)
-                    BB.gameObject.AddComponent<SpinnerSound>();
                 if (BB.gameObject.GetComponent<FrictionSlider>() == null)
                     BB.gameObject.AddComponent<FrictionSlider>();
+                if (BB.gameObject.GetComponent<SpinnerSound>() == null)
+                    BB.gameObject.AddComponent<SpinnerSound>();
                 PrefabMaster.GetStrippedBlock(BlockType.LargeWheelUnpowered, out BB);
                 if (BB.gameObject.GetComponent<Wheelfix3_round>() == null)
                     BB.gameObject.AddComponent<Wheelfix3_round>();
