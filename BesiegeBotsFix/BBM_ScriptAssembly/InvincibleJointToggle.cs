@@ -15,20 +15,18 @@ namespace BesiegeBotsTweaks
     This class provides whatever it's attached to with a joint strength invincibility toggle
     so that they can function as a part of a spinner.
     */
+    [RequireComponent(typeof(BlockBehaviour))]
     public class InvincibleJointToggle : MonoBehaviour
     {
         private const byte FRAMECOUNT = 3;  //The number of frames this component waits before making changes
         private byte frameCounter = 0;  //frameCounter Variable to keep track of how many frames have elapsed
-        private BlockBehaviour BB;
         private Joint joint;
         private bool Invincible = false;
         private MToggle toggle;
         private void Awake()    //Init some vars & the toggle button on Awake
         {
-            BB = GetComponent<BlockBehaviour>();
-            joint = BB.GetComponent<Joint>();
-
-            if(BB == null) Object.Destroy(this);
+            BlockBehaviour BB = GetComponent<BlockBehaviour>();
+            joint = BB.GetComponent<Joint>();  //Primary connections are reliably created before simblocks Awake I guess? weird but noted.
             
             toggle = BB.AddToggle("Make Invincible", "MVI", Invincible);
             toggle.Toggled += (bool value) => Invincible = value;
@@ -36,12 +34,12 @@ namespace BesiegeBotsTweaks
         private void Update()
         {
             //Wait until sim starts, then starts counting frames until FRAMECOUNT frames are reached
-            if(!BB.SimPhysics) return;
+            if(!Modding.Game.IsSimulating) return;
             frameCounter++;
             if(frameCounter < FRAMECOUNT) return;
 
             //If the block isn't actually part of a simulation (i.e. on a client computer in multiverse with local sim turned off) then the component instance is destroyed since it won't do anything either way
-            if(StatMaster.isClient && !StatMaster.isLocalSim) Object.Destroy(this);
+            if(StatMaster.isClient && !Modding.Game.IsSetToLocalSim) Destroy(this);
 
             //In the event that the invincible button is toggled on, make the block invincible.
             if(Invincible && joint != null)
@@ -50,7 +48,7 @@ namespace BesiegeBotsTweaks
                 joint.breakTorque = Mathf.Infinity;
             }
 
-            Object.Destroy(this);   //The component instance is destroyed after the necessary changes are made.
+            Destroy(this);   //The component instance is destroyed after the necessary changes are made.
         }
     }
 }

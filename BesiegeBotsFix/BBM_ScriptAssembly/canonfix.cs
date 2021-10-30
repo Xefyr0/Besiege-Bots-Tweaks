@@ -2,16 +2,13 @@ using UnityEngine;
 
 namespace BotFix
 {
+    [RequireComponent(typeof(CanonBlock))]
     public class CanonFix : MonoBehaviour
     {
         void Awake()
         {
-            CanonBlock CB = GetComponent<CanonBlock>();
-            if (CB != null)
-            {
-                CB.randomDelay = 0f;
-            }
-            Object.Destroy(this);
+            GetComponent<CanonBlock>().randomDelay = 0f;
+            Destroy(this);
         }
     }
 }

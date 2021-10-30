@@ -1,90 +1,68 @@
+/*
+AxialDragToggle.cs
+Written by DokterDoyle for the Besiege Bots community
+Amended by Xefyr
+*/
+
 using UnityEngine;
-using Modding.Blocks;
 using System.Collections.Generic;
 
 namespace BotFix
 {
     public class Grabberfix : MonoBehaviour
     {
-        public BBMUI BBMToolbox;
-        private Collider[] colliders;
-        private Rigidbody rigg;
-        private Block blocc;
-        private ConfigurableJoint[] CJ;
-        private GrabberBlock GB;
-        private Rigidbody target;
-
-        private MToggle MI;
-        private MMenu UgrabM;
-
-        private int FC = 0;
-        private int fcounter;
-        public int selectedmode;
-        private int BFUgr = 100000;
-        private int BFSpinnerUgr = 150000;
-
-        private bool firstframe = true;
-
+        private const byte FRAMECOUNT = 20;  //The number of frames this component waits before making changes
+        private byte frameCounter = 0;  //frameCounter Variable to keep track of how many frames have elapsed
+        public int selectedmode = 0;
+        private const int MediumBF = 100000;
+        private const int UltraBF = 150000;
+        private const int DrumBF = 250000;
         internal static List<string> GrabMode = new List<string>()
         {
             "Vanilla",
             "Medium",
             "Ultra",
+            "Drum"
         };
-
         void Awake()
         {
-            //Get Stuff
-            GB = GetComponent<GrabberBlock>();
-            rigg = GetComponent<Rigidbody>();
+            //If this component is on a client, then destroy it as it won't do anything anyways.
+            if (StatMaster.isClient && !Modding.Game.IsSetToLocalSim) Destroy(this);
 
-            //Mapper definition
-            UgrabM = GB.AddMenu("Grabmode", selectedmode, GrabMode, false);
-            UgrabM.ValueChanged += (ValueHandler)(value => { selectedmode = value; });
-
-            //DisplayInMapper config
+            //Mapper Menu definition
+            MMenu UgrabM = GetComponent<GrabberBlock>().AddMenu("Grabmode", selectedmode, GrabMode, false);
+            UgrabM.ValueChanged += (ValueHandler)(value => {selectedmode = value;});
             UgrabM.DisplayInMapper = true;
-
-            //Physics Stuff
-            if (!StatMaster.isClient || StatMaster.isLocalSim)
-            {
-                rigg = GetComponent<Rigidbody>();
-            }
         }
 
         void FixedUpdate()
         {
-            if (!StatMaster.isClient || StatMaster.isLocalSim)
+            if (!Modding.Game.IsSimulating) return;
+            if (frameCounter < FRAMECOUNT)
             {
-                if (GB.SimPhysics)
+                ConfigurableJoint[] CJ = GetComponents<ConfigurableJoint>();
+                foreach (ConfigurableJoint joint in CJ)
                 {
-                    if (selectedmode == 0)
-                        return;
-
-                    if (firstframe)
+                    switch(selectedmode)
                     {
-                        fcounter++;
-
-                        CJ = GetComponents<ConfigurableJoint>();
-                        foreach (ConfigurableJoint joint in CJ)
-                        {
-                            if (selectedmode == 1)
-                            {
-                                joint.breakForce = BFUgr;
-                                joint.breakTorque = BFUgr;
-                            }
-                            else if (selectedmode == 2)
-                            {
-                                joint.breakForce = BFSpinnerUgr;
-                                joint.breakTorque = BFSpinnerUgr;
-                            }
-                        }
-                        if (fcounter == 20)
-                            firstframe = false;
+                        case 0:
+                            Destroy(this);
+                            break;
+                        case 1:
+                            joint.breakForce = joint.breakTorque = MediumBF;
+                            break;
+                        case 2:
+                            joint.breakForce = joint.breakTorque = UltraBF;
+                            break;
+                        case 3:
+                            joint.breakForce = joint.breakTorque = DrumBF;
+                            break;
                     }
                 }
-            }
+                frameCounter++;
+            } else Destroy(this);
 
+            /*                  Old betamode grabbers. Will not work if uncommented, it needs some obsolete class members.
             if (Mod.BetaMode)
             {
                 if (!StatMaster.isClient || StatMaster.isLocalSim)
@@ -117,31 +95,16 @@ namespace BotFix
                         {
                             Destroy(rigbod);
                         }
-
-
-                        //{
-                        //    transform.parent = collider.transform;
-                        //}
-
-                        //foreach (Collider collider in target.GetComponents<Collider>())
-                        //{
-                        //    transform.parent = collider.transform;
-                        //}
                     }
                     Rigidbody prigg = GetComponentInParent<Rigidbody>();
 
                     prigg.mass = 10f;
                     prigg.ResetInertiaTensor();
 
-                    Rigidbody priggg = GetComponentInParent<Rigidbody>();
-
-                    priggg.mass = 10f;
-                    priggg.ResetInertiaTensor();
-
-
                     FC++;
                 }
-            }          
+            }
+            */      
         }
     }
 }

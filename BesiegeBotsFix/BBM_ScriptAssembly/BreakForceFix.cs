@@ -62,9 +62,6 @@ namespace BesiegeBotsTweaks
                     case BlockType.Ballast:
                     case BlockType.Decoupler:
                     case BlockType.SteeringHinge:
-                        joints[0].breakForce = 30000;
-                        joints[0].breakTorque = 30000;
-                        break;
                     case BlockType.Hinge:
                     case BlockType.BallJoint:
                     case BlockType.Swivel:
