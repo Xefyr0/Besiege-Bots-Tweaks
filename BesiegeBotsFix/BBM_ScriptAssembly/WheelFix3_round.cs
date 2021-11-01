@@ -21,11 +21,9 @@ namespace BotFix
         public GameObject WheelCollider;
 
         private MSlider GS;
-        private MMenu PCMenu;
         public MToggle Roundwheelz;
         private MSlider Lerpomode;
-
-        private int PCselect = 3;
+        
         private int ID = 0;
         private float Lerpo = 0f;
            
@@ -34,16 +32,6 @@ namespace BotFix
         private bool Collider = false;
         private bool ShowCollider = false;
         private bool IsPowered = false;
-
-        public PhysicMaterialCombine PC = PhysicMaterialCombine.Maximum;
-
-        internal static List<string> PCmenul = new List<string>()
-        {
-            "Average",
-            "Multiply",
-            "Minimum",
-            "Maximum",
-        };
      
         private void Awake()
         {
@@ -75,29 +63,8 @@ namespace BotFix
             Roundwheelz = BB.AddToggle("ROUNDWHEELZ!", "ROUNDWHEELZ!", MakeRound);
             Roundwheelz.Toggled += (bool value) => { MakeRound = Collider = value; };
 
-            PCMenu = BB.AddMenu("Combine", PCselect, PCmenul, false);
-            PCMenu.ValueChanged += (ValueHandler)(value => 
-            {
-                switch (value)
-                {
-                    case 0:
-                        PC = PhysicMaterialCombine.Average;
-                        break;
-                    case 1:
-                        PC = PhysicMaterialCombine.Multiply;
-                        break;
-                    case 2:
-                        PC = PhysicMaterialCombine.Minimum;
-                        break;
-                    case 3:
-                        PC = PhysicMaterialCombine.Maximum;
-                        break;
-                }
-            });
-
             //DisplayInMapper config
             Roundwheelz.DisplayInMapper = true;
-            PCMenu.DisplayInMapper = true;
 
             //Physics stuff
             if (!StatMaster.isClient || StatMaster.isLocalSim)

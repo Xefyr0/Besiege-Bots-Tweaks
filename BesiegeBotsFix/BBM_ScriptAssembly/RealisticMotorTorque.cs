@@ -58,7 +58,7 @@ namespace BotFix
 		    if (System.Math.Abs(targetVelocity-lastVelocity) > Mathf.Epsilon)
 		    {
 			    if (!CMCH.noRigidbody && CMCH.Rigidbody.IsSleeping()) CMCH.Rigidbody.WakeUp();
-			    if (myJoint.connectedBody.IsSleeping()) myJoint.connectedBody.WakeUp();
+			    if (myJoint.connectedBody != null && myJoint.connectedBody.IsSleeping()) myJoint.connectedBody.WakeUp();
 			    motor.targetVelocity = lastVelocity = targetVelocity;
 			    myJoint.motor = motor;
 		    }
