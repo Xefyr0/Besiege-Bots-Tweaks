@@ -72,7 +72,7 @@ namespace BotFix
         private void Update()
         {
             //If the local instance isn't a host, SP or local simmer in sim then return to save frames
-            if ((StatMaster.isClient && !Game.IsSetToLocalSim) || !FC.SimPhysics) return;    
+            if ((StatMaster.isClient && !Game.IsSetToLocalSim) || !Game.IsSimulating) return;    
 
             //On the first frame, load the flamethrower.      
             if (isFirstFrame)
@@ -110,8 +110,8 @@ namespace BotFix
         }
         public void LoadFireAmmo()
         {
+            ModConsole.Log("Loading Flamethrower to {0} seconds", baseAmmo * 0.25f);
             FC.OnReloadAmmo(ref baseAmmo, AmmoType.Fire, true, true);
-            ModConsole.Log("Loaded Flamethrower to {0} seconds", baseAmmo * 0.25f);
         }
         public void KillFire()
         {

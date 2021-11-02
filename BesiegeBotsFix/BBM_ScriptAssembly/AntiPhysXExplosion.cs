@@ -29,8 +29,8 @@ namespace BesiegeBotsTweaks
             if(joinTrigger != null && joinTrigger.isJoined)
 			{
                 joinTrigger.currentJoint.projectionMode = JointProjectionMode.PositionAndRotation;
-                joinTrigger.currentJoint.projectionDistance = 0.55f;
-                joinTrigger.currentJoint.projectionAngle = 0.45f;
+                joinTrigger.currentJoint.projectionDistance = 0.75f;
+                joinTrigger.currentJoint.projectionAngle = 75f;
 			}
             Destroy(this);
         }

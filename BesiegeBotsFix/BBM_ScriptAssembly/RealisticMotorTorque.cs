@@ -67,6 +67,7 @@ namespace BotFix
         {
             //Things like myJoint and CMCH.motor don't exist until a frame into sim, so this waits until that happens.
             while(!Modding.Game.IsSimulating) yield return new WaitForFixedUpdate();
+            if(myJoint == null || (StatMaster.isClient && !Modding.Game.IsSetToLocalSim)) yield break;
             yield return new WaitForFixedUpdate();
             myJoint.useMotor = true;
             motor = CMCH.motor;
