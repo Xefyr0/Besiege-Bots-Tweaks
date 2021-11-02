@@ -6,18 +6,16 @@ Amended by Xefyr
 
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 namespace BotFix
 {
     public class Grabberfix : MonoBehaviour
     {
-        private const byte FRAMECOUNT = 20;  //The number of frames this component waits before making changes
-        private byte frameCounter = 0;  //frameCounter Variable to keep track of how many frames have elapsed
-        public int selectedmode = 0;
-        private const int MediumBF = 100000;
-        private const int UltraBF = 150000;
-        private const int DrumBF = 250000;
-        internal static List<string> GrabMode = new List<string>()
+        private const byte FRAMECOUNT = 15;  //The number of frames this component waits before making changes
+        private int selectedmode = 0;
+        private const int MediumBF = 100000, UltraBF = 150000, DrumBF = 250000;
+        private static List<string> GrabMode = new List<string>()
         {
             "Vanilla",
             "Medium",
@@ -29,40 +27,47 @@ namespace BotFix
             //If this component is on a client, then destroy it as it won't do anything anyways.
             if (StatMaster.isClient && !Modding.Game.IsSetToLocalSim) Destroy(this);
 
-            //Mapper Menu definition
+            //Mapper Menu definition. Must be defined for both simulation block and buildmode block.
             MMenu UgrabM = GetComponent<GrabberBlock>().AddMenu("Grabmode", selectedmode, GrabMode, false);
             UgrabM.ValueChanged += (ValueHandler)(value => {selectedmode = value;});
             UgrabM.DisplayInMapper = true;
+
+            if(Modding.Game.IsSimulating) StartCoroutine(GrabberSwitch(FRAMECOUNT));
         }
 
-        void FixedUpdate()
+        private IEnumerator GrabberSwitch(int framecount)
         {
-            if (!Modding.Game.IsSimulating) return;
-            if (frameCounter < FRAMECOUNT)
+            //Wait frameCount FixedUpdates into sim
+            for(int i = 0; i < framecount; i++)
             {
-                ConfigurableJoint[] CJ = GetComponents<ConfigurableJoint>();
-                foreach (ConfigurableJoint joint in CJ)
-                {
-                    switch(selectedmode)
-                    {
-                        case 0:
-                            Destroy(this);
-                            break;
-                        case 1:
-                            joint.breakForce = joint.breakTorque = MediumBF;
-                            break;
-                        case 2:
-                            joint.breakForce = joint.breakTorque = UltraBF;
-                            break;
-                        case 3:
-                            joint.breakForce = joint.breakTorque = DrumBF;
-                            break;
-                    }
-                }
-                frameCounter++;
-            } else Destroy(this);
+                yield return new WaitForFixedUpdate();
+            }
 
-            /*                  Old betamode grabbers. Will not work if uncommented, it needs some obsolete class members.
+            //uGrabbers, mGrabbers and dGrabbers change the strength value of *all* joints, not just the grabby one
+            Joint[] joints = GetComponents<Joint>();
+            foreach (Joint joint in joints)
+            {
+                switch(selectedmode)
+                {
+                    case 0:
+                        Destroy(this);
+                        break;
+                    case 1:
+                        joint.breakForce = joint.breakTorque = MediumBF;
+                        break;
+                    case 2:
+                        joint.breakForce = joint.breakTorque = UltraBF;
+                        break;
+                    case 3:
+                        joint.breakForce = joint.breakTorque = DrumBF;
+                        break;
+                }
+            }
+        }
+
+        /*                  Old betamode grabbers. Will not work if uncommented, it needs some obsolete class members.
+        private void FixedUpdate()
+        {
             if (Mod.BetaMode)
             {
                 if (!StatMaster.isClient || StatMaster.isLocalSim)
@@ -104,8 +109,8 @@ namespace BotFix
                     FC++;
                 }
             }
-            */      
         }
+        */      
     }
 }
 

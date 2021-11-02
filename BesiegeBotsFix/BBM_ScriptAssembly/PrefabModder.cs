@@ -153,6 +153,8 @@ namespace BotFix
                     BB.gameObject.AddComponent<Grabberfix>();
                 if (BB.gameObject.GetComponent<SpinnerSound>() == null)
                     BB.gameObject.AddComponent<SpinnerSound>();
+                if (BB.gameObject.GetComponent<AntiPhysXExplosion>() == null)
+                    BB.gameObject.AddComponent<AntiPhysXExplosion>();
                 PrefabMaster.GetStrippedBlock(BlockType.Grabber, out BB);
                 if (BB.gameObject.GetComponent<SpinnerSound>() == null)
                     BB.gameObject.AddComponent<SpinnerSound>();
