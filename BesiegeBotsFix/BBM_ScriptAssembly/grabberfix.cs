@@ -1,5 +1,5 @@
 /*
-AxialDragToggle.cs
+grabberfix.cs
 Written by DokterDoyle for the Besiege Bots community
 Amended by Xefyr
 */
@@ -32,16 +32,14 @@ namespace BotFix
             UgrabM.ValueChanged += (ValueHandler)(value => {selectedmode = value;});
             UgrabM.DisplayInMapper = true;
 
-            if(Modding.Game.IsSimulating) StartCoroutine(GrabberSwitch(FRAMECOUNT));
+            StartCoroutine(GrabberSwitch(FRAMECOUNT));
         }
 
         private IEnumerator GrabberSwitch(int framecount)
         {
             //Wait frameCount FixedUpdates into sim
-            for(int i = 0; i < framecount; i++)
-            {
-                yield return new WaitForFixedUpdate();
-            }
+            while(!Modding.Game.IsSimulating) yield return new WaitForFixedUpdate();
+            for(int i = 0; i < framecount; i++) yield return new WaitForFixedUpdate();
 
             //uGrabbers, mGrabbers and dGrabbers change the strength value of *all* joints, not just the grabby one
             Joint[] joints = GetComponents<Joint>();

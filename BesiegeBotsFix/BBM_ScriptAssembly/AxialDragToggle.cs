@@ -6,9 +6,9 @@ Amended by Xefyr
 
 using UnityEngine;
 
-namespace BotFix
+namespace BesiegeBotsTweaks
 {
-    public class WFix : MonoBehaviour
+    public class AxialDragToggle : MonoBehaviour
     {
         void Awake()
         {

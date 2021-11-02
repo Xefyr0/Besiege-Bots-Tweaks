@@ -1,7 +1,14 @@
+/*
+Mod.cs
+Written by DokterDoyle for the Besiege Bots community
+Amended by Xefyr
+*/
+
 using System;
 using Modding;
 using Modding.Blocks;
 using UnityEngine;
+using BesiegeBotsTweaks;
 
 namespace BotFix
 {
