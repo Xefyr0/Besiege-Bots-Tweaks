@@ -4,6 +4,9 @@ Written by Xefyr for the Besiege Bots community
 */
 
 using UnityEngine;
+using Modding;
+using Modding.Common;
+using Modding.Blocks;
 
 namespace BesiegeBotsTweaks
 {
@@ -19,36 +22,41 @@ namespace BesiegeBotsTweaks
     public class InvincibleJointToggle : MonoBehaviour
     {
         private const byte FRAMECOUNT = 3;  //The number of frames this component waits before making changes
-        private byte frameCounter = 0;  //frameCounter Variable to keep track of how many frames have elapsed
         private Joint joint;
         private bool Invincible = false;
         private MToggle toggle;
-        private void Awake()    //Init some vars & the toggle button on Awake
+        private void Awake()
         {
-            BlockBehaviour BB = GetComponent<BlockBehaviour>();
-            joint = BB.GetComponent<Joint>();  //Primary connections are reliably created before simblocks Awake I guess? weird but noted.
-            
-            toggle = BB.AddToggle("Make Invincible", "MVI", Invincible);
-            toggle.Toggled += (bool value) => Invincible = value;
-        }
-        private void Update()
-        {
-            //Wait until sim starts, then starts counting frames until FRAMECOUNT frames are reached
-            if(!Modding.Game.IsSimulating) return;
-            frameCounter++;
-            if(frameCounter < FRAMECOUNT) return;
+            Block block = Block.From(base.gameObject);
+            joint = GetComponent<Joint>();  //Primary connections are reliably created before simblocks Awake I guess? weird but noted.
 
-            //If the block isn't actually part of a simulation (i.e. on a client computer in multiverse with local sim turned off) then the component instance is destroyed since it won't do anything either way
-            if(StatMaster.isClient && !Modding.Game.IsSetToLocalSim) Destroy(this);
+            toggle = block.InternalObject.AddToggle("Make Invincible", "MVI", Invincible);
+            toggle.Toggled += (bool value) => Invincible = value;
+
+            if (block.InternalObject.SimPhysics)
+            {
+                //The Enumerator is only meant to be executed:
+                //1. On the local instance (all instances) in Singleplayer
+                //2. As host on the local instance
+                //3. As host on the non-local instances if they're not in local sim
+                if (Player.GetHost() == null || (Player.GetLocalPlayer().IsHost && block.Machine.Player == Player.GetLocalPlayer() ? true : !block.Machine.Player.InLocalSim)) StartCoroutine(MakeInvincible());
+                else Destroy(this);    //Maybe not a good idea? Toggles like to be declared in buildmode AND sim
+            }
+        }
+        private System.Collections.IEnumerator MakeInvincible()
+        {
+            //Wait FRAMECOUNT FixedUpdates into sim
+            for (int i = 0; i < FRAMECOUNT; i++) yield return new WaitForFixedUpdate();
 
             //In the event that the invincible button is toggled on, make the block invincible.
-            if(Invincible && joint != null)
+            if (Invincible && joint != null)
             {
                 joint.breakForce = Mathf.Infinity;
                 joint.breakTorque = Mathf.Infinity;
             }
 
-            Destroy(this);   //The component instance is destroyed after the necessary changes are made.
+            //The component instance is destroyed after the necessary changes are made.
+            Destroy(this);
         }
     }
 }

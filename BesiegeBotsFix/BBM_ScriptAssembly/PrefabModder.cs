@@ -6,7 +6,6 @@ Amended by Xefyr
 
 using UnityEngine;
 using BotFix;
-using Modding.Blocks;
 using BesiegeBotsTweaks;
 
 namespace BotFix
@@ -20,13 +19,13 @@ namespace BotFix
         a separate class with a Coroutine must be used for a few frames to wait until 
         the Joints are formed before making the necessary changes.
         */
-        private static void TweakJointStrength(BlockType type)
+        private static void TweakBreakForces(BlockType type)
         {
             Modding.Blocks.BlockPrefabInfo BPI = Modding.Blocks.BlockPrefabInfo.GetOfficial(type);
             GameObject GO = BPI.InternalObject.gameObject;
             GO.AddComponent<BreakForceFix>();
         }
-        
+
         /*
         Before the existence of BBMod, Spinners and other high-speed weapons had low speed limits
         and needed many braces to achieve passable speeds.
@@ -39,9 +38,9 @@ namespace BotFix
             Modding.Blocks.BlockPrefabInfo BPI = Modding.Blocks.BlockPrefabInfo.GetOfficial(type);
             GameObject GO = BPI.InternalObject.gameObject;
             Rigidbody RB = GO.GetComponent<Rigidbody>();
-            if(RB != null)
+            if (RB != null)
             {
-                switch(type)
+                switch (type)
                 {
                     case BlockType.CogMediumUnpowered:
                     case BlockType.GripPad:
@@ -93,7 +92,7 @@ namespace BotFix
                         RB.drag = 0.01f;
                         RB.angularDrag = 0f;
                         RB.maxAngularVelocity = 100;
-                        break;     
+                        break;
                 }
             }
         }
@@ -132,7 +131,7 @@ namespace BotFix
                 }
             }
         }
-        
+
         /*
         Some blocks are too heavy or light for their appearance or usage in a Besiege Bot.
         This function exists to remedy the mass of some blocks' prefabs given their BlockType.
@@ -189,18 +188,19 @@ namespace BotFix
                     break;
             }
         }
-        
+
         internal static void ModAllPrefab()
         {
-            //General Block Prefab modifications
+            //General Static Block Prefab modifications
             foreach (BlockType type in System.Enum.GetValues(typeof(BlockType)))
             {
-                TweakJointStrength(type);
+                TweakBreakForces(type);
                 TweakDrags(type);
                 TweakFriction(type);
                 TweakMass(type);
                 Blunten(type);
             }
+
 
             //Specific Block Prefab modifications
             BlockBehaviour BB;

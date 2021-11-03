@@ -4,6 +4,9 @@ Written by Xefyr for the Besiege Bots community
 */
 
 using UnityEngine;
+using Modding;
+using Modding.Common;
+using Modding.Blocks;
 
 namespace BotFix
 {
@@ -20,26 +23,33 @@ namespace BotFix
         private float lastVelocity;
         private void Awake()
         {
-            //For some reason, this init is called twice. Once for the building block, once for the simblock.
-            //Other Awakes are normally called only for the building block.
-            if(Modding.Game.IsSimulating)
+            //Basic gets
+            CMCH = GetComponent<CogMotorControllerHinge>();
+            myJoint = GetComponent<HingeJoint>();
+            Block block = Block.From(CMCH);
+
+            if(CMCH.SimPhysics)
             {
-                CMCH = GetComponent<CogMotorControllerHinge>();
-                myJoint = GetComponent<HingeJoint>();
-                StartCoroutine(Init());
+                //The Enumerator is only meant to be executed:
+                //1. On the local instance (all instances) in Singleplayer
+                //2. As host on the local instance
+                //3. As host on the non-local instances if they're not in local sim
+                if (Player.GetHost() == null || (Player.GetLocalPlayer().IsHost && block.Machine.Player == Player.GetLocalPlayer() ? true : !block.Machine.Player.InLocalSim)) StartCoroutine(Init());
+                else Destroy(this);
             }
         }
         private void FixedUpdate()
         {
-            //If the block isn't in sim, wait until it is.
-            if (!Modding.Game.IsSimulating) return;
+            //Wait until the block in question is simulating.
+            if (!CMCH.SimPhysics) return;
             
-            //If the block is in sim but there's no joint or it's a server client, then it is of no use.
-            if(myJoint == null || (StatMaster.isClient && !Modding.Game.IsSetToLocalSim))
+            //If the joint was destroyed or never existed in the first place, then destroy this component.
+            if(myJoint == null)
             {
                 Destroy(this);
                 return;
             }
+
             //Method variables for computing motor's targetVelocity each frame
             float Velocity = CMCH.Input * CMCH.SpeedSlider.Value;
             float maxVelocity = Velocity * deltaMultiplier;
@@ -65,14 +75,17 @@ namespace BotFix
         }
         private System.Collections.IEnumerator Init()
         {
-            //Things like myJoint and CMCH.motor don't exist until a frame into sim, so this waits until that happens.
-            while(!Modding.Game.IsSimulating) yield return new WaitForFixedUpdate();
-            if(myJoint == null || (StatMaster.isClient && !Modding.Game.IsSetToLocalSim)) yield break;
+            //CMCH.motor doesn't exist and UnregisterFixedUpdate doesn't work until a frame into sim, so this waits for that to happen.
             yield return new WaitForFixedUpdate();
+
+            //Motor init
             myJoint.useMotor = true;
             motor = CMCH.motor;
             motor.force = CMCH.AccelerationSlider.Value;
             myJoint.motor = motor;
+
+            //All of the acceleration jank vanilla behaviour has relies on BlockFixedUpdate.
+            //This line "unregisters" the block this Component is attached to, so the method isn't called.
             CMCH._parentMachine.UnregisterFixedUpdate(CMCH, isBuild: false);
         }
     }

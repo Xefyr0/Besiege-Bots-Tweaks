@@ -1,5 +1,6 @@
 using Modding;
 using UnityEngine;
+using Modding.Common;
 using Modding.Blocks;
 
 
@@ -7,6 +8,7 @@ namespace BotFix
 {
     public class FlameTFix : MonoBehaviour
     {
+        private Block block;
         private FlamethrowerController FC;
         private ConfigurableJoint CJ;
         private Transform FT;
@@ -33,6 +35,7 @@ namespace BotFix
             FC = GetComponent<FlamethrowerController>();
             CJ = GetComponent<ConfigurableJoint>();
             FT = transform.Find("FireTrigger");
+            Block block = Block.From(FC);
 
             /*      Old Flamethrower color init
             colslid = FC.AddColourSlider("Firecolor", "Firecolor", fcolor, false);
@@ -67,20 +70,22 @@ namespace BotFix
             PFS = mPlayFireSound.CreateMessage(FC);
             SFS = mStopFireSound.CreateMessage(FC);
             KF = mKillFire.CreateMessage(FC);
+
+            if (FC.SimPhysics)
+            {
+                //The Enumerator is only meant to be executed:
+                //1. On the local instance (all instances) in Singleplayer
+                //2. As host and client on all instances in global sim
+                //3. On the current instance in local sim
+                if (Player.GetHost() == null || !block.Machine.Player.InLocalSim ? true : block.Machine.Player == Player.GetLocalPlayer()) StartCoroutine(FirstFrame());
+                else Destroy(this);    //Maybe not a good idea? There's multiplayer sound to consider
+            }
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
-            //If the local instance isn't a host, SP or local simmer in sim then return to save frames
-            if ((StatMaster.isClient && !Game.IsSetToLocalSim) || !Game.IsSimulating) return;    
-
-            //On the first frame, load the flamethrower.      
-            if (isFirstFrame)
-            {
-                isFirstFrame = false;
-                ModNetworking.SendToAll(LFA);
-                LoadFireAmmo();
-            }
+            //If block isn't in sim then it shouldn't do anything.
+            if (!FC.SimPhysics) return;
 
             //Flamethrower sound toggle and pitch adjustment
             if (FT.gameObject.activeSelf)
@@ -110,7 +115,7 @@ namespace BotFix
         }
         public void LoadFireAmmo()
         {
-            ModConsole.Log("Loading Flamethrower to {0} seconds", baseAmmo * 0.25f);
+            //ModConsole.Log("Loading Flamethrower to {0} seconds", baseAmmo * 0.25f);
             FC.OnReloadAmmo(ref baseAmmo, AmmoType.Fire, true, true);
         }
         public void KillFire()
@@ -121,7 +126,13 @@ namespace BotFix
             FT.gameObject.SetActive(false);
 
             //FlameTFix does nothing after the the joint is broken, so it can be destroyed.
-            Object.Destroy(this);
+            Destroy(this);
+        }
+        private System.Collections.IEnumerator FirstFrame()
+        {
+            yield return new WaitForFixedUpdate();
+            ModNetworking.SendToAll(LFA);
+            LoadFireAmmo();
         }
     }
 }
