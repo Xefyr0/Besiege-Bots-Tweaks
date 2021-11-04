@@ -11,7 +11,6 @@ using Modding.Blocks;
 namespace BesiegeBotsTweaks
 {
     [RequireComponent(typeof(BlockBehaviour))]
-    [RequireComponent(typeof(Rigidbody))]
     public class DragTweak : MonoBehaviour
     {
         private const byte FRAMECOUNT = 10;  //The number of frames this component waits before making changes
