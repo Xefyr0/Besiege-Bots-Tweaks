@@ -1,5 +1,5 @@
 /*
-BreakForceFix.cs
+BreakForcetweaks.cs
 Written by Xefyr for the Besiege Bots community
 */
 
@@ -11,7 +11,7 @@ using Modding.Blocks;
 namespace BesiegeBotsTweaks
 {
     [RequireComponent(typeof(BlockBehaviour))]
-    public class BreakForceFix : MonoBehaviour
+    public class BreakForceTweak : MonoBehaviour
     {
         private const byte FRAMECOUNT = 2;  //The number of frames this component waits before making changes
         //The entry point into this simple class is when it's attached to a GameObject. Awake is generally called once on blocks, when they're created in build mode.
@@ -36,13 +36,12 @@ namespace BesiegeBotsTweaks
             for (int i = 0; i < FRAMECOUNT; i++) yield return new WaitForFixedUpdate();
 
             //Gets the joint array from each block, and if there is at least one joint then it modifies the joint strength based on a switch statement of the block type.
-            BlockBehaviour BB = block.InternalObject;
-            Joint[] joints = BB.GetComponents<Joint>();
-            StrengthenTreads ST = BB.GetComponent<StrengthenTreads>();
+            Joint[] joints = block.GameObject.GetComponents<Joint>();
+            StrengthenTreads ST = block.GameObject.GetComponent<StrengthenTreads>();
 
             if (joints.Length > 0)
             {
-                switch (BB.Prefab.Type)
+                switch (block.InternalObject.Prefab.Type)
                 {
                     case BlockType.FlyingBlock:
                         joints[0].breakForce = 20000;

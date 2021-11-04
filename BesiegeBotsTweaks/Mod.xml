@@ -9,10 +9,10 @@
 	<Name>Besiege Bots Mod</Name>
 	<Author>DokterDoyle and Xefyr</Author> <!-- FIX: Insert your name here. -->
 	<!-- Major.Minor.Build -->
-	<Version>0.3.3</Version>
+	<Version>0.3.4</Version>
 	
 	<Description>
-	A pack of tools and fixes on ingame blocks for the Besiege Bots community, aka the real home of Robotic Combat in Besiege! <!-- FIX: Insert a short description here. -->
+	A pack of tools and tweaks for the Besiege Bots community, the real home of robot combat in Besiege! <!-- FIX: Insert a short description here. -->
 	</Description>
 	
 	<!-- Square icon of the mod. Texture defined in the Resources section.
