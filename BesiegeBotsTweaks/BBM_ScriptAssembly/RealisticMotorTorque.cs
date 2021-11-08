@@ -34,7 +34,8 @@ namespace BotFix
                 //1. On the local instance (all instances) in Singleplayer
                 //2. As host on the local instance
                 //3. As host on the non-local instances if they're not in local sim
-                if (Player.GetHost() == null || (Player.GetLocalPlayer().IsHost && block.Machine.Player == Player.GetLocalPlayer() ? true : !block.Machine.Player.InLocalSim)) StartCoroutine(Init());
+                //4. As client on the local instance if we're in local sim
+                if (Player.GetHost() == null || (block.Machine.Player == Player.GetLocalPlayer() ? Player.GetLocalPlayer().IsHost || Player.GetLocalPlayer().InLocalSim : Player.GetLocalPlayer().IsHost && !block.Machine.Player.InLocalSim)) StartCoroutine(Init());
                 else Destroy(this);
             }
         }

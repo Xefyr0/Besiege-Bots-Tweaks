@@ -13,7 +13,7 @@ namespace BesiegeBotsTweaks
     [RequireComponent(typeof(BlockBehaviour))]
     public class DragTweak : MonoBehaviour
     {
-        private const byte FRAMECOUNT = 10;  //The number of frames this component waits before making changes
+        private static readonly int FRAMECOUNT = 10;  //The number of frames this component waits before making changes.
         //The entry point into this simple class is when it's attached to a GameObject. Awake is generally called once on blocks, when they're created in build mode.
         private Block block;
         private void Awake()
@@ -26,7 +26,8 @@ namespace BesiegeBotsTweaks
                 //1. On the local instance (all instances) in Singleplayer
                 //2. As host on the local instance
                 //3. As host on the non-local instances if they're not in local sim
-                if (Player.GetHost() == null || (Player.GetLocalPlayer().IsHost && block.Machine.Player == Player.GetLocalPlayer() ? true : !block.Machine.Player.InLocalSim)) StartCoroutine(TweakDrags());
+                //4. As client on the local instance if we're in local sim
+                if (Player.GetHost() == null || (block.Machine.Player == Player.GetLocalPlayer() ? Player.GetLocalPlayer().IsHost || Player.GetLocalPlayer().InLocalSim : Player.GetLocalPlayer().IsHost && !block.Machine.Player.InLocalSim)) StartCoroutine(TweakDrags());
                 else Destroy(this);
             }
         }

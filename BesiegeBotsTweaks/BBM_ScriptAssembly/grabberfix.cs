@@ -7,12 +7,15 @@ Amended by Xefyr
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using Modding;
+using Modding.Common;
+using Modding.Blocks;
 
 namespace BotFix
 {
     public class Grabberfix : MonoBehaviour
     {
-        private const byte FRAMECOUNT = 15;  //The number of frames this component waits before making changes
+        private static readonly int FRAMECOUNT = 20;  //The number of frames this component waits before making changes.
         private int selectedmode = 0;
         private const int MediumBF = 100000, UltraBF = 150000, DrumBF = 250000;
         private static List<string> GrabMode = new List<string>()
@@ -24,22 +27,29 @@ namespace BotFix
         };
         void Awake()
         {
-            //If this component is on a client, then destroy it as it won't do anything anyways.
-            if (StatMaster.isClient && !Modding.Game.IsSetToLocalSim) Destroy(this);
+            Block block = Block.From(base.gameObject);
 
             //Mapper Menu definition. Must be defined for both simulation block and buildmode block.
-            MMenu UgrabM = GetComponent<GrabberBlock>().AddMenu("Grabmode", selectedmode, GrabMode, false);
+            MMenu UgrabM = block.InternalObject.AddMenu("Grabmode", selectedmode, GrabMode, false);
             UgrabM.ValueChanged += (ValueHandler)(value => {selectedmode = value;});
             UgrabM.DisplayInMapper = true;
 
-            StartCoroutine(GrabberSwitch(FRAMECOUNT));
+            if(block.InternalObject.SimPhysics)
+            {
+                //The Enumerator is only meant to be executed:
+                //1. On the local instance (all instances) in Singleplayer
+                //2. As host on the local instance
+                //3. As host on the non-local instances if they're not in local sim
+                //4. As client on the local instance if we're in local sim
+                if (Player.GetHost() == null || (block.Machine.Player == Player.GetLocalPlayer() ? Player.GetLocalPlayer().IsHost || Player.GetLocalPlayer().InLocalSim : Player.GetLocalPlayer().IsHost && !block.Machine.Player.InLocalSim)) StartCoroutine(GrabberSwitch());
+                else Destroy(this);
+            }
         }
 
-        private IEnumerator GrabberSwitch(int framecount)
+        private IEnumerator GrabberSwitch()
         {
-            //Wait frameCount FixedUpdates into sim
-            while(!Modding.Game.IsSimulating) yield return new WaitForFixedUpdate();
-            for(int i = 0; i < framecount; i++) yield return new WaitForFixedUpdate();
+            //Wait FRAMECOUNT FixedUpdates into sim
+            for (int i = 0; i < FRAMECOUNT; i++) yield return new WaitForFixedUpdate();
 
             //uGrabbers, mGrabbers and dGrabbers change the strength value of *all* joints, not just the grabby one
             Joint[] joints = GetComponents<Joint>();

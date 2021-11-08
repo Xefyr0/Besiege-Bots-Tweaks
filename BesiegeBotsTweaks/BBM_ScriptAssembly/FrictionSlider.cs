@@ -11,7 +11,7 @@ namespace BesiegeBotsTweaks
 {
     public class FrictionSlider : MonoBehaviour
     {
-        private const byte FRAMECOUNT = 3;  //The number of frames this component waits before making changes
+        private static readonly int FRAMECOUNT = 3;  //The number of frames this component waits before making changes.
         private byte frameCounter = 0;  //frameCounter Variable to keep track of how many frames have elapsed
         private MSlider GS;
         private MMenu PCMenu;

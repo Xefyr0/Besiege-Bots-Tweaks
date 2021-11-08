@@ -75,9 +75,10 @@ namespace BotFix
             {
                 //The Enumerator is only meant to be executed:
                 //1. On the local instance (all instances) in Singleplayer
-                //2. As host and client on all instances in global sim
-                //3. On the current instance in local sim
-                if (Player.GetHost() == null || !block.Machine.Player.InLocalSim ? true : block.Machine.Player == Player.GetLocalPlayer()) StartCoroutine(FirstFrame());
+                //2. As host on the local instance
+                //3. As host on the non-local instances if they're not in local sim
+                //4. As client on the local instance if we're in local sim
+                if (Player.GetHost() == null || (block.Machine.Player == Player.GetLocalPlayer() ? Player.GetLocalPlayer().IsHost || Player.GetLocalPlayer().InLocalSim : Player.GetLocalPlayer().IsHost && !block.Machine.Player.InLocalSim)) StartCoroutine(FirstFrame());
                 else Destroy(this);    //Maybe not a good idea? There's multiplayer sound to consider
             }
         }

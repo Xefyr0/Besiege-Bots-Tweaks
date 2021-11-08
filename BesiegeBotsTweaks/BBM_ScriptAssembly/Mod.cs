@@ -14,6 +14,7 @@ namespace BotFix
 {
 	public class Mod : ModEntryPoint
 	{
+        public static readonly float HIGHGRAV = -55f;
         public static bool UseModdedBlocks = true;
         public static bool BetaMode = false;
         public static bool ModbotMode = false;
@@ -30,7 +31,9 @@ namespace BotFix
             PrefabModder.ModAllPrefab();
 
             OptionsMaster.defaultSmoothness = 0f;
-            Physics.gravity = new Vector3(Physics.gravity.x, -55f, Physics.gravity.z);
+            Physics.gravity = new Vector3(Physics.gravity.x, HIGHGRAV, Physics.gravity.z);
+            ModConsole.Log("Set gravity to {0}", HIGHGRAV);
+
             OptionsMaster.BesiegeConfig.MorePrecisePhysics = false;
             //StatMaster.Rules.DisableFire = true;
         }
