@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Modding;
 using Modding.Blocks;
+using BesiegeBotsTweaks;
 
 namespace BotFix
 {
@@ -39,7 +40,22 @@ namespace BotFix
         private bool RKpressed = false;
         private bool isFirstFrame = true;
 
-        List<AudioClip> ASounds = new List<AudioClip>();
+        List<AudioClip> ASounds = new List<AudioClip>()
+        {
+            null,
+            ModResource.GetAudioClip("air1"),
+            ModResource.GetAudioClip("air2"),
+            ModResource.GetAudioClip("air3"),
+            ModResource.GetAudioClip("air4"),
+            ModResource.GetAudioClip("air5"),
+            ModResource.GetAudioClip("air6"),
+            ModResource.GetAudioClip("air7"),
+            ModResource.GetAudioClip("air8"),
+            ModResource.GetAudioClip("air9"),
+            ModResource.GetAudioClip("air10"),
+            ModResource.GetAudioClip("air11"),
+            ModResource.GetAudioClip("air12"),
+        };
 
         private AudioSource Airsound;
         private AudioSource Stopsound;
@@ -76,6 +92,10 @@ namespace BotFix
             "TFOOINGING",
         };
 
+        internal static MessageType A1 = ModNetworking.CreateMessageType(DataType.Block);
+        internal static MessageType LP = ModNetworking.CreateMessageType(DataType.Block);
+        internal static MessageType LS = ModNetworking.CreateMessageType(DataType.Block, DataType.Boolean);
+
         private void Awake()
         {           
             SC = GetComponent<SuspensionController>();
@@ -111,21 +131,6 @@ namespace BotFix
 
             //DisplayInMapper config
             MoveMode.DisplayInMapper = true;
-      
-            //Sound config
-            ASounds.Add(Soundfiles.None);
-            ASounds.Add(Soundfiles.air1);
-            ASounds.Add(Soundfiles.air2);
-            ASounds.Add(Soundfiles.air3);
-            ASounds.Add(Soundfiles.air4);
-            ASounds.Add(Soundfiles.air5);
-            ASounds.Add(Soundfiles.air6);
-            ASounds.Add(Soundfiles.air7);
-            ASounds.Add(Soundfiles.air8);
-            ASounds.Add(Soundfiles.air9);
-            ASounds.Add(Soundfiles.air10);
-            ASounds.Add(Soundfiles.air11);
-            ASounds.Add(Soundfiles.air12);
 
             Airsound = SC.gameObject.AddComponent<AudioSource>();
             Airsound.rolloffMode = AudioRolloffMode.Linear;
@@ -138,7 +143,7 @@ namespace BotFix
                     break;
 
                 case 1:
-                    Airsound.clip = Soundfiles.Motorloop;
+                    Airsound.clip = ModResource.GetAudioClip("bigmotor_loop");
                     Airsound.loop = true;
                     Airsound.maxDistance = 100f;
                     Airsound.volume = 0.2f;
@@ -159,7 +164,7 @@ namespace BotFix
             Stopsound.rolloffMode = AudioRolloffMode.Linear;
             Stopsound.volume = 0.3f;
             Stopsound.playOnAwake = false;
-            Stopsound.clip = Soundfiles.MotorStop;
+            Stopsound.clip = ModResource.GetAudioClip("bigmotor_Stop");
             Stopsound.loop = false;
             Stopsound.pitch = Feed / 8;
 
@@ -169,7 +174,7 @@ namespace BotFix
             Breaksound.rolloffMode = AudioRolloffMode.Linear;
             Breaksound.volume = 0.4f;
             Breaksound.playOnAwake = false;
-            Breaksound.clip = Soundfiles.air_broken;
+            Breaksound.clip = ModResource.GetAudioClip("air_Broken");
             
             thisblock = Block.From(SC);
 
@@ -202,7 +207,11 @@ namespace BotFix
                     CJ.linearLimit = SJlimit;                   
                 }
                 rigg = GetComponent<Rigidbody>();
-            }        
+            }
+
+            ModNetworking.Callbacks[A1] += PlaySoundClient;
+            ModNetworking.Callbacks[LP] += PlayLoopSoundClient;
+            ModNetworking.Callbacks[LS] += StopLoopSoundClient;
         }
 
         private void UpdateMapper()
@@ -433,7 +442,7 @@ namespace BotFix
 
             if (StatMaster.isClient || StatMaster.isLocalSim)
                 return;
-            ModNetworking.SendToAll(Messages.A1.CreateMessage(thisblock));
+            ModNetworking.SendToAll(A1.CreateMessage(thisblock));
         }
 
         private void PlaySoundLoop()
@@ -442,7 +451,7 @@ namespace BotFix
 
             if (StatMaster.isClient || StatMaster.isLocalSim)
                 return;
-            ModNetworking.SendToAll(Messages.LP.CreateMessage(thisblock));
+            ModNetworking.SendToAll(LP.CreateMessage(thisblock));
             //Debug.Log("Play loop");
         }
 
@@ -463,7 +472,7 @@ namespace BotFix
 
             if (StatMaster.isClient || StatMaster.isLocalSim)
                 return;
-            ModNetworking.SendToAll(Messages.LS.CreateMessage(thisblock, broke));
+            ModNetworking.SendToAll(LS.CreateMessage(thisblock, broke));
             //Debug.Log("Stop loop");
         }
 

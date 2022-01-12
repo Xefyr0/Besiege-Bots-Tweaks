@@ -8,79 +8,44 @@ namespace BotFix
     public class WinchFix : MonoBehaviour
     {
         private SpringCode SC;
-        private MKey DKey;
+        private MKey DestroyKey;
         private bool brok = false;
+
+        private MessageType mDestroySpring = ModNetworking.CreateMessageType(DataType.Block);
+        private Message DS;
 
         private void Awake()
         {
             SC = GetComponent<SpringCode>();
 
             //Mapper definition
-            DKey = SC.AddKey("Destroy", "Destroy", KeyCode.X);
+            DestroyKey = SC.AddKey("Destroy", "Destroy", KeyCode.X);
+            DestroyKey.DisplayInMapper = true;
 
-            //DisplayInMapper config
-            DKey.DisplayInMapper = true;
+            ModNetworking.Callbacks[mDestroySpring] += (System.Action<Message>)delegate(Message m) {((Block)m.GetData(0)).InternalObject.GetComponent<WinchFix>().DestroySpring();};
+            DS = mDestroySpring.CreateMessage(SC);
         }
 
         void Update()
         {
-            if (!StatMaster.isClient || StatMaster.isLocalSim)
-            {
-                if (SC.SimPhysics)
-                {
-                    if (brok)
-                        return;
+            //If block isn't in sim then it shouldn't do anything.
+            if (!SC.SimPhysics) return;
 
-                    if (DKey.IsHeld || DKey.EmulationHeld())
-                    {
-                        DestroySpringCode();
-                    }
-                }
+            if (DestroyKey.IsHeld || DestroyKey.EmulationHeld())
+            {
+                ModNetworking.SendToAll(DS);
+                DestroySpring();
             }
         }
 
-        public void DestroySpringCode()
+        public void DestroySpring()
         {
-            if (SC.Prefab.Type == BlockType.RopeWinch)
-            {
-                SC.Snap();
-                //Debug.Log("oh snap!");
-                brok = true;
-            }
-
-            if (SC.Prefab.Type == BlockType.Spring)
-            {
-                SC.gameObject.SetActive(false);
-                brok = true;
-            }
-
-            if (StatMaster.isClient || StatMaster.isLocalSim)
-                return;
-            //Debug.Log("Send play message");
-            ModNetworking.SendToAll(Messages.DS.CreateMessage(SC));
-            //Debug.Log("NETWORKED oh snap!");
-        }
-
-        public static void DestroyClient(Message m)
-        {
-            Block BL = (Block)m.GetData(0);
-            BL.InternalObject.GetComponent<WinchFix>().DestroySpringCodeClient();
-            //Debug.Log("oh snapped!");
-        }
-
-        public void DestroySpringCodeClient()
-        {
-            if (SC.Prefab.Type == BlockType.RopeWinch)
-            {
-                SC.Snap();
-                brok = true;
-            }
-
-            if (SC.Prefab.Type == BlockType.Spring)
-            {
-                SC.gameObject.SetActive(false);
-                brok = true;
-            }
+            //If the block this Component is attached to is a rope, snap it.
+            if (SC.Prefab.Type == BlockType.RopeWinch) SC.Snap();
+            //If the block this Component is attached to is a spring, disable it.
+            if (SC.Prefab.Type == BlockType.Spring) SC.gameObject.SetActive(false);
+            //WinchFix does nothing after the the snap, so it can be destroyed.
+            Destroy(this);
         }
     }
 }

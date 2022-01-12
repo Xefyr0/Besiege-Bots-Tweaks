@@ -127,6 +127,7 @@ namespace BotFix
                 case BlockType.Propeller:
                 case BlockType.SmallPropeller:
                 case BlockType.Drill:
+                case BlockType.MetalBall:
                     BPI.InternalObject.myDamageType = DamageType.Blunt;
                     break;
             }
@@ -147,6 +148,7 @@ namespace BotFix
 
             //Specific Block Prefab modifications
             BlockBehaviour BB;
+
             //0
             //PrefabMaster.GetBlock(BlockType.StartingBlock, out BB);
 
@@ -448,13 +450,13 @@ namespace BotFix
 
             //63
             PrefabMaster.GetBlock(BlockType.Log, out BB);
-            if (BB.gameObject.GetComponent<Logfix>() == null)
-                BB.gameObject.AddComponent<Logfix>();
+            if (BB.gameObject.GetComponent<LogDustToggle>() == null)
+                BB.gameObject.AddComponent<LogDustToggle>();
             if (BB.gameObject.GetComponent<SpinnerSound>() == null)
                 BB.gameObject.AddComponent<SpinnerSound>();
             PrefabMaster.GetStrippedBlock(BlockType.Log, out BB);
-            if (BB.gameObject.GetComponent<Logfix>() == null)
-                BB.gameObject.AddComponent<Logfix>();
+            if (BB.gameObject.GetComponent<LogDustToggle>() == null)
+                BB.gameObject.AddComponent<LogDustToggle>();
             if (BB.gameObject.GetComponent<SpinnerSound>() == null)
                 BB.gameObject.AddComponent<SpinnerSound>();
 

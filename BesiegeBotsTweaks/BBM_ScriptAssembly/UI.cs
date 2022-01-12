@@ -7,22 +7,22 @@ namespace BotFix
     {
         private ModKey keykey = ModKeys.GetKey("keykey");
         private readonly int windowID = ModUtility.GetWindowId();
-        private Rect windowRect = new Rect(15f, 100f, 190f, 300f); //260
+        private Rect windowRect = new Rect(15f, 200f, 190f, 300f); //260
         public bool mute = true;
         private string mutetext;
-        private string MBtext;
-        private string Betatext;
+        //private string MBtext;
+        //private string Betatext;
         private string gtext;
         public float oload;
         public float temp;
 
+        /*
         private readonly GUIStyle style = new GUIStyle()        
         {
-            normal = { textColor = Color.white},
+            normal = {textColor = Color.white},
             alignment = TextAnchor.MiddleLeft,
-            active = { background = Texture2D.whiteTexture,
-            textColor = Color.black},
-            margin = { top = 5},
+            active = {background = Texture2D.whiteTexture, textColor = Color.black},
+            margin = {top = 5},
             fontSize = 15
         };
 
@@ -30,36 +30,34 @@ namespace BotFix
         {
             normal = { textColor = Color.white},
             alignment = TextAnchor.MiddleRight,
-            active = { background = Texture2D.whiteTexture,
-            textColor = Color.black},
-            margin = { top = 5},
+            active = {background = Texture2D.whiteTexture, textColor = Color.black},
+            margin = {top = 5},
             fontSize = 15
         };
+        */
 
         private bool ShowGUI;
         private BBinfo BBinfo;
         private event Click VelocityButtonClickEvent;
         private event Click MuteEvent;
-        private event Click BMuteEvent;
-        private event Click BetaEvent;
-        private event Click MBEvent;
+        //private event Click BMuteEvent;
+        //private event Click BetaEvent;
+        //private event Click MBEvent;
 
         private void Start()
         {
             ShowGUI = true;
             InitEvent();
-            GameObject gameObject2 = new GameObject("BBinfo Yeet");
-            gameObject2.transform.SetParent(transform);
-            BBinfo = gameObject2.AddComponent<BBinfo>();          
+            BBinfo = GetComponent<BBinfo>();          
         }
 
         private void InitEvent()
         {
             VelocityButtonClickEvent += (Click)(() => { });
             MuteEvent += (Click)(() => { });
-            BMuteEvent += (Click)(() => { });
-            BetaEvent += (Click)(() => { });
-            MBEvent += (Click)(() => { });
+            //BMuteEvent += (Click)(() => { });
+            //BetaEvent += (Click)(() => { });
+            //MBEvent += (Click)(() => { });
         }
 
         private void Update()
@@ -94,7 +92,23 @@ namespace BotFix
                 BBinfo.ChangedVelocityUnit();
                 VelocityButtonClickEvent();
             }
-            GUILayout.Label(string.Format("{0} {1}", (object)BBinfo.Velocity.magnitude.ToString("#0.00"), (object)BBinfo.velocityUnit));
+            string VU = "";
+            switch(BBinfo.velocityUnit)
+            {
+                case 0:
+                    VU = "kmh";
+                    break;
+                case 1:
+                    VU = "mph";
+                    break;
+                case 2:
+                    VU = "m/s";
+                    break;
+                case 3:
+                    VU = "mach";
+                    break;
+            }
+            GUILayout.Label(string.Format("{0} {1}", (object)BBinfo.Velocity.magnitude.ToString("#0.00"), VU));
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
             GUILayout.EndHorizontal();
@@ -118,6 +132,7 @@ namespace BotFix
                 GUILayout.Label(string.Format("{0} {1}", BBinfo.angval.ToString("#0.00"), "RPM"));
                 GUILayout.EndHorizontal();
 
+                /*
                 GUILayout.BeginHorizontal();
                 if (Mod.UseModdedBlocks == true)
                 {
@@ -137,9 +152,9 @@ namespace BotFix
                     
                 }
                 GUILayout.EndHorizontal();
-
+                */
             }
-
+            
             GUILayout.BeginHorizontal();
 
             if (mute == true)
@@ -153,12 +168,13 @@ namespace BotFix
 
             if (GUILayout.Button(mutetext))
             {
-                Mute();
+                MuteGrav();
                 MuteEvent();
                 
             }
             GUILayout.EndHorizontal();
 
+            /*
             GUILayout.BeginHorizontal();
             if (Mod.BetaMode == true)
             {
@@ -194,6 +210,7 @@ namespace BotFix
                 PrefabModder.ModAllPrefab();
             }
             GUILayout.EndHorizontal();
+            */
             /*
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             GUILayout.BeginHorizontal();
@@ -218,20 +235,14 @@ namespace BotFix
             GUI.DragWindow();
         }
 
-        public void Mute()
+        public void MuteGrav()
         {
-            if (mute)
-            {
-                mute = false;
-                Physics.gravity = new Vector3(Physics.gravity.x, -32.81f, Physics.gravity.z);
-            }
-            else
-            {
-                mute = true;
-                Physics.gravity = new Vector3(Physics.gravity.x, -50f, Physics.gravity.z);               
-            }
+            if (mute) Physics.gravity = new Vector3(Physics.gravity.x, -32.81f, Physics.gravity.z);
+            else Physics.gravity = new Vector3(Physics.gravity.x, Mod.HIGHGRAV, Physics.gravity.z);
+            mute = !mute;
         }
 
+        /*
         public void BMute()
         {
             if (Mod.UseModdedBlocks) Mod.UseModdedBlocks = false;
@@ -249,5 +260,6 @@ namespace BotFix
             if (Mod.ModbotMode) Mod.ModbotMode = false;
             else Mod.ModbotMode = true;
         }
+        */
     }
 }

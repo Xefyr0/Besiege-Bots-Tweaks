@@ -14,6 +14,7 @@ namespace BesiegeBotsTweaks
     class AntiPhysXExplosion : MonoBehaviour
     {
         private static readonly int FRAMECOUNT = 15;  //The number of frames this component waits before making changes.
+        //The entry point into this simple class is when it's attached to a GameObject. Awake is generally called once on blocks, when they're created in build mode.
         private void Awake()
         {
             Block block = Block.From(base.gameObject);

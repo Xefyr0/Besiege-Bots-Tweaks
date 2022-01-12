@@ -71,6 +71,9 @@ namespace BesiegeBotsTweaks
                         break;
                     case BlockType.Flamethrower:
                     case BlockType.Wing:
+                        joints[0].breakForce = 60000;
+                        joints[0].breakTorque = 60000;
+                        break;
                     case BlockType.WingPanel:
                     case BlockType.BuildSurface:
                         joints[0].breakForce = 40000;

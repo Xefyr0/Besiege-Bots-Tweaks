@@ -1,47 +1,50 @@
+/*
+SpinnerSound.cs
+Written by DokterDoyle for the Besiege Bots community
+Amended by Xefyr
+*/
 using System;
 using Modding;
+using Modding.Common;
 using Modding.Blocks;
 using UnityEngine;
 using System.Collections.Generic;
-using System.Collections;
 
-namespace BotFix
+namespace BesiegeBotsTweaks
 {
+    [RequireComponent(typeof(BlockBehaviour))]
     public class SpinnerSound : MonoBehaviour
     {
-        //List<AudioClip> MSounds = new List<AudioClip>();
- 
-        public List<AudioClip> MSounds = new List<AudioClip>()
+        //Soundfiles to load. Cannot be static :/
+        public readonly List<AudioClip> MSounds = new List<AudioClip>()
         {
-            Soundfiles.Bar1,
-            Soundfiles.Bar2,
-            Soundfiles.Bar3,
-            Soundfiles.Bar4,
-            Soundfiles.Bar5,
-            Soundfiles.Bar6,
+            ModResource.GetAudioClip("Bar1"),
+            ModResource.GetAudioClip("Bar2"),
+            ModResource.GetAudioClip("Bar3"),
+            ModResource.GetAudioClip("Bar4"),
+            ModResource.GetAudioClip("Bar5"),
+            ModResource.GetAudioClip("Bar6"),
 
+            ModResource.GetAudioClip("Disc1"),
+            ModResource.GetAudioClip("Disc2"),
+            ModResource.GetAudioClip("Disc3"),
+            ModResource.GetAudioClip("Disc4"),
+            ModResource.GetAudioClip("Disc5"),
+            ModResource.GetAudioClip("Disc6"),
 
-            Soundfiles.Disc1,
-            Soundfiles.Disc2,
-            Soundfiles.Disc3,
-            Soundfiles.Disc4,
-            Soundfiles.Disc5,
-            Soundfiles.Disc6,
+            ModResource.GetAudioClip("Disc7"),
+            ModResource.GetAudioClip("Disc8"),
 
+            ModResource.GetAudioClip("Drum1"),
+            ModResource.GetAudioClip("Drum2"),
 
-            Soundfiles.Toothy_Disc,
-            Soundfiles.DualDisc,
-
-            Soundfiles.Drum1,
-            Soundfiles.Drum2,
-
-
-            Soundfiles.Shell1,
-            Soundfiles.Shell2,
-            Soundfiles.Shell3,
+            ModResource.GetAudioClip("Shell1"),
+            ModResource.GetAudioClip("Shell2"),
+            ModResource.GetAudioClip("Shell3")
         };
 
-        internal static List<string> Soundlist = new List<string>()
+        //In-game names for sounds, corresponds to MSounds
+        internal readonly List<string> Soundlist = new List<string>()
         {
             "Big Bar",
             "High Rpm Bar",
@@ -66,161 +69,148 @@ namespace BotFix
             "Resonant Shell",
             "Very Big Bar",
             "Noisy Shell"
-
         };
 
-        private bool Tstate = false;
-        private bool UseMotorSound;
-        public BlockBehaviour BB;
+        //Information about this block
+        private BlockBehaviour BB;
+        private Block thisblock;
+        private bool getPhysics = false;
 
-        public float Pitch = 1;
-        public float startingVolume = 0.3f;
-        public float timeToDecrease = 1;
-        public AudioSource CurrentSound;
+        //Information about the motor sound
+        private float startingVolume = 0.3f;
+        private AudioSource SoundSource;
+        private bool PlayingSound = false;
+
+        //Key Mapper information
+        public bool UseMotorSound;
         public int SelectedSound = 0;
-        private MMenu SoundMenu;
+        public float pitchMultiplier = 1;
         private MToggle MotorSoundToggle;
+        private MMenu SoundMenu;
         private MSlider PitchSlider;
-        public Block thisblock;
-        bool firstframe = true;
 
-        public Quaternion Angle;
-        public float angval;
-        public float angvel;
-        private Quaternion lastAngle;
+        //Information for calculating the average velocity over queueSize frames
+        private Quaternion currentRotation;
+        private Quaternion lastRotation;
+        private float deltaAngle;
         private Queue<float> averageAngularVelocityQueue = new Queue<float>();
         private int queueSize = 20;
-        private int Sendrate = 0;
+        private byte updateCounter = 0;
+        private readonly byte updateRate = 5;
 
+        internal static MessageType mAvgSpeed = ModNetworking.CreateMessageType(DataType.Block, DataType.Single);
 
         private void Awake()
         {
             BB = GetComponent<BlockBehaviour>();
-
-            MotorSoundToggle = BB.AddToggle("SpinnerSound", "Sound", UseMotorSound);
-            MotorSoundToggle.Toggled += (value) =>
-            {
-                UseMotorSound = SoundMenu.DisplayInMapper = PitchSlider.DisplayInMapper = value;
-            };
-
-            PitchSlider = BB.AddSlider("Pitch", "Pitcher", Pitch, 0f, 4f);
-            PitchSlider.ValueChanged += (float value) => { Pitch = value; };
-
-            SoundMenu = BB.AddMenu("SpinnerSound", SelectedSound, Soundlist, false);
-            SoundMenu.ValueChanged += (value => { SelectedSound = value; });
-
-            PitchSlider.DisplayInMapper = UseMotorSound;
-            SoundMenu.DisplayInMapper = UseMotorSound;
-            MotorSoundToggle.DisplayInMapper = true;
             thisblock = Block.From(gameObject);
 
+            //Key Mapper Init
+            MotorSoundToggle = BB.AddToggle("SpinnerSound", "Sound", UseMotorSound);
+            MotorSoundToggle.Toggled += (value) => UseMotorSound = SoundMenu.DisplayInMapper = PitchSlider.DisplayInMapper = value;
 
+            SoundMenu = BB.AddMenu("SpinnerSound", SelectedSound, Soundlist, false);
+            SoundMenu.ValueChanged += (int value) => SelectedSound = value;
+            SoundMenu.DisplayInMapper = UseMotorSound;
+
+            PitchSlider = BB.AddSlider("Pitch", "Pitcher", pitchMultiplier, 0f, 4f);
+            PitchSlider.ValueChanged += (float value) => pitchMultiplier = value;
+            PitchSlider.DisplayInMapper = UseMotorSound;
+        }
+
+        private void Start()
+        {
+            if(!BB.isSimulating) return;
+            if(UseMotorSound)
+            {
+                
+                //SoundSource is defined in Start because that's when UseMotorSound accurately reflects the toggle, unlike in Awake.
+                SoundSource = gameObject.AddComponent<AudioSource>();
+                SoundSource.playOnAwake = false;
+                SoundSource.spatialBlend = 1;
+                SoundSource.maxDistance = 150f;
+                SoundSource.rolloffMode = AudioRolloffMode.Linear;
+                SoundSource.loop = false;
+                SoundSource.clip = MSounds[SelectedSound];
+
+                //Mute the sound if time is frozen
+                TimeSlider.Instance.onScaleChanged += (float percent) => {if(SoundSource != null) SoundSource.mute = percent <= Single.Epsilon;};
+
+                //Remaining setup is host only
+                if(!BB.SimPhysics) return;
+                deltaAngle = 0;
+                averageAngularVelocityQueue.Clear();
+
+                //Initialize lastrotation and current rotation before the first difference is calculated
+                currentRotation = BB.transform.rotation;
+                lastRotation = currentRotation;
+            }
+            else Destroy(this);
         }
 
         private void FixedUpdate()
         {
-            if (BB.SimPhysics || StatMaster.isClient)
+            if(!BB.isSimulating || !BB.SimPhysics) return;
+            //get current rotation and change from last frame
+            currentRotation = BB.transform.rotation;
+            deltaAngle = Quaternion.Angle(currentRotation, lastRotation);
+
+            //Add delta angle to the angular velocity queue for averaging
+            if (averageAngularVelocityQueue.Count == queueSize) averageAngularVelocityQueue.Dequeue();
+            averageAngularVelocityQueue.Enqueue(deltaAngle);
+
+            //find the mean angular velocity of the elements of the queue
+            float averageAngularVelocity = 0;
+            foreach (float angvel in averageAngularVelocityQueue) averageAngularVelocity += angvel;
+            averageAngularVelocity /= averageAngularVelocityQueue.Count;
+
+            lastRotation = currentRotation;
+
+            //Updates only once per updateRate frames
+            if (updateCounter == updateRate-1)
             {
-                if (UseMotorSound)
-                { 
-                    if (firstframe)
-                    {
-                        CurrentSound = gameObject.AddComponent<AudioSource>();
-                        CurrentSound.playOnAwake = false;
-                        CurrentSound.spatialBlend = 1;
-                        CurrentSound.maxDistance = 150f;
-                        CurrentSound.rolloffMode = AudioRolloffMode.Linear;
-                        CurrentSound.volume = startingVolume;
-                        CurrentSound.loop = false;                     
-                        CurrentSound.clip = MSounds[SelectedSound];
-                        firstframe = false;
-                        angval = 0;
-                        angvel = 0;
-                        averageAngularVelocityQueue.Clear();
-                    }
+                UpdateSound(averageAngularVelocity);
+                ModNetworking.SendToAll(mAvgSpeed.CreateMessage(thisblock, averageAngularVelocity));
+                updateCounter = 0;
+            }
+            updateCounter++;
+        }
 
-                    if (!StatMaster.isClient)
-                    {
-                        AngularVelocity();
-                    }
+        internal void UpdateSound(float avgAngVel)
+        {
+            try
+            {
+                if(PlayingSound)
+                {
+                    //update pitch and volume as the sound continues to play
 
-                    CurrentSound.pitch = Pitch * Time.timeScale;
-                    if (angval >= 50)
-                    {
-                        if (!Tstate)
-                        {
-                            CurrentSound.volume = startingVolume;
-                            CurrentSound.loop = true;
-                            CurrentSound.Play();
-                            Tstate = true;
-                        }
+                    SoundSource.pitch = (float)(Math.Sqrt(avgAngVel / 14) * TimeSlider.Instance.percentagey * pitchMultiplier);
+                    SoundSource.volume = (avgAngVel / 14) * startingVolume;
 
-                        CurrentSound.pitch = (angval / 700) * Time.timeScale * Pitch;
-                        CurrentSound.volume = (angval / 700) * startingVolume;
-                    }
-                    else
+                    //If the spinner slows down too much, stop the sound
+                    if(avgAngVel <= 3)
                     {
-                        CurrentSound.loop = false;
-                        CurrentSound.Stop();
-                        Tstate = false;
+                        SoundSource.loop = false;
+                        SoundSource.Stop();
+                        PlayingSound = false;
+                    }
+                }
+                else
+                {
+                    //Once the spinner speeds up enough, start the sound
+                    if(avgAngVel >= 4)
+                    {
+                        SoundSource.loop = true;
+                        SoundSource.Play();
+                        PlayingSound = true;
                     }
                 }
             }
-        }
-
-        public void AngularVelocity()
-        {           
-            Angle = BB.transform.rotation;
-            
-            angval = Quaternion.Angle(Angle, lastAngle);
-
-            if (averageAngularVelocityQueue.Count == queueSize)
-                averageAngularVelocityQueue.Dequeue();
-            averageAngularVelocityQueue.Enqueue(angval);
-            float zero = 0;
-            foreach (float averageAng in averageAngularVelocityQueue)
-                zero += averageAng;
-            angval = zero / (float)averageAngularVelocityQueue.Count;
-
-            angval = angval * 16.5f;
-            lastAngle = Angle;
-
-            if (Sendrate == 0)
+            catch(NullReferenceException)
             {
-                ModNetworking.SendToAll(Messages.SPEED.CreateMessage(thisblock, Convert.ToSingle(angval)));
+                if(SoundSource == null)Modding.ModConsole.Log("SoundSource null");
+                if(TimeSlider.Instance == null)Modding.ModConsole.Log("timeSlider null");
             }
-
-            Sendrate++;
-            if (Sendrate == 2)
-            {
-                Sendrate = 0;
-            }
-        }
-
-        public static void AngularVelocityClient(Message m)
-        {
-            //NRE here on callbacks.
-            //Debug.Log("Gotmessage:");
-            Block BL = (Block)m.GetData(0);
-            //Debug.Log(BL);
-            if(BL == null) return;
-            BL.InternalObject.GetComponent<SpinnerSound>().angval = (float)m.GetData(1);
         }
     }
 }
-
-
-
-
-
-
-
-
-
-        
-
-        
-
-        
-    
-

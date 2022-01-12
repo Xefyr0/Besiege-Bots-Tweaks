@@ -56,7 +56,7 @@ namespace BotFix
             float maxVelocity = Velocity * deltaMultiplier;
 		    float targetVelocity = lastVelocity + (maxVelocity - lastVelocity) * Time.fixedDeltaTime * CMCH.speedLerpSmooth;
             
-            //This code is magic, right down to the 0.01 number. No clue why it works, 
+            //This block of code is magic, right down to the 0.01 number. No clue why it works, 
             //but it stops motors from braking in either direction when autobrake is turned off and acceleration is set to infinity
             if (CMCH.allowControl && !CMCH.AutoBreakToggle.IsActive && System.Math.Abs(CMCH.Input) < 0.05f)
 		    {
@@ -65,7 +65,7 @@ namespace BotFix
 			    else if (lastVelocity < 0f) targetVelocity = Mathf.Max(targetVelocity, -num);
 		    }
             
-            //If the wheel is accelerating or decelerating, wake up the rigidbodies and update lastVelocity and the motor.
+            //If the wheel is accelerating or decelerating, wake up the rigidbodies and update lastVelocity and the joint motor.
 		    if (System.Math.Abs(targetVelocity-lastVelocity) > Mathf.Epsilon)
 		    {
 			    if (!CMCH.noRigidbody && CMCH.Rigidbody.IsSleeping()) CMCH.Rigidbody.WakeUp();
@@ -85,7 +85,7 @@ namespace BotFix
             motor.force = CMCH.AccelerationSlider.Value;
             myJoint.motor = motor;
 
-            //All of the acceleration jank vanilla behaviour has relies on BlockFixedUpdate.
+            //All of the jank vanilla behaviour relies on BlockFixedUpdate to take effect.
             //This line "unregisters" the block this Component is attached to, so the method isn't called.
             CMCH._parentMachine.UnregisterFixedUpdate(CMCH, isBuild: false);
         }

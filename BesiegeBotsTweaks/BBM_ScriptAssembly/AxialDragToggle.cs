@@ -13,10 +13,11 @@ namespace BesiegeBotsTweaks
         void Awake()
         {
             AxialDrag AD = GetComponent<AxialDrag>();
+            float VC = AD.velocityCap;
 
             //Mapper definition
             MToggle ADtoggle = AD.AddToggle("Disable Drag", "Disable drag", false);
-            ADtoggle.Toggled += (bool value) => {AD.velocityCap = value ? 0 : 30;};
+            ADtoggle.Toggled += (bool value) => {AD.velocityCap = value ? 0 : VC;};
 
             //DisplayInMapper config
             ADtoggle.DisplayInMapper = true;

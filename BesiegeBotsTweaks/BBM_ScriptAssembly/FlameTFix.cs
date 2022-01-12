@@ -1,11 +1,17 @@
+/*
+FlameTFix.cs
+Written by DokterDoyle for the Besiege Bots community
+Amended by Xefyr
+*/
 using Modding;
 using UnityEngine;
 using Modding.Common;
 using Modding.Blocks;
 
 
-namespace BotFix
+namespace BesiegeBotsTweaks
 {
+    [RequireComponent(typeof(BlockBehaviour))]
     public class FlameTFix : MonoBehaviour
     {
         private Block block;
@@ -17,10 +23,10 @@ namespace BotFix
         private bool isFirstFrame = true;
         private int baseAmmo = 240;
 
-        private MessageType mLoadFlamerAmmo = ModNetworking.CreateMessageType(DataType.Block);
-        private MessageType mPlayFireSound = ModNetworking.CreateMessageType(DataType.Block);
-        private MessageType mStopFireSound = ModNetworking.CreateMessageType(DataType.Block);
-        private MessageType mKillFire = ModNetworking.CreateMessageType(DataType.Block);
+        private static MessageType mLoadFlamerAmmo = ModNetworking.CreateMessageType(DataType.Block);
+        private static MessageType mPlayFireSound = ModNetworking.CreateMessageType(DataType.Block);
+        private static MessageType mStopFireSound = ModNetworking.CreateMessageType(DataType.Block);
+        private static MessageType mKillFire = ModNetworking.CreateMessageType(DataType.Block);
         private Message LFA, PFS, SFS, KF;
 
         /*          Old Flamethrower color vars
@@ -54,7 +60,7 @@ namespace BotFix
             FireSound.rolloffMode = AudioRolloffMode.Linear;
             FireSound.spatialBlend = 1;
             FireSound.playOnAwake = false;
-            FireSound.clip = Soundfiles.Flameloop;
+            FireSound.clip = ModResource.GetAudioClip("Flamerhrowerloop");
             FireSound.loop = true;
             FireSound.maxDistance = 100f;
             FireSound.volume = 0.05f;
@@ -93,8 +99,8 @@ namespace BotFix
             {
                 if (!FireSound.isPlaying)
                 {
-                    ModNetworking.SendToAll(PFS);
                     FireSound.Play();
+                    ModNetworking.SendToAll(PFS);
                 }
                 FireSound.pitch = Time.timeScale;
             }
@@ -102,8 +108,8 @@ namespace BotFix
             {
                 if (FireSound.isPlaying)
                 {
-                    ModNetworking.SendToAll(SFS);
                     FireSound.Stop();
+                    ModNetworking.SendToAll(SFS);
                 }
             }
 
@@ -124,7 +130,7 @@ namespace BotFix
             //These variable changes are hacky, but the method I'd like to call instead is private so I've no other choice.
             FC.timeOut = true;
             FC.fireParticles.Stop();
-            FT.gameObject.SetActive(false);
+            FT.gameObject.SetActive(false); //This last one may be unnecessary
 
             //FlameTFix does nothing after the the joint is broken, so it can be destroyed.
             Destroy(this);
