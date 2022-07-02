@@ -94,6 +94,9 @@ namespace BesiegeBotsTweaks
                         joints[0].breakTorque = 80000;
                         break;
                     case BlockType.SpinningBlock:
+                        joints[0].breakForce = 100000;
+                        joints[0].breakTorque = 100000;
+                        break;
                     case BlockType.CogMediumPowered:
                     case BlockType.CircularSaw:
                         joints[0].breakForce = 90000;

@@ -321,7 +321,9 @@ namespace BotFix
                 BB.gameObject.AddComponent<FrictionSlider>();
 
             //36
-            //PrefabMaster.GetBlock(BlockType.Boulder, out BB);
+            PrefabMaster.GetBlock(BlockType.Boulder, out BB);
+            if (BB.gameObject.GetComponent<FrictionSlider>() == null)
+                BB.gameObject.AddComponent<FrictionSlider>();
 
             //37
             //PrefabMaster.GetBlock(BlockType.HalfPipe, out BB);
@@ -385,9 +387,7 @@ namespace BotFix
             //PrefabMaster.GetBlock(BlockType.Drill, out BB);
 
             //49
-            PrefabMaster.GetBlock(BlockType.GripPad, out BB);
-            if (BB.gameObject.GetComponent<FrictionSlider>() == null)
-                BB.gameObject.AddComponent<FrictionSlider>();
+            //PrefabMaster.GetBlock(BlockType.GripPad, out BB);
 
             //50
             //PrefabMaster.GetBlock(BlockType.SmallWheel, out BB);
