@@ -20,9 +20,18 @@ namespace BesiegeBotsTweaks
 
         private bool dustActive = true;
 
-        internal static MessageType mToggleDust = ModNetworking.CreateMessageType(DataType.Block, DataType.Boolean);
+        private static MessageType mToggleDust = ModNetworking.CreateMessageType(DataType.Block, DataType.Boolean);
         Message TD;
 
+        internal static void SetupNetworking()
+        {
+            ModNetworking.Callbacks[mToggleDust] += (System.Action<Message>)delegate(Message m)
+            {
+                Block target = (Block)m.GetData(0);
+                if(target == null) return;
+                else target.InternalObject.GetComponent<LogDustToggle>().SetDust((bool)m.GetData(1));
+            };
+        }
         void Awake()
         {
             BB = GetComponent<BlockBehaviour>();
@@ -40,7 +49,7 @@ namespace BesiegeBotsTweaks
             SetDust(dustActive);
         }
 
-        internal void SetDust(bool active)
+        private void SetDust(bool active)
         {
             SOC.particles.gameObject.SetActive(active);
         }

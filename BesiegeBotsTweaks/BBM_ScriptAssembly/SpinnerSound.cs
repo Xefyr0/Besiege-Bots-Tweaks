@@ -98,8 +98,17 @@ namespace BesiegeBotsTweaks
         private byte updateCounter = 0;
         private readonly byte updateRate = 5;
 
-        internal static MessageType mAvgSpeed = ModNetworking.CreateMessageType(DataType.Block, DataType.Single);
+        private static MessageType mAvgSpeed = ModNetworking.CreateMessageType(DataType.Block, DataType.Single);
 
+        internal static void SetupNetworking()
+        {
+            ModNetworking.Callbacks[mAvgSpeed] += (System.Action<Message>)delegate(Message m)
+            {
+                Block target = (Block)m.GetData(0);
+                if(target == null) return;
+                else target.InternalObject.GetComponent<SpinnerSound>().UpdateSound((float)m.GetData(1));
+            };
+        }
         private void Awake()
         {
             BB = GetComponent<BlockBehaviour>();
@@ -176,7 +185,7 @@ namespace BesiegeBotsTweaks
             updateCounter++;
         }
 
-        internal void UpdateSound(float avgAngVel)
+        private void UpdateSound(float avgAngVel)
         {
             try
             {

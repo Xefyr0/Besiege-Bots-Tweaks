@@ -39,9 +39,9 @@ namespace BotFix
             if(!SingleInstance<BBinfo>.hasInstance()) SingleInstance<BBinfo>.Initialize(InfoObject);
 			#endif
 
-            //Messages.SetupNetworking();
-            ModNetworking.Callbacks[SpinnerSound.mAvgSpeed] += (System.Action<Message>)delegate(Message m) {((Block)m.GetData(0)).InternalObject.GetComponent<SpinnerSound>().UpdateSound((float)m.GetData(1));};
-            ModNetworking.Callbacks[LogDustToggle.mToggleDust] += (System.Action<Message>)delegate(Message m) {((Block)m.GetData(0)).InternalObject.GetComponent<LogDustToggle>().SetDust((bool)m.GetData(1));};
+            FlameTFix.SetupNetworking();
+            SpinnerSound.SetupNetworking();
+            LogDustToggle.SetupNetworking();
 
             PrefabModder.ModAllPrefab();
 

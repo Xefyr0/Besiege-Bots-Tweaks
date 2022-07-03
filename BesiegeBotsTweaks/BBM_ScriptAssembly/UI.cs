@@ -7,7 +7,7 @@ namespace BotFix
     {
         private ModKey keykey = ModKeys.GetKey("keykey");
         private readonly int windowID = ModUtility.GetWindowId();
-        private Rect windowRect = new Rect(15f, 200f, 190f, 300f); //260
+        private Rect windowRect = new Rect(15f, 200f, 190f, 200f); //260
         public bool mute = true;
         private string mutetext;
         //private string MBtext;

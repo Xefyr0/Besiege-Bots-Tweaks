@@ -34,6 +34,14 @@ namespace BesiegeBotsTweaks
         public Color32 fcolor = new Color32(255,240,0,255);
         public Color32 startcolor = new Color32(255, 240, 0, 255);
         */
+        internal static void SetupNetworking()
+        {
+            //Flamethrower message callbacks
+            ModNetworking.Callbacks[mLoadFlamerAmmo] += (System.Action<Message>)delegate(Message m) {((Block)m.GetData(0)).InternalObject.GetComponent<FlameTFix>().LoadFireAmmo();};
+            ModNetworking.Callbacks[mPlayFireSound] += (System.Action<Message>)delegate(Message m) {((Block)m.GetData(0)).InternalObject.GetComponent<FlameTFix>().FireSound.Play();};
+            ModNetworking.Callbacks[mStopFireSound] += (System.Action<Message>)delegate(Message m) {((Block)m.GetData(0)).InternalObject.GetComponent<FlameTFix>().FireSound.Stop();};
+            ModNetworking.Callbacks[mKillFire] += (System.Action<Message>)delegate(Message m) {((Block)m.GetData(0)).InternalObject.GetComponent<FlameTFix>().KillFire();};
+        }
 
         void Awake()
         {
@@ -41,7 +49,7 @@ namespace BesiegeBotsTweaks
             FC = GetComponent<FlamethrowerController>();
             CJ = GetComponent<ConfigurableJoint>();
             FT = transform.Find("FireTrigger");
-            Block block = Block.From(FC);
+            block = Block.From(FC);
 
             /*      Old Flamethrower color init
             colslid = FC.AddColourSlider("Firecolor", "Firecolor", fcolor, false);
@@ -65,34 +73,19 @@ namespace BesiegeBotsTweaks
             FireSound.maxDistance = 100f;
             FireSound.volume = 0.05f;
 
-            //Flamethrower message callbacks
-            ModNetworking.Callbacks[mLoadFlamerAmmo] += (System.Action<Message>)delegate(Message m) {((Block)m.GetData(0)).InternalObject.GetComponent<FlameTFix>().LoadFireAmmo();};
-            ModNetworking.Callbacks[mPlayFireSound] += (System.Action<Message>)delegate(Message m) {((Block)m.GetData(0)).InternalObject.GetComponent<FlameTFix>().FireSound.Play();};
-            ModNetworking.Callbacks[mStopFireSound] += (System.Action<Message>)delegate(Message m) {((Block)m.GetData(0)).InternalObject.GetComponent<FlameTFix>().FireSound.Stop();};
-            ModNetworking.Callbacks[mKillFire] += (System.Action<Message>)delegate(Message m) {((Block)m.GetData(0)).InternalObject.GetComponent<FlameTFix>().KillFire();};
-
             //Flamethrower Messages
             LFA = mLoadFlamerAmmo.CreateMessage(FC);
             PFS = mPlayFireSound.CreateMessage(FC);
             SFS = mStopFireSound.CreateMessage(FC);
             KF = mKillFire.CreateMessage(FC);
 
-            if (FC.SimPhysics)
-            {
-                //The Enumerator is only meant to be executed:
-                //1. On the local instance (all instances) in Singleplayer
-                //2. As host on the local instance
-                //3. As host on the non-local instances if they're not in local sim
-                //4. As client on the local instance if we're in local sim
-                if (Player.GetHost() == null || (block.Machine.Player == Player.GetLocalPlayer() ? Player.GetLocalPlayer().IsHost || Player.GetLocalPlayer().InLocalSim : Player.GetLocalPlayer().IsHost && !block.Machine.Player.InLocalSim)) StartCoroutine(FirstFrame());
-                else Destroy(this);    //Maybe not a good idea? There's multiplayer sound to consider
-            }
+            if (FC.isSimulating && FC.SimPhysics) StartCoroutine(FirstFrame());
         }
 
         private void FixedUpdate()
         {
             //If block isn't in sim then it shouldn't do anything.
-            if (!FC.SimPhysics) return;
+            if (!FC.isSimulating || !FC.SimPhysics) return;
 
             //Flamethrower sound toggle and pitch adjustment
             if (FT.gameObject.activeSelf)
@@ -116,16 +109,18 @@ namespace BesiegeBotsTweaks
             //If there isn't a joint attaching this to another block, then shut off all functionality.
             if (!CJ)
             {
+                //Modding.ModConsole.Log("No joint. Killing Fire");
                 ModNetworking.SendToAll(KF);
                 KillFire();
             }
         }
-        public void LoadFireAmmo()
+        private void LoadFireAmmo()
         {
-            //ModConsole.Log("Loading Flamethrower to {0} seconds", baseAmmo * 0.25f);
-            FC.OnReloadAmmo(ref baseAmmo, AmmoType.Fire, true, true);
+            baseAmmo /= block.Machine.GetBlocksOfType(BlockType.Flamethrower).Count;
+            ModConsole.Log("Loading Flamethrower to {0} seconds", baseAmmo * 0.25f + 10f/*FC.baseAmmo*/);
+            FC.OnReloadAmmo(ref baseAmmo, AmmoType.Fire, false, true);
         }
-        public void KillFire()
+        private void KillFire()
         {
             //These variable changes are hacky, but the method I'd like to call instead is private so I've no other choice.
             FC.timeOut = true;
