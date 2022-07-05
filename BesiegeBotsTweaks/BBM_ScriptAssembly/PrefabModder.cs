@@ -210,8 +210,10 @@ namespace BotFix
 
             //13
             PrefabMaster.GetBlock(BlockType.SteeringBlock, out BB);
+            //This has to be done here, instead of Awake(). Glad I got it first try
             ((SteeringWheel)BB).allowLimits = true;
-            ((SteeringWheel)BB).LimitsSlider.UseLimitsToggle.IsActive = false;
+            if (BB.gameObject.GetComponent<SteeringBlockLimits>() == null)
+                BB.gameObject.AddComponent<SteeringBlockLimits>();
 
 
             //14
