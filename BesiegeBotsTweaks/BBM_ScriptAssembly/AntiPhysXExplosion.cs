@@ -42,7 +42,7 @@ namespace BesiegeBotsTweaks
             if(joinTrigger != null && joinTrigger.isJoined)
 			{
                 joinTrigger.currentJoint.projectionMode = JointProjectionMode.PositionAndRotation;
-                joinTrigger.currentJoint.projectionDistance = 1.00f;
+                joinTrigger.currentJoint.projectionDistance = 1.50f;
                 joinTrigger.currentJoint.projectionAngle = 100f;
 			}
 

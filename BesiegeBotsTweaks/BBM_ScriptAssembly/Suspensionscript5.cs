@@ -142,7 +142,7 @@ namespace BotFix
                 case 0: //None                     
                     break;
 
-                case 1:
+                case 1: //Hydraulic
                     Airsound.clip = ModResource.GetAudioClip("bigmotor_loop");
                     Airsound.loop = true;
                     Airsound.maxDistance = 100f;
@@ -150,7 +150,7 @@ namespace BotFix
                     Airsound.pitch = Feed / 8;
                     break;
 
-                case 2:
+                case 2: //Pneumatic
                     Airsound.clip = ASounds[selectedsound];
                     Airsound.loop = false;
                     Airsound.maxDistance = 150f;
@@ -191,12 +191,12 @@ namespace BotFix
                             CJ.breakTorque = 30000;
                             break;
 
-                        case 1:
-                            CJ.breakForce = 30000;
-                            CJ.breakTorque = 30000;
+                        case 1: //Hydraulic
+                            CJ.breakForce = 60000;
+                            CJ.breakTorque = 60000;
                             break;
 
-                        case 2:
+                        case 2: //Pneumatic
                             CJ.breakForce = 60000;
                             CJ.breakTorque = 60000;
                             break;
@@ -263,11 +263,11 @@ namespace BotFix
             rigg.WakeUp();
             switch (selectedmovemode)
             {
-                case 1: //None   
+                case 1: //Hydraulic   
                     movefeed = feed * 0.005f;
                     break;
 
-                case 2:
+                case 2: //Pneumatic
                     movefeed = feed * 20f;
                     break;
             }

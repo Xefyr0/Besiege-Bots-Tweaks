@@ -211,6 +211,8 @@ namespace BotFix
             //13
             PrefabMaster.GetBlock(BlockType.SteeringBlock, out BB);
             ((SteeringWheel)BB).allowLimits = true;
+            ((SteeringWheel)BB).LimitsSlider.UseLimitsToggle.IsActive = false;
+
 
             //14
             //PrefabMaster.GetBlock(BlockType.FlyingBlock, out BB);
