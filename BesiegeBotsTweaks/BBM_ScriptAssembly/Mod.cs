@@ -39,9 +39,12 @@ namespace BotFix
             if(!SingleInstance<BBinfo>.hasInstance()) SingleInstance<BBinfo>.Initialize(InfoObject);
 			#endif
 
+            Modding.ModConsole.Log("[BBTweaks] Setting up Networking");
             FlameTFix.SetupNetworking();
             SpinnerSound.SetupNetworking();
             LogDustToggle.SetupNetworking();
+            WinchFix.SetupNetworking();
+            Suspensionzcript.SetupNetworking();
 
             PrefabModder.ModAllPrefab();
 

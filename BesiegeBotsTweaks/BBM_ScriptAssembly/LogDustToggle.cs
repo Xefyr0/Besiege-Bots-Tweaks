@@ -20,11 +20,12 @@ namespace BesiegeBotsTweaks
 
         private bool dustActive = true;
 
-        private static MessageType mToggleDust = ModNetworking.CreateMessageType(DataType.Block, DataType.Boolean);
+        private static MessageType mToggleDust;
         Message TD;
 
         internal static void SetupNetworking()
         {
+            mToggleDust = ModNetworking.CreateMessageType(DataType.Block, DataType.Boolean);
             ModNetworking.Callbacks[mToggleDust] += (System.Action<Message>)delegate(Message m)
             {
                 Block target = (Block)m.GetData(0);

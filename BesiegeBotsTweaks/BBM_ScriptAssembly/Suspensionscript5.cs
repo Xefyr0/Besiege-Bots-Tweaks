@@ -92,10 +92,20 @@ namespace BotFix
             "TFOOINGING",
         };
 
-        internal static MessageType A1 = ModNetworking.CreateMessageType(DataType.Block);
-        internal static MessageType LP = ModNetworking.CreateMessageType(DataType.Block);
-        internal static MessageType LS = ModNetworking.CreateMessageType(DataType.Block, DataType.Boolean);
+        internal static MessageType A1;
+        internal static MessageType LP;
+        internal static MessageType LS;
 
+
+        internal static void SetupNetworking()
+        {
+            A1 = ModNetworking.CreateMessageType(DataType.Block);
+            LP = ModNetworking.CreateMessageType(DataType.Block);
+            LS = ModNetworking.CreateMessageType(DataType.Block, DataType.Boolean);
+            ModNetworking.Callbacks[A1] += PlaySoundClient;
+            ModNetworking.Callbacks[LP] += PlayLoopSoundClient;
+            ModNetworking.Callbacks[LS] += StopLoopSoundClient;
+        }
         private void Awake()
         {           
             SC = GetComponent<SuspensionController>();
@@ -208,10 +218,6 @@ namespace BotFix
                 }
                 rigg = GetComponent<Rigidbody>();
             }
-
-            ModNetworking.Callbacks[A1] += PlaySoundClient;
-            ModNetworking.Callbacks[LP] += PlayLoopSoundClient;
-            ModNetworking.Callbacks[LS] += StopLoopSoundClient;
         }
 
         private void UpdateMapper()

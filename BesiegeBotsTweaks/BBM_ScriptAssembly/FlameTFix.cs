@@ -23,10 +23,7 @@ namespace BesiegeBotsTweaks
         private bool isFirstFrame = true;
         private int baseAmmo = 240;
 
-        private static MessageType mLoadFlamerAmmo = ModNetworking.CreateMessageType(DataType.Block);
-        private static MessageType mPlayFireSound = ModNetworking.CreateMessageType(DataType.Block);
-        private static MessageType mStopFireSound = ModNetworking.CreateMessageType(DataType.Block);
-        private static MessageType mKillFire = ModNetworking.CreateMessageType(DataType.Block);
+        private static MessageType mLoadFlamerAmmo, mPlayFireSound, mStopFireSound, mKillFire;
         private Message LFA, PFS, SFS, KF;
 
         /*          Old Flamethrower color vars
@@ -37,6 +34,11 @@ namespace BesiegeBotsTweaks
         internal static void SetupNetworking()
         {
             //Flamethrower message callbacks
+            //TODO: Callbacks cause NRE's sometimes in multiverse
+            mLoadFlamerAmmo = ModNetworking.CreateMessageType(DataType.Block);
+            mPlayFireSound = ModNetworking.CreateMessageType(DataType.Block);
+            mStopFireSound = ModNetworking.CreateMessageType(DataType.Block);
+            mKillFire = ModNetworking.CreateMessageType(DataType.Block);
             ModNetworking.Callbacks[mLoadFlamerAmmo] += (System.Action<Message>)delegate(Message m) {((Block)m.GetData(0)).InternalObject.GetComponent<FlameTFix>().LoadFireAmmo();};
             ModNetworking.Callbacks[mPlayFireSound] += (System.Action<Message>)delegate(Message m) {((Block)m.GetData(0)).InternalObject.GetComponent<FlameTFix>().FireSound.Play();};
             ModNetworking.Callbacks[mStopFireSound] += (System.Action<Message>)delegate(Message m) {((Block)m.GetData(0)).InternalObject.GetComponent<FlameTFix>().FireSound.Stop();};
@@ -117,7 +119,7 @@ namespace BesiegeBotsTweaks
         private void LoadFireAmmo()
         {
             baseAmmo /= block.Machine.GetBlocksOfType(BlockType.Flamethrower).Count;
-            ModConsole.Log("Loading Flamethrower to {0} seconds", baseAmmo * 0.25f + 10f/*FC.baseAmmo*/);
+            //ModConsole.Log("Loading Flamethrower to {0} seconds", baseAmmo * 0.25f + 10f/*FC.baseAmmo*/);
             FC.OnReloadAmmo(ref baseAmmo, AmmoType.Fire, false, true);
         }
         private void KillFire()

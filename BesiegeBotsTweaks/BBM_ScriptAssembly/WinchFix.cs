@@ -11,8 +11,13 @@ namespace BotFix
         private MKey DestroyKey;
         private bool brok = false;
 
-        private MessageType mDestroySpring = ModNetworking.CreateMessageType(DataType.Block);
+        private static MessageType mDestroySpring;
         private Message DS;
+        internal static void SetupNetworking()
+        {
+            mDestroySpring = ModNetworking.CreateMessageType(DataType.Block);
+            ModNetworking.Callbacks[mDestroySpring] += (System.Action<Message>)delegate(Message m) {((Block)m.GetData(0)).InternalObject.GetComponent<WinchFix>().DestroySpring();};
+        }
 
         private void Awake()
         {

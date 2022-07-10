@@ -469,7 +469,8 @@ namespace BotFix
             //PrefabMaster.GetBlock(BlockType.Magnet, out BB);
 
             //65
-            //PrefabMaster.GetBlock(BlockType.Sensor, out BB);
+            PrefabMaster.GetBlock(BlockType.Sensor, out BB);
+            //((SensorBlock)BB).sensorPos.Translate(Vector3.forward * 10);
 
             //66
             //PrefabMaster.GetBlock(BlockType.Timer, out BB);

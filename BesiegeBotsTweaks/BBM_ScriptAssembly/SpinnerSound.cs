@@ -98,10 +98,11 @@ namespace BesiegeBotsTweaks
         private byte updateCounter = 0;
         private readonly byte updateRate = 5;
 
-        private static MessageType mAvgSpeed = ModNetworking.CreateMessageType(DataType.Block, DataType.Single);
+        private static MessageType mAvgSpeed;
 
         internal static void SetupNetworking()
         {
+            mAvgSpeed = ModNetworking.CreateMessageType(DataType.Block, DataType.Single);
             ModNetworking.Callbacks[mAvgSpeed] += (System.Action<Message>)delegate(Message m)
             {
                 Block target = (Block)m.GetData(0);
