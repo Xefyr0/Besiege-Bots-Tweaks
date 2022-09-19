@@ -10,9 +10,6 @@ namespace BotFix
         private Rect windowRect = new Rect(15f, 200f, 190f, 200f); //260
         public bool mute = true;
         private string mutetext;
-        //private string MBtext;
-        //private string Betatext;
-        private string gtext;
         public float oload;
         public float temp;
 
@@ -117,10 +114,9 @@ namespace BotFix
             GUILayout.Label(string.Format("{0:N2}", (object)(float)((double)BBinfo.Distance / 1000.0)));
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
-            float num = BBinfo.Acceleration;
             GUILayout.Label("G-Force:");
             string format = "{0}(g)";
-            num = BBinfo.Overload;
+            float num = BBinfo.Overload;
             string str = num.ToString("#0.00");
             GUILayout.Label(string.Format(format, (object)str));
             GUILayout.EndHorizontal();

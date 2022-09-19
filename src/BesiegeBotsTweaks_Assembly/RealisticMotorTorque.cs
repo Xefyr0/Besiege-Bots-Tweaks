@@ -25,7 +25,7 @@ namespace BotFix
 
         //The below vars are used in the code ripped from CogMotorControllerHinge.
         private int FlipInvert => CMCH.Flipped ? 1 : (-1);
-        private float deltaMultiplier => CMCH.degreesPerSecond * 80f * (float)(-FlipInvert);
+        private float DeltaMultiplier => CMCH.degreesPerSecond * 80f * (float)(-FlipInvert);
         private float lastVelocity;
         private void Awake()
         {
@@ -59,7 +59,7 @@ namespace BotFix
 
             //Method variables for computing motor's targetVelocity each frame
             float Velocity = CMCH.Input * CMCH.SpeedSlider.Value;
-            float maxVelocity = Velocity * deltaMultiplier;
+            float maxVelocity = Velocity * DeltaMultiplier;
 		    float targetVelocity = lastVelocity + (maxVelocity - lastVelocity) * Time.fixedDeltaTime * CMCH.speedLerpSmooth;
             
             //This block of code is magic, right down to the 0.01 number. No clue why it works, 

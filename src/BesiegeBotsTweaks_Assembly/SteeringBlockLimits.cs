@@ -12,6 +12,7 @@ namespace BesiegeBotsTweaks
         private void Start()
         {
             SW.LimitsSlider.UseLimitsToggle.IsActive = false;
+            SW.LimitsSlider.UseLimitsToggle.ApplyValue();
             Object.Destroy(this);
         }
     }

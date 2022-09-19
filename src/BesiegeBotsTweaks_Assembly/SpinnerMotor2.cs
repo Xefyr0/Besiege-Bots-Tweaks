@@ -22,8 +22,6 @@ namespace BotFix
         public float Torquex = 0;
         public float Torquey = 0;
         public float Torquez = 0;
-        private JointMotor motor;
-
         private Rigidbody rigg;
         private Rigidbody target;
         public BlockBehaviour BB { get; internal set; }

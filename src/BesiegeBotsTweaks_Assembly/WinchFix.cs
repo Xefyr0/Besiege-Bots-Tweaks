@@ -9,8 +9,6 @@ namespace BotFix
     {
         private SpringCode SC;
         private MKey DestroyKey;
-        private bool brok = false;
-
         private static MessageType mDestroySpring;
         private Message DS;
         internal static void SetupNetworking()

@@ -18,7 +18,7 @@ namespace BotFix
         private static readonly int FRAMECOUNT = 20;  //The number of frames this component waits before making changes.
         private int selectedmode = 0;
         private const int MediumBF = 100000, UltraBF = 150000, DrumBF = 200000;
-        private static List<string> GrabMode = new List<string>()
+        private static readonly List<string> GrabMode = new List<string>()
         {
             "Vanilla",
             "Medium",

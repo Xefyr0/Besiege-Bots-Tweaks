@@ -16,7 +16,6 @@ namespace BotFix
     [RequireComponent(typeof(BuildSurface))]
     public class BuildSurfaceFix : MonoBehaviour
     {
-        private Rigidbody rigg;
         private BuildSurface BS;
 
         void Awake()

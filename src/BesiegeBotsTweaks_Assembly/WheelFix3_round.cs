@@ -12,15 +12,12 @@ namespace BotFix
         public BlockBehaviour BB;
         public CogMotorControllerHinge CCH;
         private Rigidbody rigg;
-        private HingeJoint CJ;
         static GameObject WheelColliderOrgin;
         private Collider[] Colliders;
         private MeshFilter mFilter;
         private MeshRenderer mRenderer;
         private MeshCollider mCollider;
         public GameObject WheelCollider;
-
-        private MSlider GS;
         public MToggle Roundwheelz;
         private MSlider Lerpomode;
         
@@ -29,9 +26,6 @@ namespace BotFix
            
         public bool MakeRound = false;       
         private bool isFirstFrame = true;
-        private bool Collider = false;
-        private bool ShowCollider = false;
-        private bool IsPowered = false;
      
         private void Awake()
         {
@@ -42,7 +36,6 @@ namespace BotFix
 
             if (ID == (int)BlockType.Wheel || ID == (int)BlockType.LargeWheel)
             {
-                IsPowered = true;
                 CCH = GetComponent<CogMotorControllerHinge>();
                 Lerpomode = BB.AddSlider("Spin up time", "Lerp", Lerpo, 0f, 10f);
                 //Lerpomode.ValueChanged += (float value) => { Lerpo = value; CCH.speedLerpSmooth = value; };
@@ -61,7 +54,7 @@ namespace BotFix
 
             //Mapper definition
             Roundwheelz = BB.AddToggle("ROUNDWHEELZ!", "ROUNDWHEELZ!", MakeRound);
-            Roundwheelz.Toggled += (bool value) => { MakeRound = Collider = value; };
+            Roundwheelz.Toggled += (bool value) => { MakeRound = value; };
 
             //DisplayInMapper config
             Roundwheelz.DisplayInMapper = true;
@@ -103,11 +96,10 @@ namespace BotFix
                             mCollider = WheelCollider.GetComponent<MeshCollider>();
                             mCollider.convex = true;
 
-                            if (ShowCollider)
-                            {
-                                mRenderer = WheelCollider.AddComponent<MeshRenderer>();
-                                mRenderer.material.color = Color.red;
-                            }
+#if DEBUG
+                            mRenderer = WheelCollider.AddComponent<MeshRenderer>();
+                            mRenderer.material.color = Color.red;
+#endif
 
                             PaS pas = PaS.GetPositionScaleAndFriction(ID);
 

@@ -74,7 +74,6 @@ namespace BesiegeBotsTweaks
         //Information about this block
         private BlockBehaviour BB;
         private Block thisblock;
-        private bool getPhysics = false;
 
         //Information about the motor sound
         private float startingVolume = 0.3f;
@@ -93,8 +92,8 @@ namespace BesiegeBotsTweaks
         private Quaternion currentRotation;
         private Quaternion lastRotation;
         private float deltaAngle;
-        private Queue<float> averageAngularVelocityQueue = new Queue<float>();
-        private int queueSize = 20;
+        private readonly Queue<float> averageAngularVelocityQueue = new Queue<float>();
+        private const int queueSize = 20;
         private byte updateCounter = 0;
         private readonly byte updateRate = 5;
 

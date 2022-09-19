@@ -22,8 +22,6 @@ namespace BesiegeBotsTweaks
         private ConfigurableJoint CJ;
         private Transform FT;
         private AudioSource FireSound;
-        
-        private bool isFirstFrame = true;
         private int baseAmmo = 240;
 
         private static MessageType mLoadFlamerAmmo, mPlayFireSound, mStopFireSound, mKillFire;

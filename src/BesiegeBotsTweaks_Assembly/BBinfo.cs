@@ -22,7 +22,6 @@ namespace BotFix
         private Vector3 lastVelocity;
         private Quaternion lastAngle;
         private bool isFirstFrame;
-        private string strBlock;
         public string yeet;
         
 
@@ -133,7 +132,7 @@ namespace BotFix
                     angval = zero / (float)averageAngularVelocityQueue.Count;
                 }
 
-                angval = angval * 16.5f; //16.5
+                angval *= 16.5f; //16.5
                 lastAngle = Angle;
             } else
             {
@@ -204,10 +203,7 @@ namespace BotFix
                 else if (velocityUnit == 3) //mach
                     acceleration *= 340f;
 
-                    if (averageAccelerationQueue.Count == queueSize)
-                {
-                    double num = (double)averageAccelerationQueue.Dequeue();
-                }
+                if (averageAccelerationQueue.Count == queueSize) averageAccelerationQueue.Dequeue();
                 averageAccelerationQueue.Enqueue(acceleration);
                 Overload = averageAccelerationQueue.Average() / Physics.gravity.magnitude;
 

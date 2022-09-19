@@ -470,7 +470,8 @@ namespace BotFix
 
             //65
             PrefabMaster.GetBlock(BlockType.Sensor, out BB);
-            //((SensorBlock)BB).sensorPos.Translate(Vector3.forward * 10);
+            if (BB.gameObject.GetComponent<SensorDisjoint>() == null)
+                BB.gameObject.AddComponent<SensorDisjoint>();
 
             //66
             //PrefabMaster.GetBlock(BlockType.Timer, out BB);
