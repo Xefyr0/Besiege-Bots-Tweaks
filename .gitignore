@@ -1,0 +1,12 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/BesiegeBotsTweaks/BesiegeBotsTweaks_Assembly.dll
+/src/.vs
+/src/BesiegeBotsTweaks.sln
+/src/BesiegeBotsTweaks_Assembly/bin
+/src/BesiegeBotsTweaks_Assembly/obj
+/src/BesiegeBotsTweaks_Assembly/BesiegeBotsTweaks_Assembly.csproj.user
+/src/BesiegeBotsTweaks_Assembly/BesiegeBotsTweaks_Assembly.csproj
