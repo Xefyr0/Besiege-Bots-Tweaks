@@ -2,6 +2,9 @@
 FrictionSlider.cs
 Written by Xefyr for the Besiege Bots community
 Adapted from the work of DokterDoyle
+
+This class adds to the block mapper
+a slider that modifies the friction and menu that modifies the friction combine
 */
 
 using UnityEngine;

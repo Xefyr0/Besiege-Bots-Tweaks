@@ -1,6 +1,11 @@
 /*
 BreakForcetweaks.cs
 Written by Xefyr for the Besiege Bots community
+
+This class finds what type of block it's attached to and may modify the strengths of its Joints
+FRAMECOUNT FixedUpdates after sim starts depending on the type of the block.
+
+This does not include modifications created by blocks with "modes" such as Grabbers and Suspensions.
 */
 
 using UnityEngine;
@@ -14,7 +19,6 @@ namespace BesiegeBotsTweaks
     public class BreakForceTweak : MonoBehaviour
     {
         private static readonly int FRAMECOUNT = 2;  //The number of frames this component waits before making changes.
-        //The entry point into this simple class is when it's attached to a GameObject. Awake is generally called once on blocks, when they're created in build mode.
         private Block block;
         private void Awake()
         {

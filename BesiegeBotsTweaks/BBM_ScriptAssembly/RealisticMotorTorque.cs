@@ -1,6 +1,12 @@
 /*
 RealisticMotorTorque.cs
 Written by Xefyr for the Besiege Bots community
+
+In Besiege, most blocks that spin can easily supply lots of torque.
+For simulating robot combat however, this resulted in bots
+that had spinners with much more torque than their real-life counterparts.
+I created this class to provide a limit on torque as an alternative to the spin up time slider.
+It never got adopted as part of the ruleset, but remains as an option to builders.
 */
 
 using UnityEngine;

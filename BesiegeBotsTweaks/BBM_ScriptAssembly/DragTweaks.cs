@@ -1,6 +1,9 @@
 /*
 DragTweaks.cs
 Written by Xefyr for the Besiege Bots community
+
+This class finds the type of block it is attached to and may modify the air drag of that block
+depending on the type.
 */
 
 using UnityEngine;
@@ -14,7 +17,6 @@ namespace BesiegeBotsTweaks
     public class DragTweak : MonoBehaviour
     {
         private static readonly int FRAMECOUNT = 10;  //The number of frames this component waits before making changes.
-        //The entry point into this simple class is when it's attached to a GameObject. Awake is generally called once on blocks, when they're created in build mode.
         private Block block;
         private void Awake()
         {
@@ -97,7 +99,7 @@ namespace BesiegeBotsTweaks
                 }
             }
 
-            //The component instance is destroyed after the necessary changes are made.
+            //The instance is destroyed after the necessary changes are made.
             Destroy(this);
         }   
     }

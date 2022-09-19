@@ -2,6 +2,9 @@
 FlameTFix.cs
 Written by DokterDoyle for the Besiege Bots community
 Amended by Xefyr
+
+This class increases the ammunition a flamethrower starts with depending on the number present in the machine
+and adds sound to the flamethrower when it is running.
 */
 using Modding;
 using UnityEngine;
@@ -26,15 +29,10 @@ namespace BesiegeBotsTweaks
         private static MessageType mLoadFlamerAmmo, mPlayFireSound, mStopFireSound, mKillFire;
         private Message LFA, PFS, SFS, KF;
 
-        /*          Old Flamethrower color vars
-        private MColourSlider colslid;
-        public Color32 fcolor = new Color32(255,240,0,255);
-        public Color32 startcolor = new Color32(255, 240, 0, 255);
-        */
         internal static void SetupNetworking()
         {
             //Flamethrower message callbacks
-            //TODO: Callbacks cause NRE's sometimes in multiverse
+            //TODO: Callbacks cause NRE's sometimes in multiverse? confirm again after 7/15/2022
             mLoadFlamerAmmo = ModNetworking.CreateMessageType(DataType.Block);
             mPlayFireSound = ModNetworking.CreateMessageType(DataType.Block);
             mStopFireSound = ModNetworking.CreateMessageType(DataType.Block);
@@ -52,18 +50,6 @@ namespace BesiegeBotsTweaks
             CJ = GetComponent<ConfigurableJoint>();
             FT = transform.Find("FireTrigger");
             block = Block.From(FC);
-
-            /*      Old Flamethrower color init
-            colslid = FC.AddColourSlider("Firecolor", "Firecolor", fcolor, false);
-            colslid.ValueChanged += (ColourChangeHandler)(value => { fcolor = value; });
-            colslid.DisplayInMapper = true;
-
-            var cl = fire.colorOverLifetime;
-            cl.enabled = true;
-            Gradient grad = new Gradient();
-            grad.SetKeys(new GradientColorKey[] { new GradientColorKey(startcolor, 0.0f), new GradientColorKey(fcolor, 0.3f), new GradientColorKey(Color.black, 0.7f) }, new GradientAlphaKey[] { new GradientAlphaKey(0.0f, 0.0f), new GradientAlphaKey(1.0f, 0.1f), new GradientAlphaKey(0.0f, 1.0f) });
-            cl.color = grad;
-            */
 
             //FireSound init
             FireSound = FC.gameObject.AddComponent<AudioSource>();
@@ -116,6 +102,7 @@ namespace BesiegeBotsTweaks
                 KillFire();
             }
         }
+
         private void LoadFireAmmo()
         {
             baseAmmo /= block.Machine.GetBlocksOfType(BlockType.Flamethrower).Count;
@@ -127,11 +114,12 @@ namespace BesiegeBotsTweaks
             //These variable changes are hacky, but the method I'd like to call instead is private so I've no other choice.
             FC.timeOut = true;
             FC.fireParticles.Stop();
-            FT.gameObject.SetActive(false); //This last one may be unnecessary
 
             //FlameTFix does nothing after the the joint is broken, so it can be destroyed.
             Destroy(this);
         }
+
+        //Enumerator that loads fire ammo when sim starts
         private System.Collections.IEnumerator FirstFrame()
         {
             yield return new WaitForFixedUpdate();

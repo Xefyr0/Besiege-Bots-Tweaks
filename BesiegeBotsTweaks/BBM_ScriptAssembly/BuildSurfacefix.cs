@@ -1,3 +1,11 @@
+/*
+BuildSurfacefix.cs
+Written by DokterDoyle for the Besiege Bots community
+Amended by Xefyr
+
+This class adds a few hidden settings into the Build Surface block mapper and vastly increases the break threshold.
+*/
+
 using UnityEngine;
 using Modding;
 using Modding.Common;
@@ -10,22 +18,20 @@ namespace BotFix
     {
         private Rigidbody rigg;
         private BuildSurface BS;
-        private ConfigurableJoint[] CJ;
-        private Collider[] colliders;
 
         void Awake()
         {
+            //Basic gets
             BS = GetComponent<BuildSurface>();
             Block block = Block.From(BS);
 
+            /*
             var CT = BS.currentType;
             CT.breakImpactThreshold = 20000f;
             CT.jointBaseBreakForce = 50000f;
             CT.jointBreakForceScaler = Mathf.Infinity;
             CT.jointBreakTorqueScaler = Mathf.Infinity;
-
-            BuildSurface.AllowThicknessChange = true;
-            BS.thickSlider.DisplayInMapper = true;
+            */
 
             if(BS.SimPhysics)
             {

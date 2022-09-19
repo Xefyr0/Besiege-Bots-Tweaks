@@ -497,6 +497,10 @@ namespace BotFix
             PrefabMaster.GetBlock(BlockType.BuildSurface, out BB);
             if (BB.gameObject.GetComponent<BuildSurfaceFix>() == null)
                 BB.gameObject.AddComponent<BuildSurfaceFix>();
+            //Show thickness and mass sliders, and collision toggle.
+            BuildSurface.AllowThicknessChange = true;
+            BuildSurface.ShowMassSlider = true;
+            BuildSurface.ShowCollisionToggle = true;
         }
     }
 }

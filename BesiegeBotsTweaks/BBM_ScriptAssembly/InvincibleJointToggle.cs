@@ -1,6 +1,13 @@
 /*
 InvincibleJointToggle.cs
 Written by Xefyr for the Besiege Bots community
+
+For a long while in Besiege Bots, it's been hard to make a spinner that does not break.
+Eventually the strategy converged onto making a spinner entirely out of invincible blocks.
+Over time, people wanted to use blocks like Blades in spinners,
+and continue using blocks with nerfed joint strengths like Spinning Blocks.
+This class provides whatever it's attached to with a joint strength invincibility toggle
+so that they can function as a part of a spinner.
 */
 
 using UnityEngine;
@@ -10,14 +17,6 @@ using Modding.Blocks;
 
 namespace BesiegeBotsTweaks
 {
-    /*
-    For a long while in Besiege Bots, it's been hard to make a spinner that does not break.
-    Eventually the strategy converged onto making a spinner entirely out of invincible blocks.
-    Over time, people wanted to use blocks like Blades in spinners,
-    and continue using blocks with nerfed joint strengths like Spinning Blocks.
-    This class provides whatever it's attached to with a joint strength invincibility toggle
-    so that they can function as a part of a spinner.
-    */
     [RequireComponent(typeof(BlockBehaviour))]
     public class InvincibleJointToggle : MonoBehaviour
     {

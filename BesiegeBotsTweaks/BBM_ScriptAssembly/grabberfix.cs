@@ -73,7 +73,7 @@ namespace BotFix
             }
         }
 
-        /*                  Old betamode grabbers. Will not work if uncommented, it needs some obsolete class members.
+        /*Old betamode grabbers. Will not work if uncommented, it needs some obsolete class members.
         private void FixedUpdate()
         {
             if (Mod.BetaMode)

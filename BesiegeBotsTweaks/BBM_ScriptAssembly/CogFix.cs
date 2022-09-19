@@ -1,3 +1,10 @@
+/*
+BuildSurfacefix.cs
+Written by DokterDoyle for the Besiege Bots community
+
+This class adds a spinup time slider, which offers an alternate way to control vanilla acceleration.
+*/
+
 using UnityEngine;
 
 namespace BotFix

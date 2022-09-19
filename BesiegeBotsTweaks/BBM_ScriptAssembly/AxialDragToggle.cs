@@ -2,12 +2,16 @@
 AxialDragToggle.cs
 Written by DokterDoyle for the Besiege Bots community
 Amended by Xefyr
+
+This class adds a toggle to blocks like Wings and Wing Panels
+that disables their directional drag, if one is present.
 */
 
 using UnityEngine;
 
 namespace BesiegeBotsTweaks
 {
+    [RequireComponent(typeof(AxialDrag))]
     public class AxialDragToggle : MonoBehaviour
     {
         void Awake()
