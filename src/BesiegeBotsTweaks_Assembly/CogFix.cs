@@ -1,20 +1,25 @@
 /*
-BuildSurfacefix.cs
-Written by DokterDoyle for the Besiege Bots community
-
-This class adds a spinup time slider, which offers an alternate way to control vanilla acceleration.
-*/
+ * BuildSurfacefix.cs
+ * Written by DokterDoyle for the Besiege Bots community
+ * 
+ * This class adds a spinup time slider, which offers an alternate way to control vanilla acceleration.
+ */
 
 using UnityEngine;
 
 namespace BotFix
 {
+    [RequireComponent(typeof(CogMotorControllerHinge))]
     public class Cogfix : MonoBehaviour
     {
+        //Basic reference variables
         private BlockBehaviour BB;
         public CogMotorControllerHinge CCH;
-        private float Lerpo = 0f;
         private MSlider Lerpomode;
+
+        //Lerpomode must be preserved during simulation,
+        //gets initialized on block's instantiation through the ValueChanged lambda
+        private float Lerpo = 0f;
 
         void Awake()
         {

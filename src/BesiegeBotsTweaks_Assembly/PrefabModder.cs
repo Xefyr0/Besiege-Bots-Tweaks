@@ -1,12 +1,11 @@
 /*
-PrefabModder.cs
-Written by DokterDoyle for the Besiege Bots community
-Amended by Xefyr
-*/
+ * PrefabModder.cs
+ * Written by DokterDoyle for the Besiege Bots community
+ * Amended by Xefyr
+ */
 
-using UnityEngine;
-using BotFix;
 using BesiegeBotsTweaks;
+using UnityEngine;
 
 namespace BotFix
 {
@@ -202,19 +201,22 @@ namespace BotFix
 
             //11
             PrefabMaster.GetBlock(BlockType.Cannon, out BB);
-            if (BB.gameObject.GetComponent<CannonDelayRemover>() == null)
-                BB.gameObject.AddComponent<CannonDelayRemover>();
+            {
+                ((CanonBlock)BB).randomDelay = 0f;
+            }
 
             //12
             //PrefabMaster.GetBlock(BlockType.ScalingBlock, out BB);
 
             //13
             PrefabMaster.GetBlock(BlockType.SteeringBlock, out BB);
-            //This has to be done here, instead of Awake(). Glad I got it first try
-            ((SteeringWheel)BB).allowLimits = true;
-            if (BB.gameObject.GetComponent<SteeringBlockLimits>() == null)
-                BB.gameObject.AddComponent<SteeringBlockLimits>();
-
+            {
+                //This has to be done here, instead of Awake(). Glad I got it first try
+                ((SteeringWheel)BB).allowLimits = true;
+                ((SteeringWheel)BB).LimitsSlider.UseLimitsToggle.IsActive = false;
+                ((SteeringWheel)BB).LimitsSlider.UseLimitsToggle.ApplyValue();
+            }
+            
 
             //14
             //PrefabMaster.GetBlock(BlockType.FlyingBlock, out BB);
@@ -279,8 +281,16 @@ namespace BotFix
 
             //25
             PrefabMaster.GetBlock(BlockType.Wing, out BB);
-            if (BB.gameObject.GetComponent<AxialDragToggle>() == null)
-                BB.gameObject.AddComponent<AxialDragToggle>();
+            {
+                AxialDrag AD = BB.GetComponent<AxialDrag>();
+                float VC = AD.velocityCap;
+
+                //Mapper definition
+                MToggle ADtoggle = AD.AddToggle("Disable Drag", "Disable drag", false);
+                ADtoggle.Toggled += (bool value) => { AD.velocityCap = value ? 0 : VC; };
+                ADtoggle.DisplayInMapper = true;
+            }
+            
 
             //26
             //PrefabMaster.GetBlock(BlockType.Propeller, out BB);
@@ -317,8 +327,17 @@ namespace BotFix
 
             //34
             PrefabMaster.GetBlock(BlockType.WingPanel, out BB);
-            if (BB.gameObject.GetComponent<AxialDragToggle>() == null)
-                BB.gameObject.AddComponent<AxialDragToggle>();
+            {
+                AxialDrag AD = BB.GetComponent<AxialDrag>();
+                float VC = AD.velocityCap;
+
+                //Mapper definition
+                MToggle ADtoggle = AD.AddToggle("Disable Drag", "Disable drag", false);
+                ADtoggle.Toggled += (bool value) => { AD.velocityCap = value ? 0 : VC; };
+
+                //DisplayInMapper config
+                ADtoggle.DisplayInMapper = true;
+            }
 
             //35
             PrefabMaster.GetBlock(BlockType.Ballast, out BB);
@@ -412,8 +431,9 @@ namespace BotFix
 
             //53
             PrefabMaster.GetBlock(BlockType.ShrapnelCannon, out BB);
-            if (BB.gameObject.GetComponent<CannonDelayRemover>() == null)
-                BB.gameObject.AddComponent<CannonDelayRemover>();
+            {
+                ((CanonBlock)BB).randomDelay = 0f;
+            }
 
             //54
             //PrefabMaster.GetBlock(BlockType.Grenade, out BB);

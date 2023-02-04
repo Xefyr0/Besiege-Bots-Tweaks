@@ -1,52 +1,31 @@
 /*
-BreakForcetweaks.cs
-Written by Xefyr for the Besiege Bots community
-
-This class finds what type of block it's attached to and may modify the strengths of its Joints
-FRAMECOUNT FixedUpdates after sim starts depending on the type of the block.
-
-This does not include modifications created by blocks with "modes" such as Grabbers and Suspensions.
-*/
+ * BreakForcetweaks.cs
+ * Written by Xefyr for the Besiege Bots community
+ * 
+ * This class finds what type of block it's attached to and may modify the strengths of its Joints
+ * FRAMECOUNT FixedUpdates after sim starts depending on the type of the block.
+ * 
+ * This does not include modifications created by blocks with "modes" such as Grabbers and Suspensions.
+ */
 
 using UnityEngine;
-using Modding;
-using Modding.Common;
-using Modding.Blocks;
 
 namespace BesiegeBotsTweaks
 {
-    [RequireComponent(typeof(BlockBehaviour))]
-    public class BreakForceTweak : MonoBehaviour
+    //Not necessary because Joints are generated after the component is applied
+    //[RequireComponent(typeof(Joint))]
+    class BreakForceTweak : FrameDelayAction
     {
-        private static readonly int FRAMECOUNT = 2;  //The number of frames this component waits before making changes.
-        private Block block;
-        private void Awake()
+        protected override int FRAMECOUNT { get; } = 2;
+        protected override void DelayedAction()
         {
-            block = Block.From(base.gameObject);
-            
-            if (block.InternalObject.SimPhysics)
-            {
-                //The Enumerator is only meant to be executed:
-                //1. On the local instance (all instances) in Singleplayer
-                //2. As host on the local instance
-                //3. As host on the non-local instances if they're not in local sim
-                //4. As client on the local instance if we're in local sim
-                if (Player.GetHost() == null || (block.Machine.Player == Player.GetLocalPlayer() ? Player.GetLocalPlayer().IsHost || Player.GetLocalPlayer().InLocalSim : Player.GetLocalPlayer().IsHost && !block.Machine.Player.InLocalSim)) StartCoroutine(TweakBreakForces());
-                else Destroy(this);
-            }
-        }
-        private System.Collections.IEnumerator TweakBreakForces()
-        {
-            //Wait FRAMECOUNT FixedUpdates into sim
-            for (int i = 0; i < FRAMECOUNT; i++) yield return new WaitForFixedUpdate();
-
             //Gets the joint array from each block, and if there is at least one joint then it modifies the joint strength based on a switch statement of the block type.
-            Joint[] joints = block.GameObject.GetComponents<Joint>();
-            StrengthenTreads ST = block.GameObject.GetComponent<StrengthenTreads>();
+            Joint[] joints = thisBlock.GameObject.GetComponents<Joint>();
+            StrengthenTreads ST = thisBlock.GameObject.GetComponent<StrengthenTreads>();
 
             if (joints.Length > 0)
             {
-                switch (block.InternalObject.Prefab.Type)
+                switch (thisBlock.InternalObject.Prefab.Type)
                 {
                     case BlockType.FlyingBlock:
                         joints[0].breakForce = 20000;
@@ -137,9 +116,6 @@ namespace BesiegeBotsTweaks
                         break;
                 }
             }
-
-            //The component instance is destroyed after the necessary changes are made.
-            Destroy(this);
         }
     }
 }

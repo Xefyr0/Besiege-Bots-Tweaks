@@ -1,6 +1,5 @@
 
 using Modding;
-using Modding.Blocks;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -23,7 +22,7 @@ namespace BotFix
         private Quaternion lastAngle;
         private bool isFirstFrame;
         public string yeet;
-        
+
 
         public Vector3 Position { get; private set; }
 
@@ -49,7 +48,7 @@ namespace BotFix
         }
 
         private void FixedUpdate()
-        {   
+        {
             if (Game.IsSimulating)
             {
                 if (!isFirstFrame)
@@ -70,7 +69,7 @@ namespace BotFix
                 FuncOverload();
                 FuncAcceleration();
                 BlockSelector();
-               
+
             }
             else
             {
@@ -85,7 +84,7 @@ namespace BotFix
         {
             Position = lastPosition = Vector3.zero;
             Velocity = lastVelocity = Vector3.zero;
-            Angle = lastAngle = new Quaternion(0,0,0,0);
+            Angle = lastAngle = new Quaternion(0, 0, 0, 0);
             Distance = 0.0f;
             Overload = 0.0f;
             Acceleration = 0.0f;
@@ -95,7 +94,7 @@ namespace BotFix
 
         public void ChangedVelocityUnit()
         {
-            if(velocityUnit < 3) velocityUnit ++;
+            if (velocityUnit < 3) velocityUnit++;
             else velocityUnit = 0;
             Velocity = Vector3.zero;
             ConsoleController.ShowMessage(velocityUnit.ToString());
@@ -112,7 +111,7 @@ namespace BotFix
         private void FuncAngle()
         {
             if (validBlock)
-                Angle = targetBlock.transform.rotation;         
+                Angle = targetBlock.transform.rotation;
         }
 
         private void FuncAngVel()
@@ -134,13 +133,14 @@ namespace BotFix
 
                 angval *= 16.5f; //16.5
                 lastAngle = Angle;
-            } else
+            }
+            else
             {
                 angval = 0;
             }
-            
+
         }
-        
+
         private void FuncVelocity()
         {
             if (validBlock)
@@ -257,7 +257,7 @@ namespace BotFix
 
             if (nutkey != null && nutkey.IsPressed && Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, 1000f))
             {
-               
+
                 GameObject index = hitInfo.transform.gameObject;
                 if (index.GetComponent<BlockBehaviour>())
                     targetBlock = index.GetComponent<BlockBehaviour>();

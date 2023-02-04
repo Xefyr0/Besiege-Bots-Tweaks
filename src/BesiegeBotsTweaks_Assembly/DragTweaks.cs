@@ -1,49 +1,28 @@
 /*
-DragTweaks.cs
-Written by Xefyr for the Besiege Bots community
-
-This class finds the type of block it is attached to and may modify the air drag of that block
-depending on the type.
-*/
+ * DragTweaks.cs
+ * Written by Xefyr for the Besiege Bots community
+ * 
+ * This class finds the type of block it is attached to and may modify the air drag of that block
+ * depending on the type.
+ */
 
 using UnityEngine;
-using Modding;
-using Modding.Common;
-using Modding.Blocks;
 
 namespace BesiegeBotsTweaks
 {
-    [RequireComponent(typeof(BlockBehaviour))]
-    public class DragTweak : MonoBehaviour
+    //Cannot have because parenting requires the removal of a rigidbody.
+    //[RequireComponent(typeof(Rigidbody))]
+    class DragTweak : FrameDelayAction
     {
-        private static readonly int FRAMECOUNT = 10;  //The number of frames this component waits before making changes.
-        private Block block;
-        private void Awake()
+        protected override int FRAMECOUNT { get; } = 10;
+        protected override void DelayedAction()
         {
-            block = Block.From(base.gameObject);
-            
-            if (block.InternalObject.SimPhysics)
-            {
-                //The Enumerator is only meant to be executed:
-                //1. On the local instance (all instances) in Singleplayer
-                //2. As host on the local instance
-                //3. As host on the non-local instances if they're not in local sim
-                //4. As client on the local instance if we're in local sim
-                if (Player.GetHost() == null || (block.Machine.Player == Player.GetLocalPlayer() ? Player.GetLocalPlayer().IsHost || Player.GetLocalPlayer().InLocalSim : Player.GetLocalPlayer().IsHost && !block.Machine.Player.InLocalSim)) StartCoroutine(TweakDrags());
-                else Destroy(this);
-            }
-        }
-        private System.Collections.IEnumerator TweakDrags()
-        {
-            //Wait FRAMECOUNT FixedUpdates into sim
-            for (int i = 0; i < FRAMECOUNT; i++) yield return new WaitForFixedUpdate();
-
             //Gets the Rigidbody of each block, and if it isn't null then the drags & maxAngularVelocity are modified based on a switch statement of the block type.
-            GameObject GO = block.GameObject;
+            GameObject GO = thisBlock.GameObject;
             Rigidbody RB = GO.GetComponent<Rigidbody>();
             if (RB != null)
             {
-                switch (block.InternalObject.Prefab.Type)
+                switch (thisBlock.InternalObject.Prefab.Type)
                 {
                     case BlockType.CogMediumUnpowered:
                     case BlockType.GripPad:
@@ -98,9 +77,6 @@ namespace BesiegeBotsTweaks
                         break;
                 }
             }
-
-            //The instance is destroyed after the necessary changes are made.
-            Destroy(this);
         }   
     }
 }

@@ -1,21 +1,19 @@
 /*
-FlameTFix.cs
-Written by DokterDoyle for the Besiege Bots community
-Amended by Xefyr
-
-This class increases the ammunition a flamethrower starts with depending on the number present in the machine
-and adds sound to the flamethrower when it is running.
-*/
+ * FlameTFix.cs
+ * Written by DokterDoyle for the Besiege Bots community
+ * Amended by Xefyr
+ * 
+ * This class increases the ammunition a flamethrower starts with depending on the number present in the machine
+ * and adds sound to the flamethrower when it is running.
+ */
 using Modding;
-using UnityEngine;
-using Modding.Common;
 using Modding.Blocks;
+using UnityEngine;
 
 
 namespace BesiegeBotsTweaks
 {
-    [RequireComponent(typeof(BlockBehaviour))]
-    public class FlameTFix : MonoBehaviour
+    class FlameTFix : MonoBehaviour
     {
         private Block block;
         private FlamethrowerController FC;
@@ -35,13 +33,13 @@ namespace BesiegeBotsTweaks
             mPlayFireSound = ModNetworking.CreateMessageType(DataType.Block);
             mStopFireSound = ModNetworking.CreateMessageType(DataType.Block);
             mKillFire = ModNetworking.CreateMessageType(DataType.Block);
-            ModNetworking.Callbacks[mLoadFlamerAmmo] += (System.Action<Message>)delegate(Message m) {((Block)m.GetData(0)).InternalObject.GetComponent<FlameTFix>().LoadFireAmmo();};
-            ModNetworking.Callbacks[mPlayFireSound] += (System.Action<Message>)delegate(Message m) {((Block)m.GetData(0)).InternalObject.GetComponent<FlameTFix>().FireSound.Play();};
-            ModNetworking.Callbacks[mStopFireSound] += (System.Action<Message>)delegate(Message m) {((Block)m.GetData(0)).InternalObject.GetComponent<FlameTFix>().FireSound.Stop();};
-            ModNetworking.Callbacks[mKillFire] += (System.Action<Message>)delegate(Message m) {((Block)m.GetData(0)).InternalObject.GetComponent<FlameTFix>().KillFire();};
+            ModNetworking.Callbacks[mLoadFlamerAmmo] += delegate(Message m) {((Block)m.GetData(0)).InternalObject.GetComponent<FlameTFix>().LoadFireAmmo();};
+            ModNetworking.Callbacks[mPlayFireSound] += delegate(Message m) {((Block)m.GetData(0)).InternalObject.GetComponent<FlameTFix>().FireSound.Play();};
+            ModNetworking.Callbacks[mStopFireSound] += delegate(Message m) {((Block)m.GetData(0)).InternalObject.GetComponent<FlameTFix>().FireSound.Stop();};
+            ModNetworking.Callbacks[mKillFire] += delegate (Message m) { ((Block)m.GetData(0)).InternalObject.GetComponent<FlameTFix>().KillFire(); };
         }
 
-        void Awake()
+        private void Awake()
         {
             //Variable init
             FC = GetComponent<FlamethrowerController>();
@@ -64,8 +62,17 @@ namespace BesiegeBotsTweaks
             PFS = mPlayFireSound.CreateMessage(FC);
             SFS = mStopFireSound.CreateMessage(FC);
             KF = mKillFire.CreateMessage(FC);
+        }
 
-            if (FC.isSimulating && FC.SimPhysics) StartCoroutine(FirstFrame());
+        
+        private void Start()
+        {
+            //If block isn't in sim then it shouldn't do anything.
+            if (!FC.isSimulating || !FC.SimPhysics) return;
+
+            //Load fire ammo when sim starts
+            ModNetworking.SendToAll(LFA);
+            LoadFireAmmo();
         }
 
         private void FixedUpdate()
@@ -107,6 +114,7 @@ namespace BesiegeBotsTweaks
             //ModConsole.Log("Loading Flamethrower to {0} seconds", baseAmmo * 0.25f + 10f/*FC.baseAmmo*/);
             FC.OnReloadAmmo(ref baseAmmo, AmmoType.Fire, false, true);
         }
+
         private void KillFire()
         {
             //These variable changes are hacky, but the method I'd like to call instead is private so I've no other choice.
@@ -115,14 +123,6 @@ namespace BesiegeBotsTweaks
 
             //FlameTFix does nothing after the the joint is broken, so it can be destroyed.
             Destroy(this);
-        }
-
-        //Enumerator that loads fire ammo when sim starts
-        private System.Collections.IEnumerator FirstFrame()
-        {
-            yield return new WaitForFixedUpdate();
-            ModNetworking.SendToAll(LFA);
-            LoadFireAmmo();
         }
     }
 }

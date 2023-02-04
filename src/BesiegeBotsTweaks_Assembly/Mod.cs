@@ -1,18 +1,16 @@
 /*
-Mod.cs
-Written by DokterDoyle for the Besiege Bots community
-Amended by Xefyr
-*/
+ * Mod.cs
+ * Written by DokterDoyle for the Besiege Bots community
+ * Amended by Xefyr
+ */
 
-using System;
-using Modding;
-using Modding.Blocks;
-using UnityEngine;
 using BesiegeBotsTweaks;
+using Modding;
+using UnityEngine;
 
 namespace BotFix
 {
-	public class Mod : ModEntryPoint
+    public class Mod : ModEntryPoint
 	{
         public static readonly float HIGHGRAV = -55f;
         private BBMUI UIObject;

@@ -4,6 +4,15 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
+/*
+ * SensorDisjoint.cs
+ * Written by Xefyr for the Besiege Bots community
+ * 
+ * This class adds a slider to the Sensor block that it is attached to.
+ * That slider can move the whole sensor trigger farther away from the main block,
+ * reminiscent of a "disjoint" hitbox in combat games.
+ */
+
 namespace BesiegeBotsTweaks
 {
     [RequireComponent(typeof(SensorBlock))]

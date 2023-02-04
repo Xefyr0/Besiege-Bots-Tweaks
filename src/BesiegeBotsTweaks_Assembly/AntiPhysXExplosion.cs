@@ -1,54 +1,33 @@
 /*
-AntiPhysXExplosion.cs
-Written by Xefyr for the Besiege Bots community
+ * AntiPhysXExplosion.cs
+ * Written by Xefyr for the Besiege Bots community
+ * 
+ * This class is for use on Grabbers to drastically reduce the chance of physics explosions with their "grabby" connection.
+ */
 
-This class is for use on Grabbers to drastically reduce the chance of physics explosions with their "grabby" connection.
-*/
-
-using UnityEngine;
-using Modding;
-using Modding.Common;
 using Modding.Blocks;
+using Modding.Common;
+using UnityEngine;
 
 namespace BesiegeBotsTweaks
 {
-    [RequireComponent(typeof(BlockBehaviour))]
-    class AntiPhysXExplosion : MonoBehaviour
+    //Not necessary because Joints are generated after the component is applied
+    //[RequireComponent(typeof(Joint))]
+    class AntiPhysXExplosion : FrameDelayAction
     {
-        private static readonly int FRAMECOUNT = 15;  //The number of frames this component waits before making changes.
-        private void Awake()
+        protected override int FRAMECOUNT { get; } = 15;
+        protected override void DelayedAction()
         {
-            Block block = Block.From(base.gameObject);
-
-            if(block.InternalObject.SimPhysics)
-            {
-                //The Enumerator is only meant to be executed:
-                //1. On the local instance (all instances) in Singleplayer
-                //2. As host on the local instance
-                //3. As host on the non-local instances if they're not in local sim
-                //4. As client on the local instance if we're in local sim
-                if (Player.GetHost() == null || (block.Machine.Player == Player.GetLocalPlayer() ? Player.GetLocalPlayer().IsHost || Player.GetLocalPlayer().InLocalSim : Player.GetLocalPlayer().IsHost && !block.Machine.Player.InLocalSim)) StartCoroutine(ConfigureJointProjection());
-                else Destroy(this);
-            }
-        }
-        private System.Collections.IEnumerator ConfigureJointProjection()
-        {
-            //Wait FRAMECOUNT FixedUpdates into sim
-            for (int i = 0; i < FRAMECOUNT; i++) yield return new WaitForFixedUpdate();
-
             //joinTrigger is the component that manages the grabber's grabby joint/trigger combo.
-			JoinOnTriggerBlock joinTrigger = base.gameObject.GetComponentInChildren<JoinOnTriggerBlock>();
+            JoinOnTriggerBlock joinTrigger = gameObject.GetComponentInChildren<JoinOnTriggerBlock>();
 
             //If the grabber has grabbed onto something within frameCount frames, configure projection for that joint.
-            if(joinTrigger != null && joinTrigger.isJoined)
-			{
+            if (joinTrigger != null && joinTrigger.isJoined)
+            {
                 joinTrigger.currentJoint.projectionMode = JointProjectionMode.PositionAndRotation;
-                joinTrigger.currentJoint.projectionDistance = 1.50f;
+                joinTrigger.currentJoint.projectionDistance = 1.25f;
                 joinTrigger.currentJoint.projectionAngle = 100f;
-			}
-
-            //The component instance is destroyed after the necessary changes are made.
-            Destroy(this);
+            }
         }
     }
 }

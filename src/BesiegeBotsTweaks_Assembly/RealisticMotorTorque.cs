@@ -1,23 +1,22 @@
 /*
-RealisticMotorTorque.cs
-Written by Xefyr for the Besiege Bots community
+ * RealisticMotorTorque.cs
+ * Written by Xefyr for the Besiege Bots community
+ * 
+ * In Besiege, most blocks that spin can easily supply lots of torque.
+ * For simulating robot combat however, this resulted in bots
+ * that had spinners with much more torque than their real-life counterparts.
+ * I created this class to provide a limit on torque as an alternative to the spin up time slider.
+ * It never got adopted as part of the ruleset, but remains as an option to builders.
+ */
 
-In Besiege, most blocks that spin can easily supply lots of torque.
-For simulating robot combat however, this resulted in bots
-that had spinners with much more torque than their real-life counterparts.
-I created this class to provide a limit on torque as an alternative to the spin up time slider.
-It never got adopted as part of the ruleset, but remains as an option to builders.
-*/
-
-using UnityEngine;
-using Modding;
-using Modding.Common;
 using Modding.Blocks;
+using Modding.Common;
+using UnityEngine;
 
-namespace BotFix
+namespace BesiegeBotsTweaks
 {
     [RequireComponent(typeof(CogMotorControllerHinge))]
-    class RealisticMotorTorque : MonoBehaviour
+    class RealisticMotorTorque : FrameDelayAction
     {
         private CogMotorControllerHinge CMCH;
         private HingeJoint myJoint;
@@ -27,8 +26,12 @@ namespace BotFix
         private int FlipInvert => CMCH.Flipped ? 1 : (-1);
         private float DeltaMultiplier => CMCH.degreesPerSecond * 80f * (float)(-FlipInvert);
         private float lastVelocity;
-        private void Awake()
+
+        protected override int FRAMECOUNT { get; } = 1;
+        new void Awake()
         {
+            base.Awake();
+
             //Basic gets
             CMCH = GetComponent<CogMotorControllerHinge>();
             myJoint = GetComponent<HingeJoint>();
@@ -80,10 +83,9 @@ namespace BotFix
 			    myJoint.motor = motor;
 		    }
         }
-        private System.Collections.IEnumerator Init()
+        protected override void DelayedAction()
         {
-            //CMCH.motor doesn't exist and UnregisterFixedUpdate doesn't work until a frame into sim, so this waits for that to happen.
-            yield return new WaitForFixedUpdate();
+            //CMCH.motor doesn't exist and UnregisterFixedUpdate doesn't work until a frame into sim.
 
             //Motor init
             myJoint.useMotor = true;

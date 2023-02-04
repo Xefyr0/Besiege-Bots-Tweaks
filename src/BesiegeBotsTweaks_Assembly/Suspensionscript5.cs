@@ -1,8 +1,7 @@
-using System.Collections.Generic;
-using UnityEngine;
 using Modding;
 using Modding.Blocks;
-using BesiegeBotsTweaks;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace BotFix
 {

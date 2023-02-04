@@ -1,11 +1,12 @@
 /*
-LogDustToggle.cs
-Written by DokterDoyle for the Besiege Bots community
-Amended by Xefyr
-*/
-using UnityEngine;
+ * LogDustToggle.cs
+ * Written by DokterDoyle for the Besiege Bots community
+ * Amended by Xefyr
+ */
+
 using Modding;
 using Modding.Blocks;
+using UnityEngine;
 
 namespace BesiegeBotsTweaks
 {

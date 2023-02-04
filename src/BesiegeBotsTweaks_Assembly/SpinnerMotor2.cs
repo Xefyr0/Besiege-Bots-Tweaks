@@ -1,8 +1,9 @@
 /*
-Doyle's betamode motor code. The realistic acceleration and torque this provided was an inspiration to
-create RealisticMotorTorque.cs, which is more compatible with vanilla behaviour.
-The class, however, remains unused as legacy code.
-*/
+ * SpinnerMotor2.cs
+ * Doyle's betamode motor code. The realistic acceleration and torque this provided was an inspiration to
+ * create RealisticMotorTorque.cs, which is more compatible with vanilla behaviour.
+ * The class, however, remains unused as legacy code.
+ */
 using UnityEngine;
 
 namespace BotFix

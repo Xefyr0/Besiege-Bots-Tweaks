@@ -1,14 +1,13 @@
 /*
-SpinnerSound.cs
-Written by DokterDoyle for the Besiege Bots community
-Amended by Xefyr
-*/
-using System;
+ * SpinnerSound.cs
+ * Written by DokterDoyle for the Besiege Bots community
+ * Amended by Xefyr
+ */
 using Modding;
-using Modding.Common;
 using Modding.Blocks;
-using UnityEngine;
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace BesiegeBotsTweaks
 {
