@@ -98,14 +98,13 @@ namespace BesiegeBotsTweaks
                     ModNetworking.SendToAll(SFS);
                 }
             }
-
-            //If there isn't a joint attaching this to another block, then shut off all functionality.
-            if (!CJ)
-            {
-                //Modding.ModConsole.Log("No joint. Killing Fire");
-                ModNetworking.SendToAll(KF);
-                KillFire();
-            }
+        }
+        //If there isn't a joint attaching this to another block, then shut off all functionality.
+        private void OnJointBreak(float breakforce)
+        {
+            //Modding.ModConsole.Log("No joint. Killing Fire");
+            ModNetworking.SendToAll(KF);
+            KillFire();
         }
 
         private void LoadFireAmmo()

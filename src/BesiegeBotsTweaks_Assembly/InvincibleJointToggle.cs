@@ -22,8 +22,9 @@ namespace BesiegeBotsTweaks
         protected override int FRAMECOUNT { get; } = 3;
         new void Awake()
         {
-            joint = GetComponent<Joint>();  //Primary connections are reliably created before simblocks Awake I guess? weird but noted.
+            base.Awake();
 
+            joint = GetComponent<Joint>();
             toggle = thisBlock.InternalObject.AddToggle("Make Invincible", "MVI", Invincible);
             toggle.Toggled += (bool value) => Invincible = value;
         }

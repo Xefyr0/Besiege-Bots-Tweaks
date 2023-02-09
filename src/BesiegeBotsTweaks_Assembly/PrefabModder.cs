@@ -6,23 +6,132 @@
 
 using BesiegeBotsTweaks;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace BotFix
 {
     public class PrefabModder : MonoBehaviour
     {
         /*
-        The very first and most common change BBM makes is to change the durability of certain blocks.
+        The very first change BBM made, and most common change BBM makes currently is to change the durability of certain blocks.
         This is done by changing the breakForce and breakTorque thresholds of Joints.
-        Unfortunately, since Joints are formed as late as a few frames after sim is started,
-        a separate class with a Coroutine must be used for a few frames to wait until 
-        the Joints are formed before making the necessary changes.
         */
         private static void TweakBreakForces(BlockType type)
         {
             Modding.Blocks.BlockPrefabInfo BPI = Modding.Blocks.BlockPrefabInfo.GetOfficial(type);
-            GameObject GO = BPI.InternalObject.gameObject;
-            GO.AddComponent<BreakForceTweak>();
+            Joint joint = BPI.GameObject.GetComponent<Joint>();
+            TriggerSetJoint2 secondJoint = BPI.GameObject.GetComponentInChildren<TriggerSetJoint2>();
+            StrengthenTreads ST = BPI.GameObject.GetComponent<StrengthenTreads>();
+            if (joint)
+            {
+                switch (type)
+                {
+                    case BlockType.FlyingBlock:
+                        joint.breakForce = 20000;
+                        joint.breakTorque = 20000;
+                        break;
+                    case BlockType.Ballast:
+                    case BlockType.Decoupler:
+                    case BlockType.SteeringHinge:
+                    case BlockType.Hinge:
+                    case BlockType.BallJoint:
+                    case BlockType.Swivel:
+                        joint.breakForce = 30000;
+                        joint.breakTorque = 30000;
+                        //Hinges have a specialized component made to strengthen hinge-based treads.
+                        //This changes the break threshold values of that component to strengthen treads further.
+                        if (ST != null)
+                        {
+                            ST.breakForce = 50000;
+                            ST.breakTorque = 50000;
+                        }
+                        break;
+                    case BlockType.Suspension:
+                    case BlockType.Piston:
+                        joint.breakForce = 35000;
+                        joint.breakTorque = 35000;
+                        break;
+                    case BlockType.Flamethrower:
+                    case BlockType.Wing:
+                        joint.breakForce = 60000;
+                        joint.breakTorque = 60000;
+                        break;
+                    case BlockType.WingPanel:
+                        joint.breakForce = 40000;
+                        joint.breakTorque = 40000;
+                        break;
+                    case BlockType.SteeringBlock:
+                    case BlockType.SmallWheel:
+                    case BlockType.Wheel:
+                    case BlockType.WheelUnpowered:
+                    case BlockType.LargeWheelUnpowered:
+                        joint.breakForce = 60000;
+                        joint.breakTorque = 60000;
+                        break;
+                    case BlockType.LargeWheel:
+                        joint.breakForce = 70000;
+                        joint.breakTorque = 70000;
+                        break;
+                    case BlockType.MetalBlade:
+                    case BlockType.Spike:
+                        joint.breakForce = 80000;
+                        joint.breakTorque = 80000;
+                        break;
+                    case BlockType.SpinningBlock:
+                        joint.breakForce = 100000;
+                        joint.breakTorque = 100000;
+                        break;
+                    case BlockType.CogMediumPowered:
+                    case BlockType.CircularSaw:
+                        joint.breakForce = 90000;
+                        joint.breakTorque = 90000;
+                        break;
+                    case BlockType.WoodenPanel:
+                        joint.breakForce = Mathf.Infinity;
+                        joint.breakTorque = Mathf.Infinity;
+                        break;
+                    //The following blocks have 2 joints, all of which are modified.
+                    case BlockType.SingleWoodenBlock:
+                        joint.breakForce = 55000;
+                        joint.breakTorque = 55000;
+                        if (secondJoint)
+                        {
+                            secondJoint.jointToCopy.breakForce = 55000;
+                            secondJoint.jointToCopy.breakTorque = 55000;
+                        }
+                        break;
+                    case BlockType.DoubleWoodenBlock:
+                        joint.breakForce = 50000;
+                        joint.breakTorque = 50000;
+                        if (secondJoint)
+                        {
+                            secondJoint.jointToCopy.breakForce = 50000;
+                            secondJoint.jointToCopy.breakTorque = 50000;
+                        }
+                        break;
+                    case BlockType.WoodenPole:
+                        joint.breakForce = 40000;
+                        joint.breakTorque = 40000;
+                        if (secondJoint)
+                        {
+                            secondJoint.jointToCopy.breakForce = 40000;
+                            secondJoint.jointToCopy.breakTorque = 40000;
+                        }
+                        break;
+                    case BlockType.BuildSurface:
+                        //Change breakforce of each material.
+                        BuildSurface BB = ((BuildSurface)BPI.InternalObject.blockBehaviour);
+                        BuildSurface.SurfaceMaterialType[] buildSurfaceMats = { BB.wood, BB.glass, BB.wing, BB.metal };
+                        foreach (BuildSurface.SurfaceMaterialType surfaceType in buildSurfaceMats)
+                        {
+                            surfaceType.breakImpactThreshold = 500000f;
+                            surfaceType.jointBaseBreakForce = 50000f;
+                            surfaceType.jointBreakForceScaler = Mathf.Infinity;
+                            surfaceType.jointBreakTorqueScaler = Mathf.Infinity;
+                        }
+                        break;
+                }
+            }
         }
 
         /*
@@ -34,10 +143,67 @@ namespace BotFix
         private static void TweakDrags(BlockType type)
         {
             Modding.Blocks.BlockPrefabInfo BPI = Modding.Blocks.BlockPrefabInfo.GetOfficial(type);
-            GameObject GO = BPI.InternalObject.gameObject;
-            GO.AddComponent<DragTweak>();
+            //Gets the Rigidbody of each block, and if it isn't null then the drags & maxAngularVelocity are modified based on a switch statement of the block type.
+            Rigidbody RB = BPI.GameObject.GetComponent<Rigidbody>();
+            if (RB != null)
+            {
+                switch (type)
+                {
+                    case BlockType.CogMediumUnpowered:
+                    case BlockType.GripPad:
+                    case BlockType.Log:
+                    case BlockType.StartingBlock:
+                    case BlockType.BuildSurface:
+                    case BlockType.Ballast:
+                    case BlockType.Swivel:
+                    case BlockType.BallJoint:
+                    case BlockType.Spike:
+                    case BlockType.MetalBlade:
+                    case BlockType.Cannon:
+                    case BlockType.Torch:
+                    case BlockType.MetalBall:
+                    case BlockType.ShrapnelCannon:
+                    case BlockType.Decoupler:
+                    case BlockType.DoubleWoodenBlock:
+                    case BlockType.Hinge:
+                    case BlockType.Plow:
+                    case BlockType.HalfPipe:
+                    case BlockType.SteeringBlock:
+                    case BlockType.SteeringHinge:
+                    case BlockType.Suspension:
+                    case BlockType.WheelUnpowered:
+                    case BlockType.LargeWheelUnpowered:
+                    case BlockType.CogLargeUnpowered:
+                    case BlockType.WoodenPole:
+                    case BlockType.SingleWoodenBlock:
+                    case BlockType.WoodenPanel:
+                    case BlockType.Wheel:
+                    case BlockType.LargeWheel:
+                    case BlockType.WaterCannon:
+                    case BlockType.ArmorPlateSmall:
+                    case BlockType.ArmorPlateLarge:
+                    case BlockType.ArmorPlateRound:
+                        RB.drag = 0f;
+                        RB.angularDrag = 0f;
+                        RB.maxAngularVelocity = 100;
+                        break;
+                    case BlockType.FlyingBlock:
+                    case BlockType.SpinningBlock:
+                    case BlockType.CircularSaw:
+                    case BlockType.Drill:
+                        RB.drag = 0f;
+                        RB.angularDrag = 0f;
+                        break;
+                    //Grabbers have nonzero drag because they're used so often in spinners.
+                    case BlockType.Grabber:
+                        RB.drag = 0.01f;
+                        RB.angularDrag = 0f;
+                        RB.maxAngularVelocity = 100;
+                        break;
+                }
+            }
         }
-        
+
         /*
         In vanilla Besiege, Plows are the only viable wedging component, and there isn't really anything useful as a skidplate.
         Additionally, the high friction of blocks with an invincible connection render them more vulnerable to explosions.
@@ -112,36 +278,24 @@ namespace BotFix
         Thus, this method exists to modify the myDamageType of each of these blocks' prefabs to Blunt,
         thereby rendering those blocks unable to cut ropes.
         */
-        private static void Blunten(BlockType type)
+        private static readonly BlockType[] toBlunten = {BlockType.MetalBlade, BlockType.CircularSaw, BlockType.Spike, BlockType.Flamethrower, BlockType.Wing, BlockType.Propeller, BlockType.SmallPropeller, BlockType.Drill, BlockType.MetalBall};
+        private static void BluntenBlocks()
         {
-            //Gets the prefab of each block, and modifies the DamageType based on a switch statement of the block type.
-            Modding.Blocks.BlockPrefabInfo BPI = Modding.Blocks.BlockPrefabInfo.GetOfficial(type);
-            switch (type)
-            {
-                case BlockType.MetalBlade:
-                case BlockType.CircularSaw:
-                case BlockType.Spike:
-                case BlockType.Flamethrower:
-                case BlockType.Wing:
-                case BlockType.Propeller:
-                case BlockType.SmallPropeller:
-                case BlockType.Drill:
-                case BlockType.MetalBall:
-                    BPI.InternalObject.myDamageType = DamageType.Blunt;
-                    break;
-            }
+            //Gets the prefab of each block, and modifies the DamageType to not cut winches.
+            foreach (BlockType type in toBlunten)
+                Modding.Blocks.BlockPrefabInfo.GetOfficial(type).InternalObject.myDamageType = DamageType.Blunt;
         }
 
         internal static void ModAllPrefab()
         {
             //General Static Block Prefab modifications
+            BluntenBlocks();
             foreach (BlockType type in System.Enum.GetValues(typeof(BlockType)))
             {
                 TweakBreakForces(type);
                 TweakDrags(type);
                 TweakFriction(type);
                 TweakMass(type);
-                Blunten(type);
             }
 
 
@@ -152,7 +306,9 @@ namespace BotFix
             //PrefabMaster.GetBlock(BlockType.StartingBlock, out BB);
 
             //1
-            //PrefabMaster.GetBlock(BlockType.DoubleWoodenBlock, out BB);
+            PrefabMaster.GetBlock(BlockType.DoubleWoodenBlock, out BB);
+            if (BB.gameObject.GetComponent<WoodDustToggle>() == null)
+                BB.gameObject.AddComponent<WoodDustToggle>();
 
             //2              
             PrefabMaster.GetBlock(BlockType.Wheel, out BB);
@@ -160,11 +316,15 @@ namespace BotFix
                 BB.gameObject.AddComponent<Wheelfix3_round>();
             if (BB.gameObject.GetComponent<RealisticMotorTorque>() == null)
                 BB.gameObject.AddComponent<RealisticMotorTorque>();
+            if (BB.gameObject.GetComponent<BlockMapperLimits>() == null)
+                BB.gameObject.AddComponent<BlockMapperLimits>();
             if (BB.gameObject.GetComponent<FrictionSlider>() == null)
                 BB.gameObject.AddComponent<FrictionSlider>();
+            /*
             PrefabMaster.GetStrippedBlock(BlockType.Wheel, out BB);
             if (BB.gameObject.GetComponent<Wheelfix3_round>() == null)
                 BB.gameObject.AddComponent<Wheelfix3_round>();
+            */
 
             //3
             PrefabMaster.GetBlock(BlockType.MetalBlade, out BB);
@@ -210,19 +370,23 @@ namespace BotFix
 
             //13
             PrefabMaster.GetBlock(BlockType.SteeringBlock, out BB);
-            {
-                //This has to be done here, instead of Awake(). Glad I got it first try
-                ((SteeringWheel)BB).allowLimits = true;
-                ((SteeringWheel)BB).LimitsSlider.UseLimitsToggle.IsActive = false;
-                ((SteeringWheel)BB).LimitsSlider.UseLimitsToggle.ApplyValue();
-            }
-            
+            //This has to be done here, instead of Awake(). Glad I got it first try.
+            ((SteeringWheel)BB).allowLimits = true;
+            //The other parts have to be done after SteeringWheel's Awake though.
+            if (BB.gameObject.GetComponent<BlockMapperLimits>() == null)
+                BB.gameObject.AddComponent<BlockMapperLimits>();
+
 
             //14
-            //PrefabMaster.GetBlock(BlockType.FlyingBlock, out BB);
+            PrefabMaster.GetBlock(BlockType.FlyingBlock, out BB);
+            if (BB.gameObject.GetComponent<BlockMapperLimits>() == null)
+                BB.gameObject.AddComponent<BlockMapperLimits>();
+
 
             //15
-            //PrefabMaster.GetBlock(BlockType.SingleWoodenBlock, out BB);
+            PrefabMaster.GetBlock(BlockType.SingleWoodenBlock, out BB);
+            if (BB.gameObject.GetComponent<WoodDustToggle>() == null)
+                BB.gameObject.AddComponent<WoodDustToggle>();
 
             //16
             PrefabMaster.GetBlock(BlockType.Suspension, out BB);
@@ -239,6 +403,8 @@ namespace BotFix
             BB.transform.GetChild(10).localPosition = new Vector3(0f, 0f, -0.1f);
             if (BB.gameObject.GetComponent<RealisticMotorTorque>() == null)
                 BB.gameObject.AddComponent<RealisticMotorTorque>();
+            if (BB.gameObject.GetComponent<BlockMapperLimits>() == null)
+                BB.gameObject.AddComponent<BlockMapperLimits>();
 
             //18
             PrefabMaster.GetBlock(BlockType.Piston, out BB);
@@ -269,6 +435,8 @@ namespace BotFix
                 BB.gameObject.AddComponent<SpinnerSound>();
             if (BB.gameObject.GetComponent<RealisticMotorTorque>() == null)
                 BB.gameObject.AddComponent<RealisticMotorTorque>();
+            if (BB.gameObject.GetComponent<BlockMapperLimits>() == null)
+                BB.gameObject.AddComponent<BlockMapperLimits>();
             PrefabMaster.GetStrippedBlock(BlockType.SpinningBlock, out BB);
             if (BB.gameObject.GetComponent<SpinnerSound>() == null)
                 BB.gameObject.AddComponent<SpinnerSound>();
@@ -290,7 +458,7 @@ namespace BotFix
                 ADtoggle.Toggled += (bool value) => { AD.velocityCap = value ? 0 : VC; };
                 ADtoggle.DisplayInMapper = true;
             }
-            
+
 
             //26
             //PrefabMaster.GetBlock(BlockType.Propeller, out BB);
@@ -308,7 +476,9 @@ namespace BotFix
                 BB.gameObject.AddComponent<SpinnerSound>();
 
             //28
-            //PrefabMaster.GetBlock(BlockType.SteeringHinge, out BB);
+            PrefabMaster.GetBlock(BlockType.SteeringHinge, out BB);
+            if (BB.gameObject.GetComponent<BlockMapperLimits>() == null)
+                BB.gameObject.AddComponent<BlockMapperLimits>();
 
             //29
             //PrefabMaster.GetBlock(BlockType.ArmorPlateRound, out BB);
@@ -361,6 +531,8 @@ namespace BotFix
                 BB.gameObject.AddComponent<Cogfix>();
             if (BB.gameObject.GetComponent<RealisticMotorTorque>() == null)
                 BB.gameObject.AddComponent<RealisticMotorTorque>();
+            if (BB.gameObject.GetComponent<BlockMapperLimits>() == null)
+                BB.gameObject.AddComponent<BlockMapperLimits>();
 
             //40
             PrefabMaster.GetBlock(BlockType.WheelUnpowered, out BB);
@@ -373,7 +545,9 @@ namespace BotFix
                 BB.gameObject.AddComponent<Wheelfix3_round>();
 
             //41
-            //PrefabMaster.GetBlock(BlockType.WoodenPole, out BB);
+            PrefabMaster.GetBlock(BlockType.WoodenPole, out BB);
+            if (BB.gameObject.GetComponent<WoodDustToggle>() == null)
+                BB.gameObject.AddComponent<WoodDustToggle>();
 
             //42
             //PrefabMaster.GetBlock(BlockType.Slider, out BB);
@@ -388,6 +562,8 @@ namespace BotFix
             PrefabMaster.GetBlock(BlockType.RopeWinch, out BB);
             if (BB.gameObject.GetComponent<WinchFix>() == null)
                 BB.gameObject.AddComponent<WinchFix>();
+            if (BB.gameObject.GetComponent<BlockMapperLimits>() == null)
+                BB.gameObject.AddComponent<BlockMapperLimits>();
             PrefabMaster.GetStrippedBlock(BlockType.RopeWinch, out BB);
             if (BB.gameObject.GetComponent<WinchFix>() == null)
                 BB.gameObject.AddComponent<WinchFix>();
@@ -398,6 +574,8 @@ namespace BotFix
                 BB.gameObject.AddComponent<Wheelfix3_round>();
             if (BB.gameObject.GetComponent<RealisticMotorTorque>() == null)
                 BB.gameObject.AddComponent<RealisticMotorTorque>();
+            if (BB.gameObject.GetComponent<BlockMapperLimits>() == null)
+                BB.gameObject.AddComponent<BlockMapperLimits>();
             if (BB.gameObject.GetComponent<FrictionSlider>() == null)
                 BB.gameObject.AddComponent<FrictionSlider>();
             PrefabMaster.GetStrippedBlock(BlockType.LargeWheel, out BB);
@@ -442,7 +620,9 @@ namespace BotFix
             //PrefabMaster.GetBlock(BlockType.SmallPropeller, out BB);
 
             //56
-            //PrefabMaster.GetBlock(BlockType.WaterCannon, out BB);
+            PrefabMaster.GetBlock(BlockType.WaterCannon, out BB);
+            if (BB.gameObject.GetComponent<BlockMapperLimits>() == null)
+                BB.gameObject.AddComponent<BlockMapperLimits>();
 
             //57
             //PrefabMaster.GetBlock(BlockType.Pin, out BB);
@@ -475,13 +655,13 @@ namespace BotFix
 
             //63
             PrefabMaster.GetBlock(BlockType.Log, out BB);
-            if (BB.gameObject.GetComponent<LogDustToggle>() == null)
-                BB.gameObject.AddComponent<LogDustToggle>();
+            if (BB.gameObject.GetComponent<WoodDustToggle>() == null)
+                BB.gameObject.AddComponent<WoodDustToggle>();
             if (BB.gameObject.GetComponent<SpinnerSound>() == null)
                 BB.gameObject.AddComponent<SpinnerSound>();
             PrefabMaster.GetStrippedBlock(BlockType.Log, out BB);
-            if (BB.gameObject.GetComponent<LogDustToggle>() == null)
-                BB.gameObject.AddComponent<LogDustToggle>();
+            if (BB.gameObject.GetComponent<WoodDustToggle>() == null)
+                BB.gameObject.AddComponent<WoodDustToggle>();
             if (BB.gameObject.GetComponent<SpinnerSound>() == null)
                 BB.gameObject.AddComponent<SpinnerSound>();
 
@@ -516,9 +696,7 @@ namespace BotFix
 
             //73 BuildSurface
             PrefabMaster.GetBlock(BlockType.BuildSurface, out BB);
-            if (BB.gameObject.GetComponent<BuildSurfaceFix>() == null)
-                BB.gameObject.AddComponent<BuildSurfaceFix>();
-            //Show thickness and mass sliders, and collision toggle.
+            //Show thickness slider, mass slider, and collision toggle.
             BuildSurface.AllowThicknessChange = true;
             BuildSurface.ShowMassSlider = true;
             BuildSurface.ShowCollisionToggle = true;

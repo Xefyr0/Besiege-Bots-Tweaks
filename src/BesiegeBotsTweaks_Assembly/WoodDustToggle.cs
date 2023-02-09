@@ -1,5 +1,5 @@
 /*
- * LogDustToggle.cs
+ * WoodDustToggle.cs
  * Written by DokterDoyle for the Besiege Bots community
  * Amended by Xefyr
  */
@@ -12,7 +12,7 @@ namespace BesiegeBotsTweaks
 {
     [RequireComponent(typeof(BlockBehaviour))]
     [RequireComponent(typeof(SoundOnCollide))]
-    public class LogDustToggle : MonoBehaviour
+    public class WoodDustToggle : MonoBehaviour
     {
         private BlockBehaviour BB;
         private SoundOnCollide SOC;
@@ -31,7 +31,7 @@ namespace BesiegeBotsTweaks
             {
                 Block target = (Block)m.GetData(0);
                 if(target == null) return;
-                else target.InternalObject.GetComponent<LogDustToggle>().SetDust((bool)m.GetData(1));
+                else target.InternalObject.GetComponent<WoodDustToggle>().SetDust((bool)m.GetData(1));
             };
         }
         void Awake()
@@ -53,7 +53,8 @@ namespace BesiegeBotsTweaks
 
         private void SetDust(bool active)
         {
-            SOC.particles.gameObject.SetActive(active);
+            if (SOC.particles != null) SOC.particles.gameObject.SetActive(active);
+            if (SOC.randSoundController != null) SOC.randSoundController.audioSource.enabled = active;
         }
     }
 }

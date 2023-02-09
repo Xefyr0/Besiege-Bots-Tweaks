@@ -40,7 +40,7 @@ namespace BotFix
             Modding.ModConsole.Log("[BBTweaks] Setting up Networking");
             FlameTFix.SetupNetworking();
             SpinnerSound.SetupNetworking();
-            LogDustToggle.SetupNetworking();
+            WoodDustToggle.SetupNetworking();
             WinchFix.SetupNetworking();
             Suspensionzcript.SetupNetworking();
 
@@ -48,7 +48,7 @@ namespace BotFix
 
             OptionsMaster.defaultSmoothness = 0f;
             Physics.gravity = new Vector3(Physics.gravity.x, HIGHGRAV, Physics.gravity.z);
-            ModConsole.Log("Set gravity to {0}", HIGHGRAV);
+            ModConsole.Log("[BBT] Set gravity to {0}", HIGHGRAV);
 
             OptionsMaster.BesiegeConfig.MorePrecisePhysics = false;
             //StatMaster.Rules.DisableFire = true;

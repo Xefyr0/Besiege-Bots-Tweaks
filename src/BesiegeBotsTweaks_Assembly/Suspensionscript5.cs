@@ -148,7 +148,7 @@ namespace BotFix
 
             switch (selectedmovemode)
             {
-                case 0: //None                     
+                case 0: //None
                     break;
 
                 case 1: //Hydraulic
@@ -163,7 +163,7 @@ namespace BotFix
                     Airsound.clip = ASounds[selectedsound];
                     Airsound.loop = false;
                     Airsound.maxDistance = 150f;
-                    Airsound.volume = 0.3f;                                   
+                    Airsound.volume = 0.3f;
                     break;
             }
             
@@ -233,6 +233,7 @@ namespace BotFix
                     HydraSound.DisplayInMapper = false;
                     SoundMenu.DisplayInMapper = false;
                     SoundMode.DisplayInMapper = false;
+                    SC.SpringSlider.SetRange(0, 3f);
                     break;
 
                 case 1: //HydraulicMode
@@ -245,6 +246,8 @@ namespace BotFix
                     HydraSound.DisplayInMapper = true;
                     SoundMenu.DisplayInMapper = false;
                     SoundMode.DisplayInMapper = false;
+                    FeedSlider.SetRange(0f, 25f);
+                    SC.SpringSlider.SetRange(0, 200f);
                     break;
 
                 case 2: //PneumaticMode
@@ -258,6 +261,8 @@ namespace BotFix
                     SoundMenu.DisplayInMapper = true;
                     SoundMode.DisplayInMapper = true;
                     HSound = false;
+                    FeedSlider.SetRange(0f, 10f);
+                    SC.SpringSlider.SetRange(0, 200f);
                     break;
             }
         }

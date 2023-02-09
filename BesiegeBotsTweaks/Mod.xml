@@ -9,7 +9,7 @@
 	<Name>Besiege Bots Tweaks</Name>
 	<Author>DokterDoyle and Xefyr</Author> <!-- FIX: Insert your name here. -->
 	<!-- Major.Minor.Build -->
-	<Version>0.4.1</Version>
+	<Version>0.5.0</Version>
 	
 	<Description>
 	A pack of tools and tweaks for the Besiege Bots community, the real home of robot combat in Besiege! <!-- FIX: Insert a short description here. -->
@@ -55,6 +55,8 @@
 		 Mods that are immediately loaded when starting the game are significantly
 		 less user-friendly, whenever the mod is disabled the game needs to be restarted.-->
 	<!-- <LoadInTitleScreen /> -->
+	
+	<LoadOrder>-1</LoadOrder>
 	
 	<!-- Note on IDs -->
 	<!-- Many elements of your mod need to have an ID assigned that will identify them.
