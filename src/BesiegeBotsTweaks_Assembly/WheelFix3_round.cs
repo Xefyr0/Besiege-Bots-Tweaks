@@ -12,7 +12,6 @@ namespace BotFix
         static GameObject WheelColliderOrgin;
         private Collider[] Colliders;
         private MeshFilter mFilter;
-        private MeshRenderer mRenderer;
         private MeshCollider mCollider;
         public GameObject WheelCollider;
         public MToggle Roundwheelz;
@@ -94,7 +93,7 @@ namespace BotFix
                             mCollider.convex = true;
 
 #if DEBUG
-                            mRenderer = WheelCollider.AddComponent<MeshRenderer>();
+                            MeshRenderer mRenderer = WheelCollider.AddComponent<MeshRenderer>();
                             mRenderer.material.color = Color.red;
 #endif
 

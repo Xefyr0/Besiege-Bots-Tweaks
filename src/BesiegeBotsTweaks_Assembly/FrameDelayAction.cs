@@ -14,6 +14,7 @@ namespace BesiegeBotsTweaks
     {
         //The number of frames to wait before invoking delayedAction
         protected virtual int FRAMECOUNT { get; } = -1;
+        protected virtual bool DESTROY_AT_END { get; } = true;
 
         //This block in Block format
         protected Block thisBlock;
@@ -39,8 +40,8 @@ namespace BesiegeBotsTweaks
             //Take action
             DelayedAction();
 
-            //This component instance is destroyed after the necessary changes are made.
-            Destroy(this);
+            //This component instance is destroyed after the necessary changes are made, if the option is enabled. (it is by default)
+            if(DESTROY_AT_END) Destroy(this);
         }
 
         protected abstract void DelayedAction();

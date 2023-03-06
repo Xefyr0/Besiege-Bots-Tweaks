@@ -17,7 +17,6 @@ namespace BesiegeBotsTweaks
     {
         private Block block;
         private FlamethrowerController FC;
-        private ConfigurableJoint CJ;
         private Transform FT;
         private AudioSource FireSound;
         private int baseAmmo = 240;
@@ -43,7 +42,6 @@ namespace BesiegeBotsTweaks
         {
             //Variable init
             FC = GetComponent<FlamethrowerController>();
-            CJ = GetComponent<ConfigurableJoint>();
             FT = transform.Find("FireTrigger");
             block = Block.From(FC);
 

@@ -14,7 +14,7 @@ namespace BotFix
     {
         //Basic reference variables
         private BlockBehaviour BB;
-        public CogMotorControllerHinge CCH;
+        private CogMotorControllerHinge CCH;
         private MSlider Lerpomode;
 
         //Lerpomode must be preserved during simulation,

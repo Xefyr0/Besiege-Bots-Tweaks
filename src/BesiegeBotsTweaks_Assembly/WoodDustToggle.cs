@@ -12,7 +12,7 @@ namespace BesiegeBotsTweaks
 {
     [RequireComponent(typeof(BlockBehaviour))]
     [RequireComponent(typeof(SoundOnCollide))]
-    public class WoodDustToggle : MonoBehaviour
+    class WoodDustToggle : FrameDelayAction
     {
         private BlockBehaviour BB;
         private SoundOnCollide SOC;
@@ -20,6 +20,25 @@ namespace BesiegeBotsTweaks
         private MToggle SmokeToggle;
 
         private bool dustActive = true;
+
+        protected override int FRAMECOUNT { get; } = 1;
+        protected override bool DESTROY_AT_END { get; } = false;
+        public bool DustActive
+        {
+            get
+            {
+                return dustActive;
+            }
+
+            set
+            {
+                if (SOC.particles != null) SOC.particles.gameObject.SetActive(value);
+                if (SOC.randSoundController != null) SOC.randSoundController.audioSource.enabled = value;
+                dustActive = value;
+                TD = mToggleDust.CreateMessage(BB, value);
+                ModNetworking.SendToAll(TD);
+            }
+        }
 
         private static MessageType mToggleDust;
         Message TD;
@@ -31,30 +50,23 @@ namespace BesiegeBotsTweaks
             {
                 Block target = (Block)m.GetData(0);
                 if(target == null) return;
-                else target.InternalObject.GetComponent<WoodDustToggle>().SetDust((bool)m.GetData(1));
+                else target.InternalObject.GetComponent<WoodDustToggle>().DustActive = (bool)m.GetData(1);
             };
         }
-        void Awake()
+        new void Awake()
         {
+            base.Awake();
             BB = GetComponent<BlockBehaviour>();
             SOC = GetComponent<SoundOnCollide>();
 
             SmokeToggle = BB.AddToggle("Enable Smoke", "Enable Smoke", dustActive);
-            SmokeToggle.Toggled += (bool value) => dustActive = value;
+            SmokeToggle.Toggled += (bool value) => DustActive = value;
         }
 
-        private void Start()
+        protected override void DelayedAction()
         {
             if(!BB.SimPhysics) return;
-            TD = mToggleDust.CreateMessage(BB, dustActive);
-            ModNetworking.SendToAll(TD);
-            SetDust(dustActive);
-        }
-
-        private void SetDust(bool active)
-        {
-            if (SOC.particles != null) SOC.particles.gameObject.SetActive(active);
-            if (SOC.randSoundController != null) SOC.randSoundController.audioSource.enabled = active;
+            DustActive = true;
         }
     }
 }

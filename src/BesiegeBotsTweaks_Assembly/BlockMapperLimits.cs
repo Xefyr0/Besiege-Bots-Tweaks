@@ -40,18 +40,19 @@ namespace BesiegeBotsTweaks
             {
                 (BB as SpringCode).SpeedSlider.SetRange((BB as SpringCode).SpeedSlider.Min, 10.0f);
             }
-            //Reduce max power of water cannon to 0.5f
+            //Reduce max power of water cannons to 0.5f
             if(BB is WaterCannonController)
             {
                 (BB as WaterCannonController).StrengthSlider.SetRange((BB as WaterCannonController).StrengthSlider.Min, 0.5f);
                 (BB as WaterCannonController).StrengthSlider.SetValue(0.5f);
             }
-            //Reduce maximum acceleration for motors to 0.0f
-            //Increase maximum speed for motors to 12.0f for spinner motor speeds
+            //Motor tweaks
             if(BB is CogMotorControllerHinge)
             {
+                //Reduce minimum acceleration for motors to 0.0f
                 (BB as CogMotorControllerHinge).AccelerationSlider.SetRange(0.0f, (BB as CogMotorControllerHinge).AccelerationSlider.Max);
-                (BB as CogMotorControllerHinge).SpeedSlider.SetRange((BB as CogMotorControllerHinge).SpeedSlider.Min, 12.0f);
+                //Increase maximum speed for motors to 12.0f for spinner motor speeds
+                //(BB as CogMotorControllerHinge).SpeedSlider.SetRange((BB as CogMotorControllerHinge).SpeedSlider.Min, 12.0f);
             }
             Destroy(this);
         }

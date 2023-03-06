@@ -6,6 +6,7 @@
 
 using BesiegeBotsTweaks;
 using Modding;
+using System;
 using UnityEngine;
 
 namespace BotFix
@@ -30,12 +31,16 @@ namespace BotFix
 			//Initialize the BBMUI and BBinfo components and attach them to the Mod GameObject if it isn't already
 			if(!(UIObject = ModGameObject.GetComponent<BBMUI>())) UIObject = ModGameObject.AddComponent<BBMUI>();
             if(!(InfoObject = ModGameObject.GetComponent<BBinfo>())) InfoObject = ModGameObject.AddComponent<BBinfo>();
-			
-			//If using SingleInstance, intialize the BBMUI component and make it the instance if it isn't already.
-			#if useSingleInstance
+
+            //Add the Mapper object if Object Explorer is loaded
+            if (Mods.IsModLoaded(new Guid("3c1fa3de-ec74-44e4-807c-9eced79ddd3f"))) ModGameObject.AddComponent<Mapper>();
+
+
+            //If using SingleInstance, intialize the BBMUI component and make it the instance if it isn't already.
+#if useSingleInstance
 			if(!SingleInstance<BBMUI>.hasInstance()) SingleInstance<BBMUI>.Initialize(UIObject);
             if(!SingleInstance<BBinfo>.hasInstance()) SingleInstance<BBinfo>.Initialize(InfoObject);
-			#endif
+#endif
 
             Modding.ModConsole.Log("[BBTweaks] Setting up Networking");
             FlameTFix.SetupNetworking();

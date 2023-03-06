@@ -80,9 +80,9 @@ namespace BesiegeBotsTweaks
         private bool PlayingSound = false;
 
         //Key Mapper information
-        public bool UseMotorSound;
-        public int SelectedSound = 0;
-        public float pitchMultiplier = 1;
+        private bool UseMotorSound;
+        private int SelectedSound = 0;
+        private float pitchMultiplier = 1;
         private MToggle MotorSoundToggle;
         private MMenu SoundMenu;
         private MSlider PitchSlider;

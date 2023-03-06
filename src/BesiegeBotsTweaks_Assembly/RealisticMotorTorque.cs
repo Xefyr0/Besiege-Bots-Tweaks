@@ -10,7 +10,6 @@
  */
 
 using Modding.Blocks;
-using Modding.Common;
 using UnityEngine;
 
 namespace BesiegeBotsTweaks
@@ -26,8 +25,11 @@ namespace BesiegeBotsTweaks
         private int FlipInvert => CMCH.Flipped ? 1 : (-1);
         private float DeltaMultiplier => CMCH.degreesPerSecond * 80f * (float)(-FlipInvert);
         private float lastVelocity;
+        public float Velocity;
+        public float targetVelocity;
 
         protected override int FRAMECOUNT { get; } = 1;
+        protected override bool DESTROY_AT_END { get; } = false;
         new void Awake()
         {
             base.Awake();
@@ -50,9 +52,9 @@ namespace BesiegeBotsTweaks
             }
 
             //Method variables for computing motor's targetVelocity each frame
-            float Velocity = CMCH.Input * CMCH.SpeedSlider.Value;
+            Velocity = CMCH.Input * CMCH.SpeedSlider.Value;
             float maxVelocity = Velocity * DeltaMultiplier;
-		    float targetVelocity = lastVelocity + (maxVelocity - lastVelocity) * Time.fixedDeltaTime * CMCH.speedLerpSmooth;
+		    targetVelocity = lastVelocity + (maxVelocity - lastVelocity) * Time.fixedDeltaTime * CMCH.speedLerpSmooth;
             
             //This block of code is magic, right down to the 0.01 number. No clue why it works, 
             //but it stops motors from braking in either direction when autobrake is turned off and acceleration is set to infinity

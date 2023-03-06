@@ -309,6 +309,9 @@ namespace BotFix
             PrefabMaster.GetBlock(BlockType.DoubleWoodenBlock, out BB);
             if (BB.gameObject.GetComponent<WoodDustToggle>() == null)
                 BB.gameObject.AddComponent<WoodDustToggle>();
+            PrefabMaster.GetStrippedBlock(BlockType.DoubleWoodenBlock, out BB);
+            if (BB.gameObject.GetComponent<WoodDustToggle>() == null)
+                BB.gameObject.AddComponent<WoodDustToggle>();
 
             //2              
             PrefabMaster.GetBlock(BlockType.Wheel, out BB);
@@ -385,8 +388,6 @@ namespace BotFix
 
             //15
             PrefabMaster.GetBlock(BlockType.SingleWoodenBlock, out BB);
-            if (BB.gameObject.GetComponent<WoodDustToggle>() == null)
-                BB.gameObject.AddComponent<WoodDustToggle>();
 
             //16
             PrefabMaster.GetBlock(BlockType.Suspension, out BB);
@@ -546,6 +547,9 @@ namespace BotFix
 
             //41
             PrefabMaster.GetBlock(BlockType.WoodenPole, out BB);
+            if (BB.gameObject.GetComponent<WoodDustToggle>() == null)
+                BB.gameObject.AddComponent<WoodDustToggle>();
+            PrefabMaster.GetStrippedBlock(BlockType.WoodenPole, out BB);
             if (BB.gameObject.GetComponent<WoodDustToggle>() == null)
                 BB.gameObject.AddComponent<WoodDustToggle>();
 

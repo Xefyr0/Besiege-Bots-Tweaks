@@ -16,7 +16,7 @@ namespace BesiegeBotsTweaks
     {
         private MSlider GS;
         private MMenu PCMenu;
-        private int PCselect = 0;
+        private readonly int CombineDefault = 0;
         private BlockBehaviour BB;
         public float grip = 0.7f;
         public PhysicMaterialCombine PC = PhysicMaterialCombine.Average;
@@ -36,14 +36,14 @@ namespace BesiegeBotsTweaks
 
             //BB is initialized in Awake instead of Update because otherwise GetComponent would be called multiple times.
             BB = GetComponent<BlockBehaviour>();
-            if(BB == null) Object.Destroy(this);
+            if(BB == null) Destroy(this);
 
             //Create friction slider and define its ValueChanged event handler to modify an internal variable.
             GS = BB.AddSlider("Friction", "Friction", grip, 0.1f, 4f);
             GS.ValueChanged += (float value) => { grip = value; };
 
             //Create friction menu and define its ValueChanged event handler to modify an internal variable.
-            PCMenu = BB.AddMenu("Combine", PCselect, PCmenul, false);
+            PCMenu = BB.AddMenu("Combine", CombineDefault, PCmenul, false);
             PCMenu.ValueChanged += (ValueHandler)(value => 
             {
                 switch (value)

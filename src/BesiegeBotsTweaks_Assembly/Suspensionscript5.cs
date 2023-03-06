@@ -12,25 +12,27 @@ namespace BotFix
         public SuspensionController SC;
         public Block thisblock;
 
+        //Mapper objects
         private MKey ExtendKey;
         private MKey RetractKey;
         private MMenu MoveMode;
         private MMenu SoundMenu;
         private MMenu SoundMode;
         private MToggle HydraSound;
+        private MSlider SpringSlider;
         private MSlider FeedSlider;
         private MSlider ExtendLimitSlider;
         private MSlider RetractLimitSlider;
         private MSlider DampSlider;
 
-        public float Feed = 0.5f;
-        public float ExtendLimit = 1f;
-        public float RetractLimit = 1f;
-        public float Dampening = 1.2f;
-
-        public int selectedmovemode = 0;
-        public int selectedsound;
-        public int soundmode;
+        //Mapper value variables
+        private float Feed = 0.5f;
+        private float ExtendLimit = 1f;
+        private float RetractLimit = 1f;
+        private float Dampening = 1.2f;
+        private int selectedmovemode = 0;
+        private int selectedsound;
+        private int soundmode;
 
         private bool Break = false;
         public bool HSound;
@@ -115,7 +117,9 @@ namespace BotFix
 
             ExtendKey = SC.AddKey("extend", "Extend", KeyCode.M);
 
-            RetractKey = SC.AddKey("retract", "Shrink", KeyCode.N);           
+            RetractKey = SC.AddKey("retract", "Shrink", KeyCode.N);
+
+            SpringSlider = SC.SpringSlider;
            
             FeedSlider = SC.AddSlider("feedSpeed", "feed", Feed, 0f, 25f);
             FeedSlider.ValueChanged += (float value) => { Feed = value; };
@@ -233,7 +237,9 @@ namespace BotFix
                     HydraSound.DisplayInMapper = false;
                     SoundMenu.DisplayInMapper = false;
                     SoundMode.DisplayInMapper = false;
-                    SC.SpringSlider.SetRange(0, 3f);
+                    //SC.SpringSlider can be null on stripped blocks in multiverse.
+                    if (SpringSlider != null) SpringSlider.SetRange(0, 3f);
+                    if (SpringSlider != null && SpringSlider.Value > SpringSlider.Max) SpringSlider.SetValue(SpringSlider.Max);
                     break;
 
                 case 1: //HydraulicMode
@@ -247,7 +253,8 @@ namespace BotFix
                     SoundMenu.DisplayInMapper = false;
                     SoundMode.DisplayInMapper = false;
                     FeedSlider.SetRange(0f, 25f);
-                    SC.SpringSlider.SetRange(0, 200f);
+                    //SC.SpringSlider can be null on stripped blocks in multiverse.
+                    if (SpringSlider != null) SpringSlider.SetRange(0, 200f);
                     break;
 
                 case 2: //PneumaticMode
@@ -262,7 +269,9 @@ namespace BotFix
                     SoundMode.DisplayInMapper = true;
                     HSound = false;
                     FeedSlider.SetRange(0f, 10f);
-                    SC.SpringSlider.SetRange(0, 200f);
+                    if (FeedSlider.Value > FeedSlider.Max) FeedSlider.SetValue(FeedSlider.Max);
+                    //SC.SpringSlider can be null on stripped blocks in multiverse.
+                    if (SpringSlider != null) SpringSlider.SetRange(0, 200f);
                     break;
             }
         }
