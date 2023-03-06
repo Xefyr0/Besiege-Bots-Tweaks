@@ -288,19 +288,24 @@ namespace BotFix
 
         internal static void ModAllPrefab()
         {
+            BlockBehaviour BB;
+
             //General Static Block Prefab modifications
             BluntenBlocks();
             foreach (BlockType type in System.Enum.GetValues(typeof(BlockType)))
             {
                 TweakBreakForces(type);
-                TweakDrags(type);
                 TweakFriction(type);
                 TweakMass(type);
+
+                //maxAngularVelocity is set sometime after simulation starts,
+                //so we need to apply a component to EVERY BLOCK WE TWEAK
+                PrefabMaster.GetBlock(type, out BB);
+                if (BB.gameObject.GetComponent<DragTweaks>() == null)
+                    BB.gameObject.AddComponent<DragTweaks>();
             }
 
-
-            //Specific Block Prefab modifications
-            BlockBehaviour BB;
+            /*** Block-Specific modifications ***/
 
             //0
             //PrefabMaster.GetBlock(BlockType.StartingBlock, out BB);
@@ -450,15 +455,8 @@ namespace BotFix
 
             //25
             PrefabMaster.GetBlock(BlockType.Wing, out BB);
-            {
-                AxialDrag AD = BB.GetComponent<AxialDrag>();
-                float VC = AD.velocityCap;
-
-                //Mapper definition
-                MToggle ADtoggle = AD.AddToggle("Disable Drag", "Disable drag", false);
-                ADtoggle.Toggled += (bool value) => { AD.velocityCap = value ? 0 : VC; };
-                ADtoggle.DisplayInMapper = true;
-            }
+            if (BB.gameObject.GetComponent<AxialDragToggle>() == null)
+                BB.gameObject.AddComponent<AxialDragToggle>();
 
 
             //26
@@ -498,17 +496,8 @@ namespace BotFix
 
             //34
             PrefabMaster.GetBlock(BlockType.WingPanel, out BB);
-            {
-                AxialDrag AD = BB.GetComponent<AxialDrag>();
-                float VC = AD.velocityCap;
-
-                //Mapper definition
-                MToggle ADtoggle = AD.AddToggle("Disable Drag", "Disable drag", false);
-                ADtoggle.Toggled += (bool value) => { AD.velocityCap = value ? 0 : VC; };
-
-                //DisplayInMapper config
-                ADtoggle.DisplayInMapper = true;
-            }
+            if (BB.gameObject.GetComponent<AxialDragToggle>() == null)
+                BB.gameObject.AddComponent<AxialDragToggle>();
 
             //35
             PrefabMaster.GetBlock(BlockType.Ballast, out BB);
