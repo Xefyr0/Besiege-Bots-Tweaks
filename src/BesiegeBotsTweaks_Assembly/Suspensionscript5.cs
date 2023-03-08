@@ -3,10 +3,12 @@ using Modding.Blocks;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BotFix
+namespace BesiegeBotsTweaks
 {
-    public class Suspensionzcript : MonoBehaviour
+    class Suspensionzcript : FrameDelayAction
     {
+        protected override int FRAMECOUNT => 1;
+        protected override bool DESTROY_AT_END => false;
         private ConfigurableJoint CJ;
         private Rigidbody rigg;
         public SuspensionController SC;
@@ -107,8 +109,44 @@ namespace BotFix
             ModNetworking.Callbacks[LP] += PlayLoopSoundClient;
             ModNetworking.Callbacks[LS] += StopLoopSoundClient;
         }
+
+        protected override void DelayedAction()
+        {
+            //Physics stuff
+            if (!StatMaster.isClient || StatMaster.isLocalSim)
+            {
+                CJ = GetComponent<ConfigurableJoint>();
+                Modding.ModConsole.Log("XefTemp");
+                if (CJ)
+                {
+                    switch (selectedmovemode)
+                    {
+                        case 0: //None 
+                            CJ.breakForce = 35000;
+                            CJ.breakTorque = 30000;
+                            break;
+
+                        case 1: //Hydraulic
+                            CJ.breakForce = 60000;
+                            CJ.breakTorque = 60000;
+                            break;
+
+                        case 2: //Pneumatic
+                            CJ.breakForce = 60000;
+                            CJ.breakTorque = 60000;
+                            break;
+                    }
+                    float limit = Mathf.Max(ExtendLimit, RetractLimit);
+                    SoftJointLimit SJlimit = CJ.linearLimit;
+                    SJlimit.limit = limit;
+                    CJ.linearLimit = SJlimit;
+                }
+                rigg = GetComponent<Rigidbody>();
+            }
+        }
         private void Awake()
-        {           
+        {
+            base.Awake();
             SC = GetComponent<SuspensionController>();
 
             //Mapper definition
@@ -190,37 +228,6 @@ namespace BotFix
             Breaksound.clip = ModResource.GetAudioClip("air_Broken");
             
             thisblock = Block.From(SC);
-
-            //Physics stuff
-            if (!StatMaster.isClient || StatMaster.isLocalSim)
-            {
-                CJ = GetComponent<ConfigurableJoint>();
-                if (CJ)
-                {
-                    switch (selectedmovemode)
-                    {
-                        case 0: //None 
-                            CJ.breakForce = 35000;
-                            CJ.breakTorque = 30000;
-                            break;
-
-                        case 1: //Hydraulic
-                            CJ.breakForce = 60000;
-                            CJ.breakTorque = 60000;
-                            break;
-
-                        case 2: //Pneumatic
-                            CJ.breakForce = 60000;
-                            CJ.breakTorque = 60000;
-                            break;
-                    }
-                    float limit = Mathf.Max(ExtendLimit, RetractLimit);
-                    SoftJointLimit SJlimit = CJ.linearLimit;
-                    SJlimit.limit = limit;
-                    CJ.linearLimit = SJlimit;                   
-                }
-                rigg = GetComponent<Rigidbody>();
-            }
         }
 
         private void UpdateMapper()

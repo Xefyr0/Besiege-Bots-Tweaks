@@ -392,7 +392,7 @@ namespace BotFix
 
 
             //15
-            PrefabMaster.GetBlock(BlockType.SingleWoodenBlock, out BB);
+            //PrefabMaster.GetBlock(BlockType.SingleWoodenBlock, out BB);
 
             //16
             PrefabMaster.GetBlock(BlockType.Suspension, out BB);
