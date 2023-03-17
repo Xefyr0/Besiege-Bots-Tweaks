@@ -116,7 +116,6 @@ namespace BesiegeBotsTweaks
             if (!StatMaster.isClient || StatMaster.isLocalSim)
             {
                 CJ = GetComponent<ConfigurableJoint>();
-                Modding.ModConsole.Log("XefTemp");
                 if (CJ)
                 {
                     switch (selectedmovemode)

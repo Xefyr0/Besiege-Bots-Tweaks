@@ -33,7 +33,8 @@ namespace BesiegeBotsTweaks
             set
             {
                 if (SOC.particles != null) SOC.particles.gameObject.SetActive(value);
-                if (SOC.randSoundController != null) SOC.randSoundController.audioSource.enabled = value;
+                //this line crashes shit wtf
+                //if (SOC.randSoundController != null) SOC.randSoundController.audioSource.enabled = value;
                 dustActive = value;
                 TD = mToggleDust.CreateMessage(BB, value);
                 ModNetworking.SendToAll(TD);
