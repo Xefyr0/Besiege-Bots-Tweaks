@@ -30,6 +30,7 @@ namespace BesiegeBotsTweaks
         }
         protected override void DelayedAction()
         {
+            if (!thisBlock.InternalObject.SimPhysics) return;
             //In the event that the invincible button is toggled on, make the block joint invincible.
             if (Invincible && joint != null)
             {
