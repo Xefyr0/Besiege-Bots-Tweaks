@@ -19,7 +19,8 @@ namespace BotFix
         
         private int ID = 0;
         private float Lerpo = 0f;
-           
+
+        //1.2.5 update compat
         public bool MakeRound = false;       
         private bool isFirstFrame = true;
      
@@ -42,11 +43,12 @@ namespace BotFix
                 };
                 Lerpomode.DisplayInMapper = true;
             }
-
+            //1.2.5 update compat
             if (WheelColliderOrgin == null)
             {
                 StartCoroutine(ReadWheelMesh());
             }
+
 
             //Mapper definition
             Roundwheelz = BB.AddToggle("ROUNDWHEELZ!", "ROUNDWHEELZ!", MakeRound);
@@ -62,6 +64,7 @@ namespace BotFix
             }
         }
 
+        //1.2.5 update compat
         void Update()
         {
             if (!StatMaster.isClient || StatMaster.isLocalSim)
@@ -155,7 +158,7 @@ namespace BotFix
         {
             //Debug.Log("Readmesh!");
             WheelColliderOrgin = new GameObject("Wheel Collider Orgin");
-            UnityEngine.Object.DontDestroyOnLoad(WheelColliderOrgin);
+            DontDestroyOnLoad(WheelColliderOrgin);
             //WheelColliderOrgin.transform.SetParent(Mod.gameObject.transform);
             
             if (!WheelColliderOrgin.GetComponent<MeshCollider>())
@@ -168,6 +171,9 @@ namespace BotFix
                 meshCollider.sharedMesh = ModResource.GetMesh("Wheel Mesh");
                 meshCollider.convex = true;
                 WheelColliderOrgin.SetActive(false);
+
+                //1.25 update compat
+                Besiege.AssetImporter.readableMeshes = false;
             }
         }
     }

@@ -16,12 +16,15 @@ namespace BotFix
         public static readonly float HIGHGRAV = -55f;
         private BBMUI UIObject;
         private BBinfo InfoObject;
-        //public static bool UseModdedBlocks = true;
         //public static bool BetaMode = false;
         //public static bool ModbotMode = false;
         public override void OnLoad()
 		{
             ModConsole.Log("[BesiegeBotsTweaks] Loading Mod");
+
+            //1.25 update compat
+            Besiege.AssetImporter.readableMeshes = true;
+
             GameObject ModGameObject = GameObject.Find("ModControllerObject");	//If there isn't an existing mod GameObject,
 			if(ModGameObject == null)
 			{
