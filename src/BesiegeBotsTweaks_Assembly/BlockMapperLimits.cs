@@ -20,15 +20,17 @@ namespace BesiegeBotsTweaks
         private void Start()
         {
             BlockBehaviour BB = GetComponent<BlockBehaviour>();
-            //Disable Steering Block angle limits by default
+            //Add Steering Block angle limits
             if(BB is SteeringWheel)
             {
-                if(BB.BlockID == ((int)BlockType.SteeringBlock))
+                ((SteeringWheel)BB).allowLimits = true;
+                if (BB.BlockID == ((int)BlockType.SteeringBlock) && !Modding.Game.IsSimulating && ((SteeringWheel)BB).LimitsSlider != null)
                 {
+                    FauxTransform fauxTransform = new FauxTransform(new Vector3(0f, 0f, 0f), Quaternion.Euler(0f, 0f, 0f), Vector3.one * 0.35f);
                     (BB as SteeringWheel).LimitsSlider.UseLimitsToggle.IsActive = false;
                     (BB as SteeringWheel).LimitsSlider.UseLimitsToggle.ApplyValue();
+                    (BB as SteeringWheel).LimitsSlider.iconInfo = fauxTransform;
                 }
-                (BB as SteeringWheel).SpeedSlider.SetRange((BB as SteeringWheel).SpeedSlider.Min, 3.0f);
             }
             //Increase the max speed of flying blocks to 2.0
             if(BB is FlyingController)

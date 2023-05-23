@@ -310,9 +310,6 @@ namespace BotFix
                     ((CanonBlock)BB).randomDelay = 0f;
                     break;
                 case BlockType.SteeringBlock:
-                    //This has to be done here, instead of Awake(). Glad I got it first try.
-                    ((SteeringWheel)BB).allowLimits = true;
-                    //The other parts have to be done after SteeringWheel's Awake though.
                     BB.gameObject.AddComponent<BlockMapperLimits>();
                     break;
                 case BlockType.FlyingBlock:
@@ -326,7 +323,7 @@ namespace BotFix
                 case BlockType.CircularSaw:
                     //1.25 update compat removed these
                     //BB.transform.GetChild(9).localPosition = new Vector3(0f, 0f, -0.1f);
-                    BB.transform.GetChild(10).localPosition = new Vector3(0f, 0f, -0.1f);
+                    //BB.transform.GetChild(10).localPosition = new Vector3(0f, 0f, -0.1f);
                     BB.gameObject.AddComponent<RealisticMotorTorque>();
                     BB.gameObject.AddComponent<BlockMapperLimits>();
                     break;
@@ -338,7 +335,6 @@ namespace BotFix
                     BB.gameObject.AddComponent<SpinnerSound>();
                     BB.gameObject.AddComponent<RealisticMotorTorque>();
                     BB.gameObject.AddComponent<BlockMapperLimits>();
-                    BB.gameObject.AddComponent<SpinnerSound>();
                     break;
                 case BlockType.Wing:
                 case BlockType.WingPanel:
@@ -383,10 +379,16 @@ namespace BotFix
 
         internal static void ModAllPrefab()
         {
+            PrefabMaster.GetBlock(BlockType.SteeringBlock, out BlockBehaviour BB);
+            //This has to be done here, instead of Awake(). Glad I got it first try.
+            ((SteeringWheel)BB).allowLimits = true;
+
             //Modding.ModConsole.Log("ModAllPrefab called");
             Modding.Events.OnBlockInit += delegate (Block toInit)
             {
-                BlockBehaviour BB = toInit.InternalObject;
+                if (Modding.Game.IsSimulating) return;
+
+                BB = toInit.InternalObject;
 #if DEBUG
                 Modding.ModConsole.Log("Initializing " + toInit.ToString());
 #endif
